@@ -1,0 +1,481 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const heroShape = '/figma/service-metocean-hero-shape.svg';
+const footerShape = '/figma/service-metocean-contact-shape.svg';
+const atlasImage = '/figma/service-metocean-atlas.png';
+const directionalImage = '/figma/service-metocean-directional.png';
+const simulationImage = '/figma/service-metocean-simulation.png';
+const extremeImage = '/figma/service-metocean-extreme.png';
+const dssImage = '/figma/service-metocean-dss.png';
+const extendedImage = '/figma/service-metocean-extended.png';
+const serviceOrbitImage = '/figma/home-service-orbit.png';
+const iconDroplet = '/figma/icon-droplet.svg';
+const iconEarth = '/figma/icon-earth.svg';
+const iconPeople = '/figma/icon-people.svg';
+
+const studies = [
+	{
+		title: 'Metocean Atlas',
+		description:
+			'Metocean Atlas (map) of physical parameters (wind, wave, currents, and tides) in coastal and ocean environments.',
+		image: atlasImage,
+		tone: 'white',
+	},
+	{
+		title: 'Directional Analysis',
+		description:
+			'Directional analyses of long-term winds, waves, and currents in coastal and ocean environments.',
+		image: directionalImage,
+		tone: 'mist',
+	},
+	{
+		title: 'Numerical Simulations',
+		description:
+			'Simulation of waves, currents, and tides, and conception from several scenarios that could occur on work sites.',
+		image: simulationImage,
+		tone: 'lime',
+	},
+	{
+		title: 'Extreme Values Analysis',
+		description:
+			'Using a vast amount of historical data, extreme values analysis gives prediction of extreme events from waves, currents, and tides on work sites.',
+		image: extremeImage,
+		tone: 'white',
+	},
+];
+
+const relatedServices = [
+	{
+		title: 'Metocean Design Criteria',
+		description: 'Extreme Value Analysis. Numerical Simulation. Ocean, Climate and Weather Analysis',
+		icon: iconEarth,
+		image: serviceOrbitImage,
+		href: '/service/metocean',
+		tone: 'light-blue',
+	},
+	{
+		title: 'Marine Operation Decision Support System (MO-DSS)',
+		description: 'Marine Sea State Prediction. Weather Forecast. Tow Route Forecast. Weather Window.',
+		icon: iconDroplet,
+		image: dssImage,
+		href: '/#service',
+		tone: 'mist',
+	},
+	{
+		title: 'Extended Services',
+		description: 'Our team can provide customized services tailored for your specific needs in maritime industry.',
+		icon: iconPeople,
+		image: extendedImage,
+		href: '/#service',
+		tone: 'white',
+	},
+];
+---
+
+<Layout
+	title="Metocean Design Criteria | Bhumi Warih"
+	activeNav="service"
+	footerShape={footerShape}
+>
+	<main class="service-page">
+		<section class="service-hero">
+			<div class="service-hero__bg"></div>
+			<img class="service-hero__shape" src={heroShape} alt="" />
+			<div class="service-hero__copy">
+				<p class="service-hero__eyebrow">/Service</p>
+				<h1>Metocean Design Criteria</h1>
+			</div>
+			<p class="service-hero__meta">Registered on CIVD System: SPDA Number 73970/EMP/2024</p>
+		</section>
+
+		<section class="service-intro">
+			<div class="service-intro__copy">
+				<p class="section-tag">About</p>
+				<p class="service-intro__lead">
+					Metocean is a set of atmospheric and oceanic parameters (i.e. wind, wave, current,
+					tide level) that are essential in ensuring the safety and reliability of various coastal
+					and marine operations and constructions.
+				</p>
+				<p>
+					Metocean Design Criteria is developed to deliver the probabilistic behavior of
+					representative metocean parameters for coastal and offshore construction and structure
+					planning and design. MODC provides engineers the data to minimize uncertainty for
+					optimal resource allocation in order to ensure cost-efficient engineering practices in
+					compliance with international standards. We present metocean information as a prediction
+					of normal and extreme conditions of wind, tides, waves, and currents.
+				</p>
+			</div>
+
+			<div class="study-stack">
+				{
+					studies.map((study) => (
+						<article class={`study-card study-card--${study.tone}`}>
+							<div class="study-card__media">
+								<img src={study.image} alt={study.title} />
+							</div>
+							<div class="study-card__body">
+								<h2>{study.title}</h2>
+								<p>{study.description}</p>
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="related-services" id="service">
+			<div class="related-services__intro">
+				<div>
+					<p class="section-tag">Services</p>
+					<h2>Offshore and Coastal Navigation Decision Making</h2>
+				</div>
+				<p>
+					Make informed decisions through accurate analysis and expert guidance, for safer
+					operations, optimized performance, and cost-efficient protection of marine assets.
+				</p>
+			</div>
+
+			<div class="service-grid">
+				{
+					relatedServices.map((service, index) => (
+						<article class={`service-card service-card--${service.tone} ${index === 1 ? 'service-card--wide' : ''}`}>
+							<div class="service-card__copy">
+								<img class="service-card__icon" src={service.icon} alt="" />
+								<h3>{service.title}</h3>
+								<p>{service.description}</p>
+								<a href={service.href} class="pill pill--outline-dark">Read More <span aria-hidden="true">→</span></a>
+							</div>
+							<div class="service-card__media">
+								<img src={service.image} alt="" />
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</section>
+	</main>
+</Layout>
+
+<style>
+	:global(:root) {
+		--page-pad: clamp(1rem, 4vw, 5rem);
+		--service-blue: #044ecc;
+		--service-accent: #00a1dc;
+		--service-line: #b7bcc5;
+		--service-text: #111111;
+		--service-muted: #3d3d3d;
+	}
+
+	.service-page {
+		background: white;
+		color: var(--service-text);
+	}
+
+	.service-hero {
+		position: relative;
+		min-height: 40.8125rem;
+		overflow: clip;
+		color: white;
+	}
+
+	.service-hero__bg {
+		position: absolute;
+		inset: 0;
+		background: var(--service-blue);
+	}
+
+	.service-hero__shape {
+		position: absolute;
+		inset: -23rem auto auto -13rem;
+		width: min(116rem, 136vw);
+		max-width: none;
+		transform: rotate(-90deg);
+		opacity: 0.95;
+	}
+
+	.service-hero__copy,
+	.service-hero__meta {
+		position: relative;
+		z-index: 1;
+	}
+
+	.service-hero__copy {
+		padding: 15.5rem var(--page-pad) 4rem;
+		max-width: 44rem;
+	}
+
+	.service-hero__eyebrow {
+		margin: 0 0 1rem;
+		font-size: clamp(1.4rem, 2vw, 2rem);
+		line-height: 1.1;
+	}
+
+	.service-hero h1 {
+		margin: 0;
+		font-size: clamp(3.5rem, 7vw, 6rem);
+		line-height: 0.95;
+		letter-spacing: -0.04em;
+	}
+
+	.service-hero__meta {
+		position: absolute;
+		top: 11.5rem;
+		right: var(--page-pad);
+		max-width: 20.625rem;
+		font-size: 1.25rem;
+		line-height: 1.25;
+	}
+
+	.service-intro,
+	.related-services {
+		padding: 4rem var(--page-pad) 5rem;
+	}
+
+	.service-intro {
+		display: grid;
+		grid-template-columns: minmax(0, 0.86fr) minmax(0, 1fr);
+		gap: clamp(2rem, 4vw, 5rem);
+		align-items: start;
+	}
+
+	.section-tag {
+		margin: 0 0 1rem;
+		color: var(--service-accent);
+		font-size: 1rem;
+		line-height: 1;
+	}
+
+	.service-intro__copy {
+		max-width: 32.4375rem;
+	}
+
+	.service-intro__lead {
+		margin: 0 0 1.25rem;
+		font-size: clamp(1.75rem, 3vw, 2rem);
+		line-height: 1.12;
+	}
+
+	.service-intro__copy p:last-child {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.45;
+		color: var(--service-muted);
+	}
+
+	.study-stack {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1.75rem;
+	}
+
+	.study-card {
+		overflow: hidden;
+		border: 1px solid var(--service-line);
+		border-radius: 0.75rem;
+		background: white;
+	}
+
+	.study-card--mist {
+		background: #e7e8eb;
+	}
+
+	.study-card--lime {
+		background: #d4ff00;
+	}
+
+	.study-card__media {
+		display: grid;
+		place-items: center;
+		min-height: 31rem;
+		padding: 1.75rem;
+		border-bottom: 1px solid var(--service-line);
+	}
+
+	.study-card__media img {
+		max-height: 28rem;
+		object-fit: contain;
+	}
+
+	.study-card__body {
+		padding: 1.5rem;
+	}
+
+	.study-card__body h2 {
+		margin: 0 0 0.5rem;
+		font-size: 2rem;
+		line-height: 1.12;
+	}
+
+	.study-card__body p {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.45;
+	}
+
+	.related-services__intro {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(18rem, 39.25rem);
+		gap: 2rem;
+		margin-bottom: 2rem;
+		align-items: end;
+	}
+
+	.related-services__intro h2 {
+		margin: 0;
+		max-width: 38rem;
+		font-size: clamp(2rem, 4vw, 2.75rem);
+		line-height: 1;
+		letter-spacing: -0.04em;
+	}
+
+	.related-services__intro p {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.45;
+		color: var(--service-muted);
+	}
+
+	.service-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.5rem;
+	}
+
+	.service-card {
+		position: relative;
+		display: grid;
+		grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+		overflow: hidden;
+		border-radius: 0.75rem;
+		min-height: 23rem;
+	}
+
+	.service-card--wide {
+		grid-column: span 2;
+	}
+
+	.service-card--light-blue .service-card__copy {
+		background: rgba(0, 81, 255, 0.08);
+	}
+
+	.service-card--mist .service-card__copy {
+		background: #e6e7ea;
+	}
+
+	.service-card--white .service-card__copy {
+		background: rgba(0, 161, 220, 0.08);
+	}
+
+	.service-card__copy {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.875rem;
+		padding: 1.5rem;
+	}
+
+	.service-card__icon {
+		width: 3rem;
+		height: 3rem;
+	}
+
+	.service-card__copy h3 {
+		margin: 0;
+		font-size: clamp(2rem, 4vw, 2.25rem);
+		line-height: 1.05;
+	}
+
+	.service-card__copy p {
+		margin: 0;
+		max-width: 18rem;
+		font-size: 1rem;
+		line-height: 1.4;
+	}
+
+	.service-card__media {
+		position: relative;
+		overflow: hidden;
+		min-height: 19rem;
+	}
+
+	.service-card__media img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.pill {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		min-height: 2.625rem;
+		padding: 0.75rem 1rem;
+		border-radius: 999px;
+		font-size: 1.125rem;
+		line-height: 1;
+		text-decoration: none;
+		white-space: nowrap;
+	}
+
+	.pill--outline-dark {
+		border: 1px solid currentColor;
+		color: #101010;
+	}
+
+	@media (max-width: 72rem) {
+		.service-intro,
+		.related-services__intro,
+		.service-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.service-card--wide {
+			grid-column: auto;
+		}
+
+		.service-card {
+			grid-template-columns: 1fr;
+		}
+
+		.service-card__copy p {
+			max-width: none;
+		}
+	}
+
+	@media (max-width: 56rem) {
+		.service-hero {
+			min-height: 30rem;
+		}
+
+		.service-hero__copy {
+			padding-top: 10rem;
+		}
+
+		.service-hero__meta {
+			position: relative;
+			top: auto;
+			right: auto;
+			padding: 0 var(--page-pad) 2rem;
+		}
+
+		.study-card__media {
+			min-height: 18rem;
+		}
+	}
+
+	@media (max-width: 40rem) {
+		.service-intro,
+		.related-services {
+			padding-top: 3rem;
+			padding-bottom: 3rem;
+		}
+
+		.service-card__media img {
+			position: static;
+			height: auto;
+		}
+	}
+</style>

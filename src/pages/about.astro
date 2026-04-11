@@ -1,0 +1,825 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const navItems = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Industry', href: '/industry' },
+	{ label: 'Service', href: '/#service' },
+	{ label: 'About', href: '/about' },
+	{ label: 'Blog', href: '/#blog' },
+];
+
+const heroBase = '/figma/about-hero-base.jpg';
+const heroBand = '/figma/about-hero-band.png';
+const heroGraphicA = '/figma/about-hero-graphic-a.svg';
+const heroGraphicB = '/figma/about-hero-graphic-b.svg';
+const serviceImage = '/figma/about-service-image.png';
+const clientLogoA = '/figma/about-client-logos-a.png';
+const clientLogoB = '/figma/about-client-logos-b.png';
+const clientLogoC = '/figma/about-client-logos-c.png';
+const teamShotA = '/figma/about-team-shot-a.png';
+const teamShotB = '/figma/about-team-shot-b.png';
+const teamShotC = '/figma/about-team-shot-c.png';
+const teamShotD = '/figma/about-team-shot-d.png';
+const teamShotE = '/figma/about-team-shot-e.png';
+const footerShape = '/figma/about-contact-shape.svg';
+
+const clientAssets = [
+	clientLogoA,
+	clientLogoA,
+	clientLogoA,
+	clientLogoB,
+	clientLogoB,
+	clientLogoB,
+	clientLogoA,
+	clientLogoA,
+	clientLogoA,
+	clientLogoB,
+	clientLogoB,
+	clientLogoA,
+	clientLogoA,
+	clientLogoA,
+	clientLogoC,
+];
+
+const teamShots = [teamShotA, teamShotB, teamShotC, teamShotD, teamShotE];
+
+const teamCards = Array.from({ length: 9 }, (_, index) => ({
+	role: 'Jabatan',
+	name: 'Nama Lengkap, Gelar',
+	description: 'Description or profile (If Any)',
+}));
+---
+
+<Layout title="BhumiWarih Profile | Bhumi Warih">
+	<main class="about-page">
+		<section class="about-hero">
+			<div class="about-hero__bg">
+				<img class="about-hero__base" src={heroBase} alt="" />
+				<img class="about-hero__band" src={heroBand} alt="" />
+				<img class="about-hero__graphic about-hero__graphic--a" src={heroGraphicA} alt="" />
+				<img class="about-hero__graphic about-hero__graphic--b" src={heroGraphicB} alt="" />
+				<div class="about-hero__veil"></div>
+			</div>
+
+			<header class="topbar">
+				<nav class="topbar__menu">
+					{
+						navItems.map((item) => (
+							<a href={item.href} class={`pill pill--ghost ${item.href === '/about' ? 'is-active' : ''}`}>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+
+				<div class="topbar__brand" aria-label="Bhumi Warih logo">
+					<div class="brand-mark"></div>
+				</div>
+
+				<div class="topbar__actions">
+					<a href="#contact" class="pill pill--ghost">ID | EN</a>
+					<a href="#contact" class="pill pill--solid">Contact Us <span aria-hidden="true">→</span></a>
+				</div>
+			</header>
+
+			<div class="about-hero__meta">
+				Specializing in Information and Knowledge of Meteorological and Oceanographic (MEtocean)
+				field.
+			</div>
+
+			<div class="about-hero__copy">
+				<p class="section-tag section-tag--inverse">/About</p>
+				<h1>BhumiWarih Profile</h1>
+			</div>
+		</section>
+
+		<section class="about-intro">
+			<p class="section-tag">What We Do</p>
+			<h2>
+				Delivering clear ‘picture’ of various parameter and ranges of marine physical environmental
+				factors which are of substantial to our client investments.
+			</h2>
+
+			<div class="about-intro__columns">
+				<div>
+					<p class="section-tag">How We Do</p>
+					<p>
+						We will produce this ‘picture’ as metocean information and knowledge of a given site
+						of interest and present them as standard hardcopy report, offline data base retrieval
+						system with interactive user interface, regular push-mail report, or online access to
+						our operational metocean system, including involvement of front line service.
+					</p>
+				</div>
+				<div>
+					<p class="section-tag">Our Mission</p>
+					<p>
+						BhumiWarih’s mission is to provide support to the improvement of accuracy, security,
+						and safety of the coastal and offshore design, planning, and investment.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="service-overview">
+			<div class="service-overview__copy">
+				<p class="section-tag">Service Overview</p>
+				<h3>
+					A specialized competence of the company is the capability to involve state-of-the-art
+					scientific methods and novel techniques in improving the reliability and merit of marine
+					environmental information.
+				</h3>
+				<p>
+					Our core of competences are based on long experience and academic training of its
+					personnel in dealing with studies of mean and extreme values of wind, wave, current, and
+					tide, for the purpose of design criteria or front end engineering of fix or floating
+					structures and underwater constructions, as well as real-time and forecast systems for
+					planning and monitoring of sea-state sensitive operations.
+				</p>
+			</div>
+			<div class="service-overview__media">
+				<img src={serviceImage} alt="Offshore instrument in clear water" />
+			</div>
+		</section>
+
+		<section class="clients">
+			<div class="clients__intro">
+				<p class="section-tag">Our Clients</p>
+				<h3>We’re Trusted by Government Bodies and Private Sectors Across the Globe</h3>
+			</div>
+
+			<div class="clients__grid">
+				{
+					clientAssets.map((asset) => (
+						<div class="clients__logo">
+							<img src={asset} alt="" />
+						</div>
+					))
+				}
+				<div class="clients__more">and by 999+ More since YYYY</div>
+			</div>
+		</section>
+
+		<section class="team">
+			<div class="team__intro">
+				<p class="section-tag">Our Team</p>
+				<h3>
+					Experiments, diversity in perspective and multi disciplinary set of mind are our beliefs
+					in delivering innovative and creative solutions to our client’s problems.
+				</h3>
+
+				<div class="team__gallery">
+					{teamShots.map((asset) => <img src={asset} alt="" />)}
+				</div>
+
+				<p>
+					BWgeohydromatics’ key people are entrepreneur researchers, who have been accumulating
+					knowledge in theoretical and practical spheres of applications of various disciplines
+					covering coastal engineering, environmental science, physical geography, hydrography,
+					and oceanography.
+				</p>
+				<p>
+					To date, our key team members are well trained and exposed physical oceanographers with
+					strong support from computation and information technology team.
+				</p>
+			</div>
+
+			<div class="team__cards">
+				{
+					teamCards.map((card) => (
+						<article class="team-card">
+							<div class="team-card__photo"></div>
+							<div class="team-card__body">
+								<p class="team-card__role">{card.role}</p>
+								<h4>{card.name}</h4>
+								<p>{card.description}</p>
+								<div class="team-card__socials">
+									<a href="#contact" aria-label="LinkedIn">in</a>
+									<a href="#contact" aria-label="YouTube">yt</a>
+									<a href="#contact" aria-label="Instagram">ig</a>
+									<a href="#contact" aria-label="Twitter">x</a>
+								</div>
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="contact" id="contact">
+			<img class="contact__shape" src={footerShape} alt="" />
+			<div class="contact__inner">
+				<div class="contact__copy">
+					<p class="section-tag section-tag--inverse">/Contact Us</p>
+					<h2>Planning an Offshore Project? Let&apos;s Talk About Your Metocean Needs.</h2>
+					<address>
+						Non Stop Building, Jl. Tubagus Ismail No.40 Lt. 2 Unit 7, Sekeloa, Kecamatan
+						Coblong, Kota Bandung, Jawa Barat, Indonesia 40134
+					</address>
+				</div>
+
+				<form class="contact__form">
+					<div class="contact__grid">
+						<label>
+							<span class="sr-only">Your Name</span>
+							<input type="text" name="name" placeholder="Your Name" />
+						</label>
+						<label>
+							<span class="sr-only">Your Email</span>
+							<input type="email" name="email" placeholder="Your Email" />
+						</label>
+					</div>
+					<label>
+						<span class="sr-only">Your Message</span>
+						<textarea name="message" rows="6" placeholder="Tell us what you need..."></textarea>
+					</label>
+					<button type="submit" class="pill pill--solid">Send Message <span aria-hidden="true">→</span></button>
+				</form>
+			</div>
+
+			<footer class="footer">
+				<div class="footer__links">
+					<a href="https://bwgeohydromatics.com/legal-and-privacy/" target="_blank" rel="noreferrer">Legal &amp; Privacy</a>
+					<a href="/#glossary">Glossary</a>
+					<a href="#contact">Careers</a>
+					<span>Copyright © 2026</span>
+				</div>
+				<div class="footer__socials">
+					<a href="#contact" aria-label="LinkedIn">in</a>
+					<a href="#contact" aria-label="YouTube">yt</a>
+					<a href="#contact" aria-label="Instagram">ig</a>
+					<a href="#contact" aria-label="Twitter">x</a>
+				</div>
+				<div class="footer__company">PT. Bhumi Warih Geohydromatics</div>
+			</footer>
+		</section>
+	</main>
+</Layout>
+
+<style>
+	:global(:root) {
+		--bg: #ffffff;
+		--paper: #f8f8f8;
+		--line: #e7e7e7;
+		--text: #151515;
+		--muted: #00a1dc;
+		--page-pad: clamp(1rem, 4vw, 5rem);
+	}
+
+	.about-page {
+		background: var(--bg);
+		color: var(--text);
+	}
+
+	.about-hero {
+		position: relative;
+		min-height: 56.25rem;
+		padding: 2rem var(--page-pad) 3rem;
+		overflow: clip;
+		color: white;
+	}
+
+	.about-hero__bg,
+	.about-hero__bg img,
+	.about-hero__veil {
+		position: absolute;
+		inset: 0;
+	}
+
+	.about-hero__base,
+	.about-hero__band {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.about-hero__band {
+		mix-blend-mode: screen;
+	}
+
+	.about-hero__graphic {
+		height: 100%;
+		width: auto;
+		max-width: none;
+		object-fit: contain;
+		mix-blend-mode: hard-light;
+	}
+
+	.about-hero__graphic--a {
+		left: -0.5rem;
+		width: min(57rem, 56vw);
+	}
+
+	.about-hero__graphic--b {
+		left: -1rem;
+		width: min(48rem, 52vw);
+	}
+
+	.about-hero__veil {
+		backdrop-filter: blur(5px);
+		background: rgba(217, 217, 217, 0.01);
+		opacity: 0.3;
+		inset: 5.5rem 1rem 1.5rem;
+	}
+
+	.topbar,
+	.about-hero__meta,
+	.about-hero__copy {
+		position: relative;
+		z-index: 1;
+	}
+
+	.topbar {
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.topbar__menu,
+	.topbar__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.topbar__actions {
+		justify-content: flex-end;
+	}
+
+	.topbar__brand {
+		display: flex;
+		justify-content: center;
+	}
+
+	.brand-mark {
+		width: 3.5rem;
+		height: 3.5rem;
+		border-radius: 999px;
+		background:
+			radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.25) 28%, transparent 30%),
+			conic-gradient(from 180deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.35));
+		box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.45);
+	}
+
+	.pill {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		min-height: 2.625rem;
+		padding: 0.75rem 1rem;
+		border-radius: 999px;
+		border: 1px solid currentColor;
+		font-size: 1.125rem;
+		line-height: 1;
+		text-decoration: none;
+		white-space: nowrap;
+	}
+
+	.pill--ghost {
+		background: transparent;
+		color: white;
+	}
+
+	.pill--ghost.is-active {
+		background: white;
+		color: #01a1dc;
+		font-weight: 600;
+	}
+
+	.pill--solid {
+		background: white;
+		color: black;
+		border-color: white;
+	}
+
+	.about-hero__meta {
+		margin-top: 3.5rem;
+		margin-left: auto;
+		max-width: 20.625rem;
+		font-size: 1.25rem;
+		line-height: 1.35;
+		text-align: right;
+	}
+
+	.about-hero__copy {
+		margin-top: 19rem;
+		max-width: 42.875rem;
+	}
+
+	.about-hero__copy h1,
+	.contact h2 {
+		margin: 0;
+		font-size: clamp(3.5rem, 8vw, 6rem);
+		line-height: 0.95;
+		letter-spacing: -0.04em;
+	}
+
+	.section-tag {
+		margin: 0 0 0.875rem;
+		font-size: 1.25rem;
+		color: var(--muted);
+	}
+
+	.section-tag--inverse {
+		color: white;
+	}
+
+	.about-intro,
+	.service-overview,
+	.clients,
+	.team {
+		padding-inline: clamp(1rem, 13vw, 11.75rem);
+	}
+
+	.about-intro {
+		padding-top: 6rem;
+		padding-bottom: 4rem;
+	}
+
+	.about-intro h2 {
+		margin: 0;
+		max-width: 80rem;
+		font-size: clamp(2rem, 4vw, 3rem);
+		line-height: 1.12;
+		letter-spacing: -0.03em;
+	}
+
+	.about-intro__columns {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 2rem 6rem;
+		margin-top: 3rem;
+	}
+
+	.about-intro__columns p:last-child {
+		margin: 0;
+		font-size: 1.25rem;
+		line-height: 1.35;
+	}
+
+	.service-overview,
+	.clients {
+		margin-top: 2rem;
+		padding-top: 2rem;
+		padding-bottom: 2rem;
+		border-radius: 0.75rem;
+	}
+
+	.service-overview {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.5rem;
+		background: #ebf8fc;
+		padding-block: 2rem;
+	}
+
+	.service-overview__copy h3,
+	.clients__intro h3,
+	.team__intro h3 {
+		margin: 0;
+		font-size: 2rem;
+		line-height: 1.12;
+		letter-spacing: -0.02em;
+	}
+
+	.service-overview__copy p:last-child,
+	.team__intro p,
+	.team-card p,
+	.contact address {
+		margin: 0;
+		font-size: 1.25rem;
+		line-height: 1.35;
+	}
+
+	.service-overview__copy {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.service-overview__media {
+		border: 1px solid #b0b0b0;
+		border-radius: 0.5rem;
+		overflow: clip;
+		min-height: 32rem;
+	}
+
+	.service-overview__media img {
+		width: 100%;
+		height: 100%;
+		display: block;
+		object-fit: cover;
+	}
+
+	.clients {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.5rem;
+		background: var(--paper);
+		padding-block: 2rem;
+	}
+
+	.clients__grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0;
+		align-content: start;
+	}
+
+	.clients__logo,
+	.clients__more {
+		border: 1px solid var(--line);
+		border-radius: 0.75rem;
+		min-height: 8.0625rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 1.5rem;
+		background: white;
+	}
+
+	.clients__logo img {
+		max-width: 100%;
+		max-height: 5rem;
+		object-fit: contain;
+		mix-blend-mode: multiply;
+	}
+
+	.clients__more {
+		grid-column: span 3;
+		justify-content: flex-start;
+		font-size: 0.875rem;
+		color: #666;
+	}
+
+	.team {
+		padding-top: 4rem;
+		padding-bottom: 4rem;
+	}
+
+	.team__intro {
+		max-width: 62.5rem;
+	}
+
+	.team__gallery {
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: minmax(16rem, 1fr);
+		gap: 1rem;
+		overflow-x: auto;
+		margin: 2rem 0 1rem;
+		padding-bottom: 0.5rem;
+	}
+
+	.team__gallery img {
+		height: 12.5rem;
+		width: 100%;
+		object-fit: cover;
+		border-radius: 0.5rem;
+		flex-shrink: 0;
+	}
+
+	.team__cards {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1rem;
+		margin-top: 2rem;
+	}
+
+	.team-card {
+		border: 1px solid var(--line);
+		border-radius: 0.75rem;
+		padding: 1.5rem;
+		background: white;
+	}
+
+	.team-card__photo {
+		height: 17.8125rem;
+		border-radius: 0.5rem;
+		background: #d9d9d9;
+	}
+
+	.team-card__body {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin-top: 1rem;
+	}
+
+	.team-card__role {
+		font-weight: 500;
+	}
+
+	.team-card h4 {
+		margin: 0;
+		font-size: 1.5rem;
+		line-height: 1.12;
+	}
+
+	.team-card__socials,
+	.footer__links,
+	.footer__socials {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.team-card__socials a {
+		text-decoration: none;
+		color: #1d7fc5;
+	}
+
+	.contact {
+		position: relative;
+		padding: 5rem var(--page-pad) 2.5rem;
+		color: white;
+		background: linear-gradient(122deg, #01a1dc 0%, #1952d2 100%);
+		overflow: clip;
+	}
+
+	.contact__shape {
+		position: absolute;
+		inset: -6rem auto auto 50%;
+		width: min(120rem, 140vw);
+		max-width: none;
+		transform: translateX(-8%) rotate(90deg);
+		opacity: 0.8;
+	}
+
+	.contact__inner,
+	.footer {
+		position: relative;
+		z-index: 1;
+	}
+
+	.contact__inner {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 2rem;
+		align-items: center;
+	}
+
+	.contact__copy {
+		max-width: 39.25rem;
+	}
+
+	.contact address {
+		margin-top: 10rem;
+		max-width: 20.625rem;
+		color: white;
+		font-style: normal;
+	}
+
+	.contact__form {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.75rem;
+	}
+
+	.contact__grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.75rem;
+		width: 100%;
+	}
+
+	.contact label {
+		width: 100%;
+	}
+
+	.contact input,
+	.contact textarea {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 1.5rem 1.25rem;
+		border-radius: 1rem;
+		border: 1px solid rgba(255, 255, 255, 0.9);
+		background: rgba(255, 255, 255, 0.12);
+		color: white;
+		font: inherit;
+		resize: vertical;
+	}
+
+	.contact input::placeholder,
+	.contact textarea::placeholder {
+		color: rgba(255, 255, 255, 0.55);
+	}
+
+	.footer {
+		margin-top: 8.75rem;
+		padding-top: 2.5rem;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		gap: 1.5rem;
+		align-items: center;
+		font-size: 1rem;
+	}
+
+	.footer__links a,
+	.footer__company {
+		color: rgba(241, 245, 236, 0.95);
+	}
+
+	.footer__socials a {
+		color: white;
+		text-decoration: none;
+	}
+
+	.footer__company {
+		text-align: right;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		border: 0;
+	}
+
+	@media (max-width: 72rem) {
+		.topbar,
+		.about-intro__columns,
+		.service-overview,
+		.clients,
+		.contact__inner,
+		.footer,
+		.team__cards {
+			grid-template-columns: 1fr;
+		}
+
+		.topbar__menu,
+		.topbar__actions,
+		.topbar__brand {
+			justify-content: center;
+		}
+
+		.about-hero__meta {
+			margin-left: 0;
+			text-align: left;
+		}
+
+		.clients__grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.clients__more {
+			grid-column: span 2;
+		}
+
+		.contact__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.footer__company {
+			text-align: left;
+		}
+	}
+
+	@media (max-width: 40rem) {
+		.about-hero {
+			min-height: 32rem;
+		}
+
+		.topbar__menu {
+			display: none;
+		}
+
+		.about-hero__copy {
+			margin-top: 10rem;
+		}
+
+		.about-intro,
+		.service-overview,
+		.clients,
+		.team,
+		.contact {
+			padding-top: 3rem;
+			padding-bottom: 3rem;
+		}
+
+		.clients__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.clients__more {
+			grid-column: span 1;
+		}
+
+		.contact address {
+			margin-top: 2rem;
+		}
+
+		.footer {
+			margin-top: 3rem;
+			padding-top: 1rem;
+		}
+	}
+</style>

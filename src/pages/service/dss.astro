@@ -1,0 +1,507 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const heroShape = '/figma/service-dss-hero-shape.svg';
+const footerShape = '/figma/service-dss-contact-shape.svg';
+const forecast7Image = '/figma/service-dss-forecast-7.png';
+const forecast10Image = '/figma/service-dss-forecast-10.png';
+const climatologyImage = '/figma/service-dss-climatology.png';
+const weatherWindowImage = '/figma/service-dss-weather-window.png';
+const cardIconForecast = '/figma/service-dss-card-icon-forecast.png';
+const cardIconAnalysis = '/figma/service-dss-card-icon-analysis.png';
+const dssImage = '/figma/service-metocean-dss.png';
+const extendedImage = '/figma/service-metocean-extended.png';
+const serviceOrbitImage = '/figma/home-service-orbit.png';
+const iconDroplet = '/figma/icon-droplet.svg';
+const iconEarth = '/figma/icon-earth.svg';
+const iconPeople = '/figma/icon-people.svg';
+
+const solutions = [
+	{
+		title: 'Marine Sea State Prediction (7 Days Ahead)',
+		description:
+			'Prognosis of 7-days ahead winds, waves, swells, and currents. The prognosis is based on downscaling method using Weather Research and Forecasting model (WRF), in-house hydrodynamic model, and WaveWatch III.',
+		image: forecast7Image,
+		icon: cardIconForecast,
+	},
+	{
+		title: 'Marine Sea State Prediction (10 Days Ahead)',
+		description:
+			'Prognosis of 10-days ahead winds, waves, swells, and currents. The prognosis is based on downscaling method using Weather Research and Forecasting model (WRF), in-house hydrodynamic model, and WaveWatch III.',
+		image: forecast10Image,
+		icon: cardIconForecast,
+	},
+	{
+		title: 'Climatology Analysis',
+		description:
+			'Analysis of historical climate data for specific marine locations; detailing winds, waves, currents, and tidal patterns.',
+		image: climatologyImage,
+		icon: cardIconAnalysis,
+	},
+	{
+		title: 'Weather Window',
+		description:
+			'Analysis of operation window and assessment of down time (work standby) probability.',
+		image: weatherWindowImage,
+		icon: cardIconAnalysis,
+	},
+];
+
+const relatedServices = [
+	{
+		title: 'Metocean Design Criteria',
+		description: 'Extreme Value Analysis. Numerical Simulation. Ocean, Climate and Weather Analysis',
+		icon: iconEarth,
+		image: serviceOrbitImage,
+		href: '/service/metocean',
+		tone: 'light-blue',
+	},
+	{
+		title: 'Marine Operation Decision Support System (MO-DSS)',
+		description: 'Marine Sea State Prediction. Weather Forecast. Tow Route Forecast. Weather Window.',
+		icon: iconDroplet,
+		image: dssImage,
+		href: '/service/dss',
+		tone: 'mist',
+	},
+	{
+		title: 'Extended Services',
+		description: 'Our team can provide customized services tailored for your specific needs in maritime industry.',
+		icon: iconPeople,
+		image: extendedImage,
+		href: '/#service',
+		tone: 'white',
+	},
+];
+---
+
+<Layout
+	title="Marine Operation Decision Support System | Bhumi Warih"
+	activeNav="service"
+	footerShape={footerShape}
+>
+	<main class="service-page">
+		<section class="service-hero">
+			<div class="service-hero__bg"></div>
+			<img class="service-hero__shape" src={heroShape} alt="" />
+			<div class="service-hero__copy">
+				<p class="service-hero__eyebrow">/Service</p>
+				<h1>Marine Operation Decision Support System</h1>
+			</div>
+			<p class="service-hero__meta">Registered on CIVD System: SPDA Number 73970/EMP/2024</p>
+		</section>
+
+		<section class="service-intro">
+			<div class="service-intro__copy">
+				<p class="section-tag">About</p>
+				<p class="service-intro__lead">
+					For maritime industry, those parameters are meteorology and oceanography (metocean)
+					parameters. As the expansion of maritime industries, reliable metocean parameters
+					information are considered a remarkable matter.
+				</p>
+				<p>
+					Some operational information is critically dependent on accurate metocean parameters
+					information. If we don’t have this information, when bad weather, say, a storm comes,
+					we will not have any idea what kind of decision we have to take to save our assets. A
+					better decision can be taken if we have predicted such bad weather. Predicted weather
+					condition can give great basic knowledge for all decision makers. Thus, we can prevent
+					the damage and reduce the loss.
+				</p>
+				<p class="service-intro__kicker">
+					Natural condition uncertainties come with every man-made plan in maritime activities.
+				</p>
+			</div>
+
+			<div class="solution-stack">
+				{
+					solutions.map((solution) => (
+						<article class="solution-card">
+							<div class="solution-card__media">
+								<img src={solution.image} alt={solution.title} />
+							</div>
+							<div class="solution-card__body">
+								<div class="solution-card__copy">
+									<h2>{solution.title}</h2>
+									<p>{solution.description}</p>
+								</div>
+								<img class="solution-card__icon" src={solution.icon} alt="" />
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="related-services" id="service">
+			<div class="related-services__intro">
+				<div>
+					<p class="section-tag">Services</p>
+					<h2>Offshore and Coastal Navigation Decision Making</h2>
+				</div>
+				<p>
+					Make informed decisions through accurate analysis and expert guidance, for safer
+					operations, optimized performance, and cost-efficient protection of marine assets.
+				</p>
+			</div>
+
+			<div class="service-grid">
+				{
+					relatedServices.map((service, index) => (
+						<article class={`service-card service-card--${service.tone} ${index === 1 ? 'service-card--wide' : ''}`}>
+							<div class="service-card__copy">
+								<img class="service-card__icon-main" src={service.icon} alt="" />
+								<h3>{service.title}</h3>
+								<p>{service.description}</p>
+								<a href={service.href} class="pill pill--outline-dark">Read More <span aria-hidden="true">→</span></a>
+							</div>
+							<div class="service-card__media">
+								<img src={service.image} alt="" />
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</section>
+	</main>
+</Layout>
+
+<style>
+	:global(:root) {
+		--page-pad: clamp(1rem, 4vw, 5rem);
+		--service-blue: #044ecc;
+		--service-accent: #00a1dc;
+		--service-line: #b7bcc5;
+		--service-text: #111111;
+		--service-muted: #3d3d3d;
+	}
+
+	.service-page {
+		background: white;
+		color: var(--service-text);
+	}
+
+	.service-hero {
+		position: relative;
+		min-height: 40.8125rem;
+		overflow: clip;
+		color: white;
+	}
+
+	.service-hero__bg {
+		position: absolute;
+		inset: 0;
+		background: var(--service-blue);
+	}
+
+	.service-hero__shape {
+		position: absolute;
+		inset: -23rem auto auto -13rem;
+		width: min(116rem, 136vw);
+		max-width: none;
+		transform: rotate(-90deg);
+		opacity: 0.95;
+	}
+
+	.service-hero__copy,
+	.service-hero__meta {
+		position: relative;
+		z-index: 1;
+	}
+
+	.service-hero__copy {
+		padding: 15.5rem var(--page-pad) 4rem;
+		max-width: 54rem;
+	}
+
+	.service-hero__eyebrow {
+		margin: 0 0 1rem;
+		font-size: clamp(1.4rem, 2vw, 2rem);
+		line-height: 1.1;
+	}
+
+	.service-hero h1 {
+		margin: 0;
+		font-size: clamp(3.5rem, 7vw, 6rem);
+		line-height: 0.95;
+		letter-spacing: -0.04em;
+		max-width: 53rem;
+	}
+
+	.service-hero__meta {
+		position: absolute;
+		top: 11.5rem;
+		right: var(--page-pad);
+		max-width: 20.625rem;
+		font-size: 1.25rem;
+		line-height: 1.25;
+	}
+
+	.service-intro,
+	.related-services {
+		padding: 4rem var(--page-pad) 5rem;
+	}
+
+	.service-intro {
+		display: grid;
+		grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr);
+		gap: clamp(2rem, 4vw, 5rem);
+		align-items: start;
+	}
+
+	.section-tag {
+		margin: 0 0 1rem;
+		color: var(--service-accent);
+		font-size: 1rem;
+		line-height: 1;
+	}
+
+	.service-intro__copy {
+		max-width: 32.3125rem;
+	}
+
+	.service-intro__lead {
+		margin: 0 0 1.25rem;
+		font-size: clamp(1.75rem, 3vw, 2rem);
+		line-height: 1.12;
+	}
+
+	.service-intro__copy p:not(.section-tag) {
+		margin-top: 0;
+		font-size: 1rem;
+		line-height: 1.45;
+		color: var(--service-muted);
+	}
+
+	.service-intro__kicker {
+		color: var(--service-text);
+	}
+
+	.solution-stack {
+		display: grid;
+		gap: 1.75rem;
+	}
+
+	.solution-card {
+		overflow: hidden;
+		border: 1px solid var(--service-line);
+		border-radius: 0.75rem;
+		background: white;
+	}
+
+	.solution-card__media {
+		border-bottom: 1px solid var(--service-line);
+		background: #f3f5f7;
+	}
+
+	.solution-card__media img {
+		display: block;
+		width: 100%;
+		height: 30rem;
+		object-fit: cover;
+	}
+
+	.solution-card__body {
+		display: flex;
+		gap: 1rem;
+		align-items: flex-start;
+		justify-content: space-between;
+		padding: 1.5rem;
+	}
+
+	.solution-card__copy {
+		flex: 1;
+	}
+
+	.solution-card__copy h2 {
+		margin: 0 0 0.45rem;
+		font-size: 1.75rem;
+		line-height: 1.08;
+	}
+
+	.solution-card__copy p {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.45;
+	}
+
+	.solution-card__icon {
+		width: 3.375rem;
+		height: 3.375rem;
+		flex: none;
+	}
+
+	.related-services__intro {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(18rem, 39.25rem);
+		gap: 2rem;
+		margin-bottom: 2rem;
+		align-items: end;
+	}
+
+	.related-services__intro h2 {
+		margin: 0;
+		max-width: 38rem;
+		font-size: clamp(2rem, 4vw, 2.75rem);
+		line-height: 1;
+		letter-spacing: -0.04em;
+	}
+
+	.related-services__intro p {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.45;
+		color: var(--service-muted);
+	}
+
+	.service-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.5rem;
+	}
+
+	.service-card {
+		position: relative;
+		display: grid;
+		grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+		overflow: hidden;
+		border-radius: 0.75rem;
+		min-height: 23rem;
+	}
+
+	.service-card--wide {
+		grid-column: span 2;
+	}
+
+	.service-card--light-blue .service-card__copy {
+		background: rgba(0, 81, 255, 0.08);
+	}
+
+	.service-card--mist .service-card__copy {
+		background: #e6e7ea;
+	}
+
+	.service-card--white .service-card__copy {
+		background: rgba(0, 161, 220, 0.08);
+	}
+
+	.service-card__copy {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.875rem;
+		padding: 1.5rem;
+	}
+
+	.service-card__icon-main {
+		width: 3rem;
+		height: 3rem;
+	}
+
+	.service-card__copy h3 {
+		margin: 0;
+		font-size: clamp(2rem, 4vw, 2.25rem);
+		line-height: 1.05;
+	}
+
+	.service-card__copy p {
+		margin: 0;
+		max-width: 18rem;
+		font-size: 1rem;
+		line-height: 1.4;
+	}
+
+	.service-card__media {
+		position: relative;
+		overflow: hidden;
+		min-height: 19rem;
+	}
+
+	.service-card__media img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.pill {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		min-height: 2.625rem;
+		padding: 0.75rem 1rem;
+		border-radius: 999px;
+		font-size: 1.125rem;
+		line-height: 1;
+		text-decoration: none;
+		white-space: nowrap;
+	}
+
+	.pill--outline-dark {
+		border: 1px solid currentColor;
+		color: #101010;
+	}
+
+	@media (max-width: 72rem) {
+		.service-intro,
+		.related-services__intro,
+		.service-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.service-card--wide {
+			grid-column: auto;
+		}
+
+		.service-card {
+			grid-template-columns: 1fr;
+		}
+
+		.service-card__copy p {
+			max-width: none;
+		}
+	}
+
+	@media (max-width: 56rem) {
+		.service-hero {
+			min-height: 30rem;
+		}
+
+		.service-hero__copy {
+			padding-top: 10rem;
+		}
+
+		.service-hero__meta {
+			position: relative;
+			top: auto;
+			right: auto;
+			padding: 0 var(--page-pad) 2rem;
+		}
+
+		.solution-card__media img {
+			height: 19rem;
+		}
+	}
+
+	@media (max-width: 40rem) {
+		.service-intro,
+		.related-services {
+			padding-top: 3rem;
+			padding-bottom: 3rem;
+		}
+
+		.service-card__media img {
+			position: static;
+			height: auto;
+		}
+
+		.solution-card__body {
+			padding: 1rem;
+		}
+
+		.solution-card__icon {
+			width: 2.5rem;
+			height: 2.5rem;
+		}
+	}
+</style>

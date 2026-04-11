@@ -1,14 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const navItems = [
-	{ label: 'Home', href: '/' },
-	{ label: 'Industry', href: '/industry' },
-	{ label: 'Service', href: '/#service' },
-	{ label: 'About', href: '/about' },
-	{ label: 'Blog', href: '/blog' },
-];
-
 const heroBase = '/figma/about-hero-base.jpg';
 const heroBand = '/figma/about-hero-band.png';
 const heroGraphicA = '/figma/about-hero-graphic-a.svg';
@@ -51,7 +43,7 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 }));
 ---
 
-<Layout title="BhumiWarih Profile | Bhumi Warih">
+<Layout title="BhumiWarih Profile | Bhumi Warih" activeNav="about" footerShape={footerShape}>
 	<main class="about-page">
 		<section class="about-hero">
 			<div class="about-hero__bg">
@@ -61,27 +53,6 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 				<img class="about-hero__graphic about-hero__graphic--b" src={heroGraphicB} alt="" />
 				<div class="about-hero__veil"></div>
 			</div>
-
-			<header class="topbar">
-				<nav class="topbar__menu">
-					{
-						navItems.map((item) => (
-							<a href={item.href} class={`pill pill--ghost ${item.href === '/about' ? 'is-active' : ''}`}>
-								{item.label}
-							</a>
-						))
-					}
-				</nav>
-
-				<div class="topbar__brand" aria-label="Bhumi Warih logo">
-					<div class="brand-mark"></div>
-				</div>
-
-				<div class="topbar__actions">
-					<a href="#contact" class="pill pill--ghost">ID | EN</a>
-					<a href="#contact" class="pill pill--solid">Contact Us <span aria-hidden="true">→</span></a>
-				</div>
-			</header>
 
 			<div class="about-hero__meta">
 				Specializing in Information and Knowledge of Meteorological and Oceanographic (MEtocean)
@@ -206,53 +177,6 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 			</div>
 		</section>
 
-		<section class="contact" id="contact">
-			<img class="contact__shape" src={footerShape} alt="" />
-			<div class="contact__inner">
-				<div class="contact__copy">
-					<p class="section-tag section-tag--inverse">/Contact Us</p>
-					<h2>Planning an Offshore Project? Let&apos;s Talk About Your Metocean Needs.</h2>
-					<address>
-						Non Stop Building, Jl. Tubagus Ismail No.40 Lt. 2 Unit 7, Sekeloa, Kecamatan
-						Coblong, Kota Bandung, Jawa Barat, Indonesia 40134
-					</address>
-				</div>
-
-				<form class="contact__form">
-					<div class="contact__grid">
-						<label>
-							<span class="sr-only">Your Name</span>
-							<input type="text" name="name" placeholder="Your Name" />
-						</label>
-						<label>
-							<span class="sr-only">Your Email</span>
-							<input type="email" name="email" placeholder="Your Email" />
-						</label>
-					</div>
-					<label>
-						<span class="sr-only">Your Message</span>
-						<textarea name="message" rows="6" placeholder="Tell us what you need..."></textarea>
-					</label>
-					<button type="submit" class="pill pill--solid">Send Message <span aria-hidden="true">→</span></button>
-				</form>
-			</div>
-
-			<footer class="footer">
-				<div class="footer__links">
-					<a href="https://bwgeohydromatics.com/legal-and-privacy/" target="_blank" rel="noreferrer">Legal &amp; Privacy</a>
-					<a href="/#glossary">Glossary</a>
-					<a href="#contact">Careers</a>
-					<span>Copyright © 2026</span>
-				</div>
-				<div class="footer__socials">
-					<a href="#contact" aria-label="LinkedIn">in</a>
-					<a href="#contact" aria-label="YouTube">yt</a>
-					<a href="#contact" aria-label="Instagram">ig</a>
-					<a href="#contact" aria-label="Twitter">x</a>
-				</div>
-				<div class="footer__company">PT. Bhumi Warih Geohydromatics</div>
-			</footer>
-		</section>
 	</main>
 </Layout>
 

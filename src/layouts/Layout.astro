@@ -1,5 +1,18 @@
 ---
-const { title = 'Bhumi Warih' } = Astro.props;
+const {
+	title = 'Bhumi Warih',
+	activeNav = '',
+	footerShape = '',
+	footerGlossaryHref = '/#glossary',
+} = Astro.props;
+
+const navItems = [
+	{ key: 'home', label: 'Home', href: '/' },
+	{ key: 'industry', label: 'Industry', href: '/industry' },
+	{ key: 'service', label: 'Service', href: '/#service' },
+	{ key: 'about', label: 'About', href: '/about' },
+	{ key: 'blog', label: 'Blog', href: '/blog' },
+];
 ---
 
 <!doctype html>
@@ -19,7 +32,84 @@ const { title = 'Bhumi Warih' } = Astro.props;
 		<title>{title}</title>
 	</head>
 	<body>
+		<header class="site-topbar">
+			<nav class="site-topbar__menu" aria-label="Primary">
+				{
+					navItems.map((item) => (
+						<a
+							href={item.href}
+							class:list={['site-pill', 'site-pill--ghost', activeNav === item.key && 'is-active']}
+							aria-current={activeNav === item.key ? 'page' : undefined}
+						>
+							{item.label}
+						</a>
+					))
+				}
+			</nav>
+
+			<a href="/" class="site-topbar__brand" aria-label="Bhumi Warih home">
+				<div class="site-brand-mark"></div>
+			</a>
+
+			<div class="site-topbar__actions">
+				<a href="#contact" class="site-pill site-pill--ghost">ID | EN</a>
+				<a href="#contact" class="site-pill site-pill--solid">Contact Us <span aria-hidden="true">→</span></a>
+			</div>
+		</header>
+
 		<slot />
+
+		<section class="layout-contact" id="contact">
+			{
+				footerShape && (
+					<img class="layout-contact__shape" src={footerShape} alt="" />
+				)
+			}
+			<div class="layout-contact__inner">
+				<div class="layout-contact__copy">
+					<p class="layout-contact__eyebrow">/Contact Us</p>
+					<h2>Planning an Offshore Project? Let&apos;s Talk About Your Metocean Needs.</h2>
+					<address>
+						Non Stop Building, Jl. Tubagus Ismail No.40 Lt. 2 Unit 7, Sekeloa, Kecamatan
+						Coblong, Kota Bandung, Jawa Barat, Indonesia 40134
+					</address>
+				</div>
+
+				<form class="layout-contact__form">
+					<div class="layout-contact__grid">
+						<label>
+							<span class="sr-only">Your Name</span>
+							<input type="text" name="name" placeholder="Your Name" />
+						</label>
+						<label>
+							<span class="sr-only">Your Email</span>
+							<input type="email" name="email" placeholder="Your Email" />
+						</label>
+					</div>
+					<label>
+						<span class="sr-only">Your Message</span>
+						<textarea name="message" rows="6" placeholder="Tell us what you need..."></textarea>
+					</label>
+					<button type="submit" class="site-pill site-pill--solid">Send Message <span aria-hidden="true">→</span></button>
+				</form>
+			</div>
+
+			<footer class="site-footer" id="glossary">
+				<div class="site-footer__links">
+					<a href="https://bwgeohydromatics.com/legal-and-privacy/" target="_blank" rel="noreferrer">Legal &amp; Privacy</a>
+					<a href={footerGlossaryHref}>Glossary</a>
+					<a href="#contact">Careers</a>
+					<span>Copyright © 2026</span>
+				</div>
+				<div class="site-footer__socials">
+					<a href="#contact" aria-label="LinkedIn">in</a>
+					<a href="#contact" aria-label="YouTube">yt</a>
+					<a href="#contact" aria-label="Instagram">ig</a>
+					<a href="#contact" aria-label="Twitter">x</a>
+				</div>
+				<div class="site-footer__company">PT. Bhumi Warih Geohydromatics</div>
+			</footer>
+		</section>
 	</body>
 </html>
 
@@ -50,5 +140,254 @@ const { title = 'Bhumi Warih' } = Astro.props;
 
 	:global(img) {
 		max-width: 100%;
+	}
+
+	.site-topbar {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 30;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		align-items: center;
+		gap: 1rem;
+		padding: 2rem clamp(1rem, 4vw, 5rem) 0;
+	}
+
+	.site-topbar__menu,
+	.site-topbar__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.site-topbar__actions {
+		justify-content: flex-end;
+	}
+
+	.site-topbar__brand {
+		display: flex;
+		justify-content: center;
+		text-decoration: none;
+	}
+
+	.site-brand-mark {
+		width: 3.5rem;
+		height: 3.5rem;
+		border-radius: 999px;
+		background:
+			radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.25) 28%, transparent 30%),
+			conic-gradient(from 180deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.35));
+		box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.45);
+	}
+
+	.site-pill {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		min-height: 2.625rem;
+		padding: 0.75rem 1rem;
+		border-radius: 999px;
+		border: 1px solid currentColor;
+		font-size: 1.125rem;
+		line-height: 1;
+		text-decoration: none;
+		white-space: nowrap;
+	}
+
+	.site-pill--ghost {
+		color: white;
+		background: transparent;
+	}
+
+	.site-pill--ghost.is-active {
+		background: white;
+		color: #01a1dc;
+		font-weight: 600;
+	}
+
+	.site-pill--solid {
+		color: black;
+		background: white;
+		border-color: white;
+	}
+
+	.layout-contact {
+		position: relative;
+		padding: 5rem clamp(1rem, 4vw, 5rem) 2.5rem;
+		color: white;
+		background: linear-gradient(122deg, #01a1dc 0%, #1952d2 100%);
+		overflow: clip;
+	}
+
+	.layout-contact__shape {
+		position: absolute;
+		inset: -6rem auto auto 50%;
+		width: min(120rem, 140vw);
+		max-width: none;
+		transform: translateX(-8%) rotate(90deg);
+		opacity: 0.8;
+	}
+
+	.layout-contact__inner,
+	.site-footer {
+		position: relative;
+		z-index: 1;
+	}
+
+	.layout-contact__inner {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 2rem;
+		align-items: center;
+	}
+
+	.layout-contact__copy {
+		max-width: 39.25rem;
+	}
+
+	.layout-contact__eyebrow {
+		margin: 0 0 0.875rem;
+		font-size: 1.25rem;
+		color: white;
+	}
+
+	.layout-contact h2 {
+		margin: 0;
+		font-size: clamp(2.5rem, 5vw, 4rem);
+		line-height: 1.05;
+		letter-spacing: -0.03em;
+	}
+
+	.layout-contact address {
+		margin-top: 10rem;
+		max-width: 20.625rem;
+		color: white;
+		font-style: normal;
+		font-size: 1.25rem;
+		line-height: 1.35;
+	}
+
+	.layout-contact__form {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.75rem;
+	}
+
+	.layout-contact__grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.75rem;
+		width: 100%;
+	}
+
+	.layout-contact label {
+		width: 100%;
+	}
+
+	.layout-contact input,
+	.layout-contact textarea {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 1.5rem 1.25rem;
+		border-radius: 1rem;
+		border: 1px solid rgba(255, 255, 255, 0.9);
+		background: rgba(255, 255, 255, 0.12);
+		color: white;
+		font: inherit;
+		resize: vertical;
+	}
+
+	.layout-contact input::placeholder,
+	.layout-contact textarea::placeholder {
+		color: rgba(255, 255, 255, 0.55);
+	}
+
+	.site-footer {
+		margin-top: 8.75rem;
+		padding-top: 2.5rem;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		gap: 1.5rem;
+		align-items: center;
+		font-size: 1rem;
+	}
+
+	.site-footer__links,
+	.site-footer__socials {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.site-footer__links a,
+	.site-footer__company {
+		color: rgba(241, 245, 236, 0.95);
+	}
+
+	.site-footer__socials a {
+		color: white;
+		text-decoration: none;
+	}
+
+	.site-footer__company {
+		text-align: right;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		border: 0;
+	}
+
+	@media (max-width: 72rem) {
+		.site-topbar,
+		.layout-contact__inner,
+		.site-footer {
+			grid-template-columns: 1fr;
+		}
+
+		.site-topbar__menu,
+		.site-topbar__actions,
+		.site-topbar__brand {
+			justify-content: center;
+		}
+
+		.layout-contact__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.site-footer__company {
+			text-align: left;
+		}
+	}
+
+	@media (max-width: 40rem) {
+		.site-topbar__menu {
+			display: none;
+		}
+
+		.layout-contact {
+			padding-top: 3rem;
+			padding-bottom: 3rem;
+		}
+
+		.layout-contact address {
+			margin-top: 2rem;
+		}
+
+		.site-footer {
+			margin-top: 3rem;
+			padding-top: 1rem;
+		}
 	}
 </style>

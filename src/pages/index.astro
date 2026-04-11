@@ -1,11 +1,1004 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const heroImage = '/figma/home-hero-bg.png';
+const rigImage = '/figma/home-hero-rig.png';
+const serviceOrbitImage = '/figma/home-service-orbit.png';
+const serviceMapImage = '/figma/home-service-map.png';
+const serviceWaveImage = '/figma/home-service-wave.png';
+const industryOilImage = '/figma/home-industry-oil.png';
+const industryPortImage = '/figma/home-industry-port.png';
+const industryOtherImage = '/figma/home-industry-other.png';
+const iconDroplet = '/figma/icon-droplet.svg';
+const iconEarth = '/figma/icon-earth.svg';
+const iconPeople = '/figma/icon-people.svg';
+const blogCardA = '/figma/blog-card-a.png';
+const blogCardB = '/figma/blog-card-b.png';
+const blogCardC = '/figma/blog-card-c.png';
+
+const menu = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Industry', href: '/industry' },
+	{ label: 'Service', href: '#service' },
+	{ label: 'About', href: '#about' },
+	{ label: 'Blog', href: '#blog' },
+];
+
+const services = [
+	{
+		title: 'Metocean Design Criteria',
+		description: 'Extreme Value Analysis. Numerical Simulation. Ocean, Climate and Weather Analysis',
+		icon: iconEarth,
+		image: serviceOrbitImage,
+		tone: 'light-blue',
+	},
+	{
+		title: 'Marine Operation Decision Support System (MO-DSS)',
+		description: 'Marine Sea State Prediction. Weather Forecast. Tow Route Forecast. Weather Window.',
+		icon: iconDroplet,
+		image: serviceMapImage,
+		tone: 'mist',
+	},
+	{
+		title: 'Extended Services',
+		description: 'Our team can provide customized services tailored for your specific needs in maritime industry.',
+		icon: iconPeople,
+		image: serviceWaveImage,
+		tone: 'white',
+	},
+];
+
+const industries = [
+	{
+		eyebrow: 'Oil & Gas',
+		copy:
+			'Assist with the necessary information on atmospheric and oceanographic conditions on our client working sites. Metocean data and analysis will enable our clients’ engineers to refine plans with better cost conformity.',
+		image: industryOilImage,
+		accent: '#cfd8ee',
+		items: [
+			'Marine Sea State Prediction',
+			'Metocean Study',
+			'Pipeline Planning and Routing',
+			'Weather Window',
+			'Oil Spill Modelling',
+		],
+	},
+	{
+		eyebrow: 'Port and Harbor',
+		copy:
+			'Develop an optimized port and harbor design that meets economic and technical viability criteria including design protection, engineering efficiency, and maintainability.',
+		image: industryPortImage,
+		accent: '#ffffff',
+		items: [
+			'Navigation Safety',
+			'Marine numerical simulation',
+			'Environmental study at port and harbour area',
+			'Marine sea state prediction',
+		],
+	},
+	{
+		eyebrow: 'Other Maritime Industry',
+		copy:
+			'Bring clarity to any maritime industry problem at any stage. Before planning any maritime development, we need to understand the natural environment surrounding the project location.',
+		image: industryOtherImage,
+		accent: '#e7ecec',
+		items: [
+			'Environmental impact assessments (EIA)',
+			'Field observation',
+			'Simulation and modelling',
+			'Geographical information system (GIS)',
+			'Meteorological and oceanographic study',
+		],
+	},
+];
+
+const blogPosts = [
+	{
+		tag: 'Products',
+		title: 'Get To Know the Metocean Study, Assess Extreme Weather Risk for Your Project',
+		excerpt:
+			'Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering or renewable energy project site.',
+		image: blogCardA,
+	},
+	{
+		tag: 'Projects',
+		title: 'Smarter Land Decisions Start Here: Discover the Power of Land Forecasting',
+		excerpt:
+			'In dynamic and weather-sensitive sectors such as maritime operations, energy production, and resource exploration, atmospheric conditions matter.',
+		image: blogCardB,
+	},
+	{
+		tag: 'Projects',
+		title: 'Navigating Disaster Resilience: Flood and Tsunami Early Warning System',
+		excerpt:
+			'PT Bhumi Warih Geohydromatics supported the development of an Early Warning System platform for floods and tsunamis in the Palu region.',
+		image: blogCardC,
+	},
+	{
+		tag: 'Science and Technology',
+		title: 'The Future is Bright: Unlocking Indonesia’s Solar Potential',
+		excerpt:
+			'Geospatial analysis and financial modelling have identified hundreds of viable renewable project locations across Indonesia.',
+		image: blogCardA,
+	},
+];
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Bhumi Warih">
+	<main class="page-shell">
+		<section class="hero" id="home">
+			<div class="hero__backdrop">
+				<img src={heroImage} alt="" loading="eager" fetchpriority="high" />
+			</div>
+
+			<header class="topbar">
+				<nav class="topbar__menu">
+					{
+						menu.map((item) => (
+							<a href={item.href} class="pill pill--ghost">
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+
+				<div class="topbar__brand" aria-label="Bhumi Warih logo">
+					<div class="brand-mark"></div>
+				</div>
+
+				<div class="topbar__actions">
+					<a href="#contact" class="pill pill--ghost">ID | EN</a>
+					<a href="#contact" class="pill pill--solid">Contact Us <span aria-hidden="true">→</span></a>
+				</div>
+			</header>
+
+			<div class="hero__meta">Registered on CIVD System: SPDA Number 73970/EMP/2024</div>
+			<h1 class="hero__wordmark">BHUMI WARIH</h1>
+			<div class="hero__rig">
+				<img src={rigImage} alt="Offshore platform" />
+			</div>
+
+			<div class="hero__content">
+				<p class="hero__headline">Meteorological &amp; Oceanographic Analysis to Connected Intelligence</p>
+				<a href="#glossary" class="pill pill--ghost">Glossary</a>
+			</div>
+		</section>
+
+		<section class="about-gap" id="about" aria-label="About Bhumi Warih">
+			<div class="section-tag">About</div>
+			<div class="about-gap__copy">
+				<p>Bhumi Warih is an Indonesian based company specializing in meteorological and oceanographic (Metocean) analysis.</p>
+				<p>Our knowledge and experience have been acquired from specialized services in the maritime industry since 2010, with strong access and local understanding across South East Asia.</p>
+			</div>
+		</section>
+
+		<section class="services section" id="service">
+			<div class="section__intro">
+				<div>
+					<p class="section-tag">Services</p>
+					<h2>Offshore and Coastal Navigation Decision Making</h2>
+				</div>
+				<p>
+					Make informed decisions through accurate analysis and expert guidance, for safer
+					operations, optimized performance, and cost-efficient protection of marine assets.
+				</p>
+			</div>
+
+			<div class="service-grid">
+				{
+					services.map((service, index) => (
+						<article class={`service-card service-card--${service.tone} ${index === 1 ? 'service-card--wide' : ''}`}>
+							<div class="service-card__copy">
+								<img class="service-card__icon" src={service.icon} alt="" />
+								<h3>{service.title}</h3>
+								<p>{service.description}</p>
+								<a href="#contact" class="pill pill--outline-dark">Read More <span aria-hidden="true">→</span></a>
+							</div>
+							<div class="service-card__media">
+								<img src={service.image} alt="" />
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="approach section">
+			<p class="section-tag section-tag--center">Approach</p>
+			<h2>Integrated Marine Intelligence &amp; Business Insight Ecosystem</h2>
+			<p>
+				The collaboration between oceanographic science, geospatial engineering, and GeoAI
+				platforms enhances research capabilities, R&amp;D, and predictive models for national
+				maritime disasters and climate.
+			</p>
+		</section>
+
+		<section class="industries section" id="industry">
+			<div class="section__intro">
+				<div>
+					<p class="section-tag">Industries</p>
+					<h2>Bringing Clarity Across Industries</h2>
+				</div>
+				<p>
+					Assess and align the critical elements needed in various maritime industry. Our team
+					possesses a strong knowledge of South East Asian waters that brings clarity to any
+					maritime industry’s problem at any stage of development.
+				</p>
+			</div>
+
+			<div class="industry-stack">
+				{
+					industries.map((industry) => (
+						<article class="industry-card">
+							<div class="industry-card__summary" style={`--panel-accent:${industry.accent}`}>
+								<h3>{industry.eyebrow}</h3>
+								<ul>
+									{industry.items.map((item) => <li>{item}</li>)}
+								</ul>
+							</div>
+							<div class="industry-card__detail">
+								<div class="industry-card__image">
+									<img src={industry.image} alt="" />
+								</div>
+								<div class="industry-card__body">
+									<p>{industry.copy}</p>
+									<a href="#contact" class="pill pill--blue">Read More <span aria-hidden="true">→</span></a>
+								</div>
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="blog section" id="blog">
+			<div class="section__intro">
+				<div>
+					<p class="section-tag">Blog</p>
+					<h2>Insights &amp; Updates</h2>
+				</div>
+				<p>Our freshest thoughts on the latest trends, ongoing work, and what is coming next.</p>
+			</div>
+
+			<div class="blog-grid">
+				{
+					blogPosts.map((post) => (
+						<article class="blog-card" style={`background-image:linear-gradient(180deg, rgba(10,40,75,0.08) 0%, rgba(9,17,28,0.8) 74%), url(${post.image})`}>
+							<div class="blog-card__tag">{post.tag}</div>
+							<div class="blog-card__content">
+								<h3>{post.title}</h3>
+								<p>{post.excerpt}</p>
+								<a href="#contact" class="pill pill--ghost">Read More <span aria-hidden="true">→</span></a>
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="contact" id="contact">
+			<div class="contact__inner">
+				<div class="contact__copy">
+					<p class="section-tag section-tag--inverse">Contact Us</p>
+					<h2>Planning an Offshore Project? Let&apos;s Talk About Your Metocean Needs.</h2>
+					<address>
+						Non Stop Building, Jl. Tubagus Ismail No.40 Lt. 2 Unit 7, Sekeloa, Kecamatan
+						Coblong, Kota Bandung, Jawa Barat, Indonesia 40134
+					</address>
+				</div>
+
+				<form class="contact__form">
+					<div class="contact__grid">
+						<label>
+							<span class="sr-only">Your Name</span>
+							<input type="text" name="name" placeholder="Your Name" />
+						</label>
+						<label>
+							<span class="sr-only">Your Email</span>
+							<input type="email" name="email" placeholder="Your Email" />
+						</label>
+					</div>
+					<label>
+						<span class="sr-only">Your Message</span>
+						<textarea name="message" rows="6" placeholder="Tell us what you need..."></textarea>
+					</label>
+					<button type="submit" class="pill pill--solid">Send Message <span aria-hidden="true">→</span></button>
+				</form>
+			</div>
+
+			<footer class="footer" id="glossary">
+				<div class="footer__links">
+					<a href="https://bwgeohydromatics.com/legal-and-privacy/" target="_blank" rel="noreferrer">Legal &amp; Privacy</a>
+					<a href="#glossary">Glossary</a>
+					<a href="#contact">Careers</a>
+					<span>Copyright © 2026</span>
+				</div>
+				<div class="footer__socials">
+					<a href="#contact" aria-label="LinkedIn">in</a>
+					<a href="#contact" aria-label="YouTube">yt</a>
+					<a href="#contact" aria-label="Instagram">ig</a>
+					<a href="#contact" aria-label="Twitter">x</a>
+				</div>
+				<div class="footer__company">PT. Bhumi Warih Geohydromatics</div>
+			</footer>
+		</section>
+	</main>
 </Layout>
+
+<style>
+	:global(:root) {
+		--bg: #f0ecea;
+		--surface: #f3f3f3;
+		--ink: #121212;
+		--muted: #5b5b5b;
+		--line: #b7b7b7;
+		--blue: #00a1dc;
+		--deep-blue: #1952d2;
+		--white-12: rgba(255, 255, 255, 0.12);
+		--radius-xl: 1rem;
+		--radius-2xl: 1.5rem;
+		--page-pad: clamp(1rem, 4vw, 5rem);
+	}
+
+	.page-shell {
+		background: var(--bg);
+		color: var(--ink);
+	}
+
+	.section,
+	.about-gap {
+		padding-inline: var(--page-pad);
+	}
+
+	.hero {
+		position: relative;
+		min-height: 56.25rem;
+		padding: 6.5rem var(--page-pad) 3.5rem;
+		overflow: clip;
+		color: white;
+		background: linear-gradient(180deg, rgba(0, 41, 107, 0.18), rgba(0, 18, 48, 0.18));
+	}
+
+	.hero__backdrop,
+	.hero__backdrop img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.hero__backdrop img {
+		object-fit: cover;
+	}
+
+	.hero__backdrop::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background:
+			linear-gradient(180deg, rgba(24, 83, 211, 0.28) 0%, rgba(24, 83, 211, 0.1) 44%, rgba(12, 54, 129, 0.34) 100%),
+			linear-gradient(180deg, rgba(255, 255, 255, 0) 62%, rgba(0, 0, 0, 0.06) 100%);
+	}
+
+	.topbar,
+	.hero__meta,
+	.hero__wordmark,
+	.hero__rig,
+	.hero__content {
+		position: relative;
+		z-index: 1;
+	}
+
+	.topbar {
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.topbar__menu,
+	.topbar__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.topbar__actions {
+		justify-content: flex-end;
+	}
+
+	.topbar__brand {
+		display: flex;
+		justify-content: center;
+	}
+
+	.brand-mark {
+		width: 3.5rem;
+		height: 3.5rem;
+		border-radius: 999px;
+		background:
+			radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.25) 28%, transparent 30%),
+			conic-gradient(from 180deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.35));
+		box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.45);
+	}
+
+	.pill {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		min-height: 2.625rem;
+		padding: 0.75rem 1rem;
+		border-radius: 999px;
+		border: 1px solid currentColor;
+		font-size: 1.125rem;
+		line-height: 1;
+		text-decoration: none;
+		white-space: nowrap;
+	}
+
+	.pill--ghost {
+		color: white;
+		background: transparent;
+	}
+
+	.pill--solid {
+		color: black;
+		background: white;
+		border-color: white;
+	}
+
+	.pill--outline-dark {
+		color: var(--ink);
+		border-color: var(--ink);
+		background: transparent;
+	}
+
+	.pill--blue {
+		color: white;
+		background: #08a9d9;
+		border-color: #08a9d9;
+	}
+
+	.hero__meta {
+		margin-top: 3.75rem;
+		margin-left: auto;
+		max-width: 20.625rem;
+		font-size: 0.9375rem;
+		line-height: 1.6;
+		text-align: right;
+	}
+
+	.hero__wordmark {
+		margin: 8rem 0 0;
+		font-size: clamp(4.2rem, 14vw, 12.75rem);
+		line-height: 0.92;
+		letter-spacing: -0.05em;
+	}
+
+	.hero__rig {
+		position: absolute;
+		right: 7.25rem;
+		top: 8rem;
+		width: min(61.3vw, 55.125rem);
+	}
+
+	.hero__rig img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.hero__content {
+		margin-top: 6rem;
+		max-width: 46rem;
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 1.5rem;
+	}
+
+	.hero__headline {
+		max-width: 42.875rem;
+		margin: 0;
+		font-size: clamp(2rem, 4vw, 3rem);
+		line-height: 1;
+		letter-spacing: -0.02em;
+	}
+
+	.about-gap {
+		min-height: 40rem;
+		padding-top: 3rem;
+		padding-bottom: 3rem;
+		display: grid;
+		align-content: start;
+	}
+
+	.about-gap__copy {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 6rem;
+		margin-top: 1.5rem;
+		opacity: 0.08;
+		font-size: 2rem;
+		line-height: 1.12;
+	}
+
+	.section {
+		padding-top: 5rem;
+		padding-bottom: 5rem;
+	}
+
+	.section-tag {
+		margin: 0 0 0.75rem;
+		font-size: 1.25rem;
+		color: var(--blue);
+	}
+
+	.section-tag--center {
+		text-align: center;
+	}
+
+	.section-tag--inverse {
+		color: rgba(255, 255, 255, 0.76);
+	}
+
+	.section__intro,
+	.approach {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.5rem 2rem;
+		align-items: end;
+	}
+
+	.section__intro h2,
+	.approach h2,
+	.contact h2 {
+		margin: 0;
+		font-size: clamp(2.5rem, 4vw, 3.5rem);
+		line-height: 1.05;
+		letter-spacing: -0.03em;
+	}
+
+	.section__intro p:last-child,
+	.approach > p:last-child {
+		margin: 0;
+		font-size: 1.25rem;
+		line-height: 1.35;
+		color: var(--muted);
+	}
+
+	.service-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.875rem;
+		margin-top: 1.5rem;
+	}
+
+	.service-card {
+		display: grid;
+		grid-template-columns: minmax(16rem, 1fr) minmax(16rem, 1fr);
+		min-height: 22.8125rem;
+		border: 1px solid var(--line);
+		border-radius: 0.75rem;
+		overflow: clip;
+		background: white;
+	}
+
+	.service-card--wide {
+		grid-column: span 2;
+	}
+
+	.service-card--light-blue .service-card__copy {
+		background: #dbe5f7;
+	}
+
+	.service-card--mist .service-card__copy {
+		background: #e6e7ea;
+	}
+
+	.service-card--white .service-card__copy {
+		background: white;
+	}
+
+	.service-card__copy {
+		padding: 1.5rem;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.875rem;
+	}
+
+	.service-card__icon {
+		width: 3rem;
+		height: 3rem;
+	}
+
+	.service-card__copy h3 {
+		margin: 0;
+		font-size: 2.25rem;
+		line-height: 1.12;
+		letter-spacing: -0.02em;
+	}
+
+	.service-card__copy p,
+	.industry-card__body p,
+	.blog-card p,
+	.contact address {
+		margin: 0;
+		font-size: 1.25rem;
+		line-height: 1.35;
+		color: var(--ink);
+	}
+
+	.service-card__media,
+	.service-card__media img,
+	.industry-card__image,
+	.industry-card__image img {
+		width: 100%;
+		height: 100%;
+	}
+
+	.service-card__media {
+		background: #edf2f6;
+	}
+
+	.service-card__media img,
+	.industry-card__image img {
+		display: block;
+		object-fit: cover;
+	}
+
+	.approach {
+		max-width: 39.25rem;
+		margin-inline: auto;
+		grid-template-columns: 1fr;
+		text-align: center;
+	}
+
+	.industry-stack {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+		margin-top: 1.5rem;
+	}
+
+	.industry-card {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0;
+		border-radius: 0.75rem;
+		overflow: hidden;
+		border: 1px solid var(--line);
+	}
+
+	.industry-card__summary {
+		padding: 1rem;
+		background: var(--panel-accent);
+	}
+
+	.industry-card__summary h3 {
+		margin: 0 0 1.5rem;
+		font-size: clamp(2rem, 4vw, 3rem);
+		line-height: 1.02;
+		letter-spacing: -0.03em;
+	}
+
+	.industry-card__summary ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.industry-card__summary li {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 1rem 1.125rem;
+		border-radius: 999px;
+		border: 1px solid #dfdfdf;
+		backdrop-filter: blur(2px);
+		background: rgba(255, 255, 255, 0.18);
+		font-size: 1.125rem;
+		line-height: 1.1;
+	}
+
+	.industry-card__summary li::after {
+		content: '↗';
+		width: 2rem;
+		height: 2rem;
+		display: inline-grid;
+		place-items: center;
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.9);
+		font-size: 1rem;
+	}
+
+	.industry-card__detail {
+		display: grid;
+		grid-template-rows: 18.75rem 1fr;
+		background: var(--surface);
+	}
+
+	.industry-card__body {
+		padding: 1rem;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1rem;
+	}
+
+	.blog-grid {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 1.5rem;
+		margin-top: 1.875rem;
+	}
+
+	.blog-card {
+		min-height: 25rem;
+		padding: 1rem;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		border-radius: 0.75rem;
+		border: 1px solid var(--line);
+		color: white;
+		background-position: center;
+		background-size: cover;
+	}
+
+	.blog-card__tag {
+		display: inline-flex;
+		align-items: center;
+		width: fit-content;
+		padding: 0.375rem 0.5rem;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.92);
+		font-size: 0.625rem;
+		font-weight: 600;
+	}
+
+	.blog-card__content {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.blog-card h3 {
+		margin: 0;
+		font-size: 2rem;
+		line-height: 1.05;
+		letter-spacing: -0.03em;
+	}
+
+	.blog-card p {
+		color: white;
+		font-size: 0.875rem;
+	}
+
+	.contact {
+		margin-top: 5rem;
+		padding: 5rem var(--page-pad) 2.5rem;
+		color: white;
+		background:
+			radial-gradient(circle at 82% 30%, rgba(255, 255, 255, 0.12), transparent 0 17rem),
+			radial-gradient(circle at 89% 35%, rgba(255, 255, 255, 0.1), transparent 0 24rem),
+			linear-gradient(122deg, #01a1dc 0%, #1952d2 100%);
+		overflow: clip;
+	}
+
+	.contact__inner {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 2rem;
+		align-items: center;
+	}
+
+	.contact__copy {
+		max-width: 39.25rem;
+	}
+
+	.contact address {
+		margin-top: 10rem;
+		max-width: 20.625rem;
+		color: white;
+		font-style: normal;
+	}
+
+	.contact__form {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.75rem;
+	}
+
+	.contact__grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.75rem;
+		width: 100%;
+	}
+
+	.contact label {
+		width: 100%;
+	}
+
+	.contact input,
+	.contact textarea {
+		width: 100%;
+		border: 1px solid rgba(255, 255, 255, 0.9);
+		border-radius: 1rem;
+		background: var(--white-12);
+		color: white;
+		padding: 1.5rem 1.25rem;
+		font: inherit;
+		resize: vertical;
+		box-sizing: border-box;
+	}
+
+	.contact textarea {
+		min-height: 8.75rem;
+	}
+
+	.contact input::placeholder,
+	.contact textarea::placeholder {
+		color: rgba(255, 255, 255, 0.6);
+	}
+
+	.footer {
+		margin-top: 8.75rem;
+		padding-top: 2.5rem;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		gap: 1.5rem;
+		align-items: center;
+		font-size: 1rem;
+	}
+
+	.footer__links,
+	.footer__socials {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.footer__links a,
+	.footer__company {
+		color: rgba(241, 245, 236, 0.95);
+	}
+
+	.footer__socials a {
+		color: white;
+		text-decoration: none;
+	}
+
+	.footer__company {
+		text-align: right;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		border: 0;
+	}
+
+	@media (max-width: 72rem) {
+		.topbar {
+			grid-template-columns: 1fr;
+		}
+
+		.topbar__menu,
+		.topbar__actions,
+		.topbar__brand {
+			justify-content: center;
+		}
+
+		.hero__meta {
+			margin-right: auto;
+			margin-left: 0;
+			text-align: left;
+		}
+
+		.hero__rig {
+			position: relative;
+			right: auto;
+			top: auto;
+			width: 100%;
+			max-width: 44rem;
+			margin: 2rem auto 0;
+		}
+
+		.hero__content,
+		.section__intro,
+		.contact__inner,
+		.footer,
+		.about-gap__copy,
+		.service-grid,
+		.industry-card,
+		.blog-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.hero__content {
+			align-items: flex-start;
+		}
+
+		.service-card,
+		.service-card--wide {
+			grid-column: auto;
+			grid-template-columns: 1fr;
+		}
+
+		.industry-card__detail {
+			grid-template-rows: 16rem auto;
+		}
+
+		.contact__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.footer__company {
+			text-align: left;
+		}
+	}
+
+	@media (max-width: 40rem) {
+		.hero {
+			min-height: auto;
+			padding-top: 2rem;
+		}
+
+		.topbar__menu {
+			display: none;
+		}
+
+		.hero__wordmark {
+			margin-top: 3rem;
+			font-size: clamp(3rem, 18vw, 5.5rem);
+		}
+
+		.hero__content {
+			margin-top: 2rem;
+		}
+
+		.about-gap {
+			min-height: 18rem;
+		}
+
+		.about-gap__copy {
+			font-size: 1.25rem;
+			gap: 1.5rem;
+		}
+
+		.section,
+		.contact {
+			padding-top: 3rem;
+			padding-bottom: 3rem;
+		}
+
+		.service-card__copy h3,
+		.blog-card h3 {
+			font-size: 1.75rem;
+		}
+
+		.contact address {
+			margin-top: 2rem;
+		}
+
+		.footer {
+			margin-top: 3rem;
+			padding-top: 1rem;
+		}
+	}
+</style>

@@ -10,7 +10,16 @@ const {
 const navItems = [
 	{ key: 'home', label: 'Home', href: '/' },
 	{ key: 'industry', label: 'Industry', href: '/industry' },
-	{ key: 'service', label: 'Service', href: '/#service' },
+	{
+		key: 'service',
+		label: 'Service',
+		href: '/#service',
+		children: [
+			{ label: 'Metocean', href: '/#service' },
+			{ label: 'DSS', href: '/#service' },
+			{ label: 'Extended', href: '/#service' },
+		],
+	},
 	{ key: 'about', label: 'About', href: '/about' },
 	{ key: 'blog', label: 'Blog', href: '/blog' },
 ];
@@ -36,15 +45,42 @@ const navItems = [
 		<header class="site-topbar">
 			<nav class="site-topbar__menu" aria-label="Primary">
 				{
-					navItems.map((item) => (
-						<a
-							href={item.href}
-							class:list={['site-pill', 'site-pill--ghost', activeNav === item.key && 'is-active']}
-							aria-current={activeNav === item.key ? 'page' : undefined}
-						>
-							{item.label}
-						</a>
-					))
+					navItems.map((item) =>
+						item.children ? (
+							<div class="site-dropdown">
+								<a
+									href={item.href}
+									class:list={[
+										'site-pill',
+										'site-pill--ghost',
+										'site-dropdown__trigger',
+										activeNav === item.key && 'is-active',
+									]}
+									aria-current={activeNav === item.key ? 'page' : undefined}
+									aria-haspopup="menu"
+								>
+									{item.label} <span aria-hidden="true">▾</span>
+								</a>
+								<div class="site-dropdown__menu" role="menu" aria-label="Service links">
+									{
+										item.children.map((child) => (
+											<a href={child.href} class="site-dropdown__item" role="menuitem">
+												{child.label}
+											</a>
+										))
+									}
+								</div>
+							</div>
+						) : (
+							<a
+								href={item.href}
+								class:list={['site-pill', 'site-pill--ghost', activeNav === item.key && 'is-active']}
+								aria-current={activeNav === item.key ? 'page' : undefined}
+							>
+								{item.label}
+							</a>
+						)
+					)
 				}
 			</nav>
 
@@ -167,6 +203,10 @@ const navItems = [
 		justify-content: flex-end;
 	}
 
+	.site-dropdown {
+		position: relative;
+	}
+
 	.site-topbar__brand {
 		display: flex;
 		justify-content: center;
@@ -207,6 +247,57 @@ const navItems = [
 		background: white;
 		color: #01a1dc;
 		font-weight: 600;
+	}
+
+	.site-dropdown__trigger span {
+		font-size: 0.85em;
+	}
+
+	.site-dropdown__menu {
+		position: absolute;
+		top: calc(100% + 0.5rem);
+		left: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		min-width: 12rem;
+		padding: 0.5rem;
+		border: 1px solid rgba(255, 255, 255, 0.18);
+		border-radius: 1.25rem;
+		background: rgba(4, 53, 109, 0.92);
+		backdrop-filter: blur(18px);
+		box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.2);
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(0.35rem);
+		transition:
+			opacity 160ms ease,
+			transform 160ms ease,
+			visibility 160ms ease;
+	}
+
+	.site-dropdown:hover .site-dropdown__menu,
+	.site-dropdown:focus-within .site-dropdown__menu {
+		opacity: 1;
+		visibility: visible;
+		transform: translateY(0);
+	}
+
+	.site-dropdown__item {
+		display: block;
+		padding: 0.85rem 1rem;
+		border-radius: 999px;
+		color: white;
+		font-size: 1rem;
+		line-height: 1;
+		text-decoration: none;
+	}
+
+	.site-dropdown__item:hover,
+	.site-dropdown__item:focus-visible {
+		background: white;
+		color: #01a1dc;
+		outline: none;
 	}
 
 	.site-pill--solid {

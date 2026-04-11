@@ -1,0 +1,787 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const navItems = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Industry', href: '/industry' },
+	{ label: 'Service', href: '/#service' },
+	{ label: 'About', href: '/about' },
+	{ label: 'Blog', href: '/blog' },
+];
+
+const heroImage = '/figma/blog-hero-image.png';
+const blogCardA = '/figma/blog-card-feature-a.png';
+const blogCardB = '/figma/blog-card-feature-b.png';
+const footerShape = '/figma/blog-contact-shape.svg';
+
+const featuredPost = {
+	tag: 'Industry',
+	title: 'Get To Know the Metocean Study, Assess Extreme Weather Risk for Your Project',
+	excerpt:
+		'Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering, or renewable energy, project site.',
+	image: heroImage,
+};
+
+const latestPosts = [
+	{
+		tag: 'Products',
+		title: 'Get To Know the Metocean Study, Assess Extreme Weather Risk for Your Project',
+		excerpt:
+			'Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering, or renewable energy, project site.',
+		image: blogCardA,
+		tone: 'bright',
+	},
+	{
+		tag: 'Projects',
+		title: 'Smarter Land Decisions Start Here: Discover the Power of Land Forecasting',
+		excerpt:
+			'In dynamic and weather-sensitive sectors such as maritime operations, energy production, and resource exploration, atmospheric conditions are far more than a backdrop.',
+		image: heroImage,
+		tone: 'dark',
+	},
+	{
+		tag: 'Projects',
+		title: 'Navigating Disaster Resilience: Flood and Tsunami Early Warning Systems with Machine Learning',
+		excerpt:
+			'PT Bhumi Warih Geohydromatics supported the development of an Early Warning System platform for floods and tsunamis in the Palu region.',
+		image: blogCardB,
+		tone: 'mono',
+	},
+	{
+		tag: 'Science and Technology',
+		title: 'The Future is Bright: Unlocking Indonesia’s Solar Potential',
+		excerpt:
+			'Recent studies highlight the enormous renewable energy potential that Indonesia can harness through geospatial analysis and financial modelling.',
+		image: blogCardA,
+		tone: 'bright',
+	},
+];
+
+const listPosts = [
+	{
+		tag: 'Products',
+		title: 'Get To Know the Metocean Study, Assess Extreme Weather Risk for Your Project',
+		excerpt:
+			'Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering, or renewable energy, project site.',
+	},
+	{
+		tag: 'Products',
+		title: 'Get To Know the Metocean Study, Assess Extreme Weather Risk for Your Project',
+		excerpt:
+			'Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering, or renewable energy, project site.',
+	},
+	{
+		tag: 'Products',
+		title: 'Get To Know the Metocean Study, Assess Extreme Weather Risk for Your Project',
+		excerpt:
+			'Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering, or renewable energy, project site.',
+	},
+];
+
+const sections = [
+	{
+		title: 'Products',
+		feature: {
+			tag: 'Projects',
+			title: 'Navigating Disaster Resilience: Flood and Tsunami Early Warning Systems with Machine Learning',
+			excerpt:
+				'PT Bhumi Warih Geohydromatics supported by our expert, in collaboration with PT Telkom Indonesia and PT Metra-Net, has successfully developed an Early Warning System platform for floods and tsunamis in the Palu region.',
+			image: blogCardB,
+			tone: 'mono',
+		},
+		list: listPosts,
+	},
+	{
+		title: 'Projects',
+		feature: {
+			tag: 'Projects',
+			title: 'Navigating Disaster Resilience: Flood and Tsunami Early Warning Systems with Machine Learning',
+			excerpt:
+				'PT Bhumi Warih Geohydromatics supported by our expert, in collaboration with PT Telkom Indonesia and PT Metra-Net, has successfully developed an Early Warning System platform for floods and tsunamis in the Palu region.',
+			image: heroImage,
+			tone: 'dark',
+		},
+		list: listPosts,
+	},
+	{
+		title: 'Company News',
+		feature: {
+			tag: 'Projects',
+			title: 'Navigating Disaster Resilience: Flood and Tsunami Early Warning Systems with Machine Learning',
+			excerpt:
+				'PT Bhumi Warih Geohydromatics supported by our expert, in collaboration with PT Telkom Indonesia and PT Metra-Net, has successfully developed an Early Warning System platform for floods and tsunamis in the Palu region.',
+			image: blogCardB,
+			tone: 'mono',
+		},
+		list: [
+			{
+				tag: 'Products',
+				title: 'Navigating Disaster Resilience: Flood and Tsunami Early Warning Systems with Machine Learning',
+				excerpt:
+					'PT Bhumi Warih Geohydromatics supported by our expert, in collaboration with PT Telkom Indonesia and PT Metra-Net.',
+			},
+		],
+	},
+	{
+		title: 'Science and Technology',
+		feature: {
+			tag: 'Projects',
+			title: 'Navigating Disaster Resilience: Flood and Tsunami Early Warning Systems with Machine Learning',
+			excerpt:
+				'PT Bhumi Warih Geohydromatics supported by our expert, in collaboration with PT Telkom Indonesia and PT Metra-Net, has successfully developed an Early Warning System platform for floods and tsunamis in the Palu region.',
+			image: heroImage,
+			tone: 'dark',
+		},
+		list: listPosts,
+	},
+];
+---
+
+<Layout title="Blog | Bhumi Warih">
+	<main class="blog-page">
+		<section class="blog-hero">
+			<div class="blog-hero__media">
+				<img src={featuredPost.image} alt="" />
+			</div>
+
+			<header class="topbar">
+				<nav class="topbar__menu">
+					{
+						navItems.map((item) => (
+							<a href={item.href} class={`pill pill--ghost ${item.href === '/blog' ? 'is-active' : ''}`}>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+
+				<div class="topbar__brand" aria-label="Bhumi Warih logo">
+					<div class="brand-mark"></div>
+				</div>
+
+				<div class="topbar__actions">
+					<a href="#contact" class="pill pill--ghost">ID | EN</a>
+					<a href="#contact" class="pill pill--solid">Contact Us <span aria-hidden="true">→</span></a>
+				</div>
+			</header>
+
+			<div class="blog-hero__content">
+				<div class="meta-pill">{featuredPost.tag}</div>
+				<h1>{featuredPost.title}</h1>
+				<p>{featuredPost.excerpt}</p>
+				<a href="#latest" class="pill pill--solid">Read <span aria-hidden="true">→</span></a>
+			</div>
+		</section>
+
+		<section class="latest" id="latest">
+			<div class="section-head">
+				<h2>Latest Blogs</h2>
+				<p>Our freshest thoughts on the latest trends, ongoing, and upcoming.</p>
+			</div>
+
+			<div class="latest__grid">
+				{
+					latestPosts.map((post) => (
+						<article class={`feature-card feature-card--${post.tone}`}>
+							<div class="feature-card__bg">
+								<img src={post.image} alt="" />
+							</div>
+							<div class="meta-pill">{post.tag}</div>
+							<div class="feature-card__content">
+								<h3>{post.title}</h3>
+								<p>{post.excerpt}</p>
+							</div>
+							<a href="#contact" class="pill pill--ghost pill--small">Read More <span aria-hidden="true">→</span></a>
+						</article>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="blog-sections">
+			{
+				sections.map((section) => (
+					<div class="blog-column">
+						<h2>{section.title}</h2>
+						<article class={`feature-card feature-card--${section.feature.tone} feature-card--large`}>
+							<div class="feature-card__bg">
+								<img src={section.feature.image} alt="" />
+							</div>
+							<div class="meta-pill">{section.feature.tag}</div>
+							<div class="feature-card__content">
+								<h3>{section.feature.title}</h3>
+								<p>{section.feature.excerpt}</p>
+							</div>
+							<a href="#contact" class="pill pill--ghost pill--small">Read More <span aria-hidden="true">→</span></a>
+						</article>
+
+						<div class="list-panel">
+							{
+								section.list.map((post) => (
+									<article class="list-item">
+										<div class="meta-pill meta-pill--dark">{post.tag}</div>
+										<h3>{post.title}</h3>
+										<p>{post.excerpt}</p>
+									</article>
+								))
+							}
+							<div class="list-panel__fade"></div>
+						</div>
+					</div>
+				))
+			}
+		</section>
+
+		<section class="contact" id="contact">
+			<img class="contact__shape" src={footerShape} alt="" />
+			<div class="contact__inner">
+				<div class="contact__copy">
+					<p class="section-tag section-tag--inverse">/Contact Us</p>
+					<h2>Planning an Offshore Project? Let&apos;s Talk About Your Metocean Needs.</h2>
+					<address>
+						Non Stop Building, Jl. Tubagus Ismail No.40 Lt. 2 Unit 7, Sekeloa, Kecamatan
+						Coblong, Kota Bandung, Jawa Barat, Indonesia 40134
+					</address>
+				</div>
+
+				<form class="contact__form">
+					<div class="contact__grid">
+						<label>
+							<span class="sr-only">Your Name</span>
+							<input type="text" name="name" placeholder="Your Name" />
+						</label>
+						<label>
+							<span class="sr-only">Your Email</span>
+							<input type="email" name="email" placeholder="Your Email" />
+						</label>
+					</div>
+					<label>
+						<span class="sr-only">Your Message</span>
+						<textarea name="message" rows="6" placeholder="Tell us what you need..."></textarea>
+					</label>
+					<button type="submit" class="pill pill--solid">Send Message <span aria-hidden="true">→</span></button>
+				</form>
+			</div>
+
+			<footer class="footer">
+				<div class="footer__links">
+					<a href="https://bwgeohydromatics.com/legal-and-privacy/" target="_blank" rel="noreferrer">Legal &amp; Privacy</a>
+					<a href="/">Glossary</a>
+					<a href="#contact">Careers</a>
+					<span>Copyright © 2026</span>
+				</div>
+				<div class="footer__socials">
+					<a href="#contact" aria-label="LinkedIn">in</a>
+					<a href="#contact" aria-label="YouTube">yt</a>
+					<a href="#contact" aria-label="Instagram">ig</a>
+					<a href="#contact" aria-label="Twitter">x</a>
+				</div>
+				<div class="footer__company">PT. Bhumi Warih Geohydromatics</div>
+			</footer>
+		</section>
+	</main>
+</Layout>
+
+<style>
+	:global(:root) {
+		--page-pad: clamp(1rem, 4vw, 5rem);
+		--line: #dfdfdf;
+		--text: #151515;
+		--paper: #f8f8f8;
+	}
+
+	.blog-page {
+		background: white;
+		color: var(--text);
+	}
+
+	.blog-hero {
+		position: relative;
+		min-height: 40.875rem;
+		color: white;
+		overflow: clip;
+	}
+
+	.blog-hero__media,
+	.blog-hero__media img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.blog-hero__media img {
+		object-fit: cover;
+	}
+
+	.blog-hero__media::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(180deg, rgba(0, 128, 207, 0) 48%, rgba(0, 128, 207, 0.8) 100%);
+	}
+
+	.topbar,
+	.blog-hero__content {
+		position: relative;
+		z-index: 1;
+	}
+
+	.topbar {
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		align-items: center;
+		gap: 1rem;
+		padding: 2rem var(--page-pad) 0;
+	}
+
+	.topbar__menu,
+	.topbar__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.topbar__actions {
+		justify-content: flex-end;
+	}
+
+	.topbar__brand {
+		display: flex;
+		justify-content: center;
+	}
+
+	.brand-mark {
+		width: 3.5rem;
+		height: 3.5rem;
+		border-radius: 999px;
+		background:
+			radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.25) 28%, transparent 30%),
+			conic-gradient(from 180deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.35));
+		box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.45);
+	}
+
+	.pill {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		min-height: 2.625rem;
+		padding: 0.75rem 1rem;
+		border-radius: 999px;
+		border: 1px solid currentColor;
+		font-size: 1.125rem;
+		line-height: 1;
+		text-decoration: none;
+		white-space: nowrap;
+	}
+
+	.pill--ghost {
+		background: transparent;
+		color: white;
+	}
+
+	.pill--ghost.is-active {
+		background: white;
+		color: #01a1dc;
+		font-weight: 600;
+	}
+
+	.pill--solid {
+		background: white;
+		color: black;
+		border-color: white;
+	}
+
+	.pill--small {
+		min-height: 2.125rem;
+		padding: 0.5rem 0.875rem;
+		font-size: 0.875rem;
+	}
+
+	.meta-pill {
+		display: inline-flex;
+		align-items: center;
+		width: fit-content;
+		padding: 0.5rem 0.75rem;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.9);
+		background: rgba(255, 255, 255, 0.12);
+		font-size: 0.75rem;
+		line-height: 1;
+	}
+
+	.meta-pill--dark {
+		color: black;
+		border-color: black;
+		background: transparent;
+	}
+
+	.blog-hero__content {
+		padding: 17rem var(--page-pad) 3rem;
+		max-width: 40rem;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.75rem;
+	}
+
+	.blog-hero__content h1,
+	.contact h2 {
+		margin: 0;
+		font-size: clamp(2.5rem, 5vw, 4rem);
+		line-height: 1.05;
+		letter-spacing: -0.03em;
+	}
+
+	.blog-hero__content p {
+		margin: 0;
+		font-size: 1.25rem;
+		line-height: 1.35;
+		max-width: 34rem;
+	}
+
+	.latest,
+	.blog-sections {
+		padding-inline: var(--page-pad);
+	}
+
+	.latest {
+		padding-top: 3rem;
+	}
+
+	.section-head {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1rem 2rem;
+		align-items: end;
+		margin-bottom: 1.5rem;
+	}
+
+	.section-head h2,
+	.blog-column h2 {
+		margin: 0;
+		font-size: 2rem;
+		line-height: 1.12;
+	}
+
+	.section-head p {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.4;
+		max-width: 32rem;
+	}
+
+	.latest__grid {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 1.5rem;
+	}
+
+	.feature-card {
+		position: relative;
+		min-height: 25rem;
+		padding: 1rem;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		border-radius: 0.75rem;
+		border: 1px solid #b0b0b0;
+		overflow: clip;
+		color: white;
+	}
+
+	.feature-card--large {
+		min-height: 25rem;
+	}
+
+	.feature-card__bg,
+	.feature-card__bg img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.feature-card__bg img {
+		object-fit: cover;
+	}
+
+	.feature-card__bg::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+	}
+
+	.feature-card--bright .feature-card__bg::after {
+		background: linear-gradient(180deg, rgba(0, 161, 220, 0.1) 0%, rgba(20, 93, 133, 0.9) 78%);
+	}
+
+	.feature-card--dark .feature-card__bg::after {
+		background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.48) 100%);
+	}
+
+	.feature-card--mono .feature-card__bg::after {
+		background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.4) 100%);
+	}
+
+	.feature-card--mono .feature-card__bg img {
+		filter: grayscale(1);
+	}
+
+	.feature-card > * {
+		position: relative;
+		z-index: 1;
+	}
+
+	.feature-card__content {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.feature-card__content h3,
+	.list-item h3 {
+		margin: 0;
+		font-size: 1.25rem;
+		line-height: 1.12;
+	}
+
+	.feature-card__content p,
+	.list-item p,
+	.contact address {
+		margin: 0;
+		font-size: 0.875rem;
+		line-height: 1.4;
+	}
+
+	.blog-sections {
+		padding-top: 2rem;
+		padding-bottom: 4rem;
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 2rem 1.5rem;
+	}
+
+	.blog-column {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.list-panel {
+		position: relative;
+		background: var(--paper);
+		border: 1px solid var(--line);
+		border-radius: 0.75rem;
+		padding: 1rem 0.75rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		min-height: 25rem;
+		overflow: clip;
+	}
+
+	.list-item {
+		background: white;
+		border-radius: 0.75rem;
+		padding: 0.75rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.list-panel__fade {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 3rem;
+		background: linear-gradient(180deg, rgba(248, 248, 248, 0) 0%, rgba(248, 248, 248, 1) 100%);
+	}
+
+	.contact {
+		position: relative;
+		padding: 5rem var(--page-pad) 2.5rem;
+		color: white;
+		background: linear-gradient(122deg, #01a1dc 0%, #1952d2 100%);
+		overflow: clip;
+	}
+
+	.contact__shape {
+		position: absolute;
+		inset: -6rem auto auto 50%;
+		width: min(120rem, 140vw);
+		max-width: none;
+		transform: translateX(-8%) rotate(90deg);
+		opacity: 0.8;
+	}
+
+	.contact__inner,
+	.footer {
+		position: relative;
+		z-index: 1;
+	}
+
+	.section-tag {
+		margin: 0 0 0.875rem;
+		font-size: 1.25rem;
+		color: #fff;
+	}
+
+	.section-tag--inverse {
+		color: white;
+	}
+
+	.contact__inner {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 2rem;
+		align-items: center;
+	}
+
+	.contact__copy {
+		max-width: 39.25rem;
+	}
+
+	.contact address {
+		margin-top: 10rem;
+		max-width: 20.625rem;
+		color: white;
+		font-style: normal;
+		font-size: 1.25rem;
+		line-height: 1.35;
+	}
+
+	.contact__form {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.75rem;
+	}
+
+	.contact__grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.75rem;
+		width: 100%;
+	}
+
+	.contact label {
+		width: 100%;
+	}
+
+	.contact input,
+	.contact textarea {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 1.5rem 1.25rem;
+		border-radius: 1rem;
+		border: 1px solid rgba(255, 255, 255, 0.9);
+		background: rgba(255, 255, 255, 0.12);
+		color: white;
+		font: inherit;
+		resize: vertical;
+	}
+
+	.contact input::placeholder,
+	.contact textarea::placeholder {
+		color: rgba(255, 255, 255, 0.55);
+	}
+
+	.footer {
+		margin-top: 8.75rem;
+		padding-top: 2.5rem;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		gap: 1.5rem;
+		align-items: center;
+		font-size: 1rem;
+	}
+
+	.footer__links,
+	.footer__socials {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.footer__links a,
+	.footer__company {
+		color: rgba(241, 245, 236, 0.95);
+	}
+
+	.footer__socials a {
+		color: white;
+		text-decoration: none;
+	}
+
+	.footer__company {
+		text-align: right;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		border: 0;
+	}
+
+	@media (max-width: 72rem) {
+		.topbar,
+		.section-head,
+		.blog-sections,
+		.contact__inner,
+		.footer,
+		.latest__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.topbar__menu,
+		.topbar__actions,
+		.topbar__brand {
+			justify-content: center;
+		}
+
+		.contact__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.footer__company {
+			text-align: left;
+		}
+	}
+
+	@media (max-width: 40rem) {
+		.blog-hero {
+			min-height: 28rem;
+		}
+
+		.topbar__menu {
+			display: none;
+		}
+
+		.blog-hero__content {
+			padding-top: 11rem;
+		}
+
+		.contact {
+			padding-top: 3rem;
+			padding-bottom: 3rem;
+		}
+
+		.contact address {
+			margin-top: 2rem;
+		}
+
+		.footer {
+			margin-top: 3rem;
+			padding-top: 1rem;
+		}
+	}
+</style>

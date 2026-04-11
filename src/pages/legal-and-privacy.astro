@@ -1,0 +1,193 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const heroShape = '/figma/legal-hero-shape.svg';
+const footerShape = '/figma/legal-contact-shape.svg';
+
+const sections = [
+	{
+		title: '',
+		paragraphs: [
+			'PT. Bhumi Warih Geohydromatics is committed to ensuring that your privacy is protected. Should we ask you to provide certain information by which you can be identified when using our websites, then you can be assured that it will only be used in accordance with this privacy statement.',
+			'PT. Bhumi Warih Geohydromatics may change this policy from time to time by updating this page. You should check this page from time to time to ensure that you are happy with any changes. This policy is effective from 18 December 2019.',
+		],
+	},
+	{
+		title: 'COLLECTION OF PERSONAL INFORMATION',
+		paragraphs: [
+			'We may collect information from or about you, such as personal information that you voluntarily provide, including name, address, and email address; communication preferences; unique IDs such as IP address and device IDs; site-viewing activity, such as pages visited and search terms; referring domain, destination domain and destination path; geolocation data.',
+		],
+	},
+	{
+		title: 'HOW WE USES PERSONAL INFORMATION',
+		paragraphs: [
+			'We require this information to understand your needs and provide you with a better service, and in particular for the following reasons:',
+		],
+		list: [
+			'Administer our relationship with you',
+			'Operate and maintain our Websites',
+			'Internal record keeping',
+			'Understand and analyze the usage trends and preferences of our visitors and users, improve the service, features and functionalities',
+			'Improve and enhance our products and services',
+			'Respond to queries or provide support to users of our services',
+		],
+		after:
+			'We may periodically send promotional emails about new products, special offers or other information which we think you may find interesting using the email address which you have provided. From time to time, we may also use your information to contact you for market research purposes. We may contact you by email, phone, fax or mail. We may use the information to customise the Websites according to your interests. We will not rent or sell your personal identifiable information to third parties.',
+	},
+	{
+		title: 'LEGAL REQUIREMENTS AND INVESTIGATIONS',
+		paragraphs: [
+			'PT. Bhumi Warih Geohydromatics will disclose your personal information to a third party if required to do so by law or if, in good faith, PT. Bhumi Warih Geohydromatics believes that such action is necessary to:',
+		],
+		list: [
+			'Comply with the law or with legal process',
+			'Protect and defend the company’s rights and property or prevent fraud',
+			'Protect the company against abuse, misuse or unauthorized use of PT. Bhumi Warih Geohydromatics’s products or services',
+			'Protect the personal safety or property of personnel, users or the public. This includes cases where false or deceptive registration information or impersonation is involved.',
+		],
+	},
+	{
+		title: 'LINKS TO OTHER WEBSITES',
+		paragraphs: [
+			'This websites may contain links to other websites. However, once you have used these links to leave our site, you should note that we do not have any control over that other websites. Therefore, we cannot be responsible for the protection and privacy of any information which you provide whilst visiting such sites and such sites are not governed by this privacy statement. You should exercise caution and look at the privacy statement applicable to the websites in question.',
+		],
+	},
+	{
+		title: 'ACCEPTANCE OF OUR LEGAL AND PRIVACY STATEMENT',
+		paragraphs: [
+			'By using https://bwgeohydromatics.com/ , or other PT. Bhumi Warih Geohydromatics website, you signify your acceptance of this legal and privacy statement, as amended from time to time in accordance with this paragraph.',
+			'If you do not agree with the content of this legal and privacy statement, please do not use this website. If you have a data privacy complaint, please contact us by email at: bw@bwgeohydromatics.com',
+		],
+	},
+];
+---
+
+<Layout
+	title="Legal and Privacy | Bhumi Warih"
+	footerShape={footerShape}
+	footerLegalHref="/legal-and-privacy"
+>
+	<main class="legal-page">
+		<section class="legal-hero">
+			<div class="legal-hero__bg"></div>
+			<img class="legal-hero__shape" src={heroShape} alt="" />
+			<div class="legal-hero__copy">
+				<p class="legal-hero__eyebrow">/Legal and Privacy</p>
+				<h1>Legal and Privacy</h1>
+			</div>
+		</section>
+
+		<section class="legal-content">
+			{
+				sections.map((section) => (
+					<section class="legal-block">
+						{section.title && <h2>{section.title}</h2>}
+						{section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+						{
+							section.list && (
+								<ol>
+									{section.list.map((item) => <li>{item}</li>)}
+								</ol>
+							)
+						}
+						{section.after && <p>{section.after}</p>}
+					</section>
+				))
+			}
+		</section>
+	</main>
+</Layout>
+
+<style>
+	.legal-page {
+		background: #fff;
+		color: #101010;
+	}
+
+	.legal-hero {
+		position: relative;
+		min-height: 26.9375rem;
+		overflow: clip;
+		color: white;
+	}
+
+	.legal-hero__bg {
+		position: absolute;
+		inset: 0;
+		background: #004991;
+	}
+
+	.legal-hero__shape {
+		position: absolute;
+		inset: -25rem auto auto -8rem;
+		width: min(115rem, 130vw);
+		max-width: none;
+		transform: rotate(-90deg);
+		opacity: 0.95;
+	}
+
+	.legal-hero__copy {
+		position: relative;
+		z-index: 1;
+		padding: 9rem clamp(1rem, 4vw, 5rem) 3rem;
+		max-width: 42.875rem;
+	}
+
+	.legal-hero__eyebrow {
+		margin: 0 0 0.875rem;
+		font-size: 2rem;
+		line-height: 1.1;
+	}
+
+	.legal-hero h1 {
+		margin: 0;
+		font-size: clamp(3.5rem, 7vw, 6rem);
+		line-height: 0.95;
+		letter-spacing: -0.04em;
+	}
+
+	.legal-content {
+		max-width: 52.8125rem;
+		padding: 3.5rem clamp(1rem, 4vw, 5rem) 5rem;
+	}
+
+	.legal-block {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin-bottom: 1.5rem;
+		font-size: 1rem;
+		line-height: 1.24;
+	}
+
+	.legal-block h2 {
+		margin: 0.75rem 0 0;
+		font-size: 1rem;
+		line-height: 1.24;
+		font-weight: 600;
+		letter-spacing: 0.01em;
+	}
+
+	.legal-block p,
+	.legal-block li {
+		margin: 0;
+	}
+
+	.legal-block ol {
+		margin: 0.25rem 0 0.25rem 1.25rem;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+	}
+
+	@media (max-width: 40rem) {
+		.legal-hero {
+			min-height: 21rem;
+		}
+
+		.legal-hero__copy {
+			padding-top: 7rem;
+		}
+	}
+</style>

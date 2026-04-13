@@ -8,6 +8,13 @@ const {
 } = Astro.props;
 
 const topNavLogo = '/figma/top-nav-logo.svg';
+const footerWavePattern = '/export/Union.svg';
+const footerSocials = [
+	{ label: 'LinkedIn', href: '#contact', icon: '/figma/social-linkedin.svg' },
+	{ label: 'YouTube', href: '#contact', icon: '/figma/social-youtube.svg' },
+	{ label: 'Instagram', href: '#contact', icon: '/figma/social-instagram.svg' },
+	{ label: 'X', href: '#contact', icon: '/figma/social-x.svg' },
+];
 
 const navItems = [
 	{ key: 'home', label: 'Home', href: '/' },
@@ -99,11 +106,7 @@ const navItems = [
 		<slot />
 
 		<section class="layout-contact" id="contact">
-			{
-				footerShape && (
-					<img class="layout-contact__shape" src={footerShape} alt="" />
-				)
-			}
+			<img class="layout-contact__shape" src={footerWavePattern} alt="" />
 			<div class="layout-contact__inner">
 				<div class="layout-contact__copy">
 					<p class="layout-contact__eyebrow">/Contact Us</p>
@@ -141,10 +144,13 @@ const navItems = [
 					<span>Copyright © 2026</span>
 				</div>
 				<div class="site-footer__socials">
-					<a href="#contact" aria-label="LinkedIn">in</a>
-					<a href="#contact" aria-label="YouTube">yt</a>
-					<a href="#contact" aria-label="Instagram">ig</a>
-					<a href="#contact" aria-label="Twitter">x</a>
+					{
+						footerSocials.map((social) => (
+							<a href={social.href} aria-label={social.label}>
+								<img src={social.icon} alt="" aria-hidden="true" />
+							</a>
+						))
+					}
 				</div>
 				<div class="site-footer__company">PT. Bhumi Warih Geohydromatics</div>
 			</footer>
@@ -317,10 +323,12 @@ const navItems = [
 
 	.layout-contact__shape {
 		position: absolute;
-		inset: -6rem auto auto 50%;
-		width: min(120rem, 140vw);
+		left: 0;
+		bottom: 0;
+		height: 100%;
+		width: auto;
 		max-width: none;
-		transform: translateX(-8%) rotate(90deg);
+		transform: none;
 		opacity: 0.8;
 	}
 
@@ -423,8 +431,18 @@ const navItems = [
 	}
 
 	.site-footer__socials a {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 		color: white;
 		text-decoration: none;
+	}
+
+	.site-footer__socials img {
+		display: block;
+		width: 1.5rem;
+		height: 1.5rem;
+		filter: brightness(0) invert(1);
 	}
 
 	.site-footer__company {

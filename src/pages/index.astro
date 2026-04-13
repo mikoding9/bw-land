@@ -3,9 +3,9 @@ import Layout from '../layouts/Layout.astro';
 
 const heroImage = '/figma/home-hero-bg.png';
 const rigImage = '/figma/home-hero-rig.png';
-const serviceOrbitImage = '/figma/home-service-orbit.png';
-const serviceMapImage = '/figma/home-service-map.png';
-const serviceWaveImage = '/figma/home-service-wave.png';
+const serviceOrbitImage = '/figma/service-metocean-card.png';
+const serviceMapImage = '/figma/service-dss-card.png';
+const serviceWaveImage = '/figma/service-extended-card.png';
 const industryOilImage = '/figma/home-industry-oil.png';
 const industryPortImage = '/figma/home-industry-port.png';
 const industryOtherImage = '/figma/home-industry-other.png';
@@ -114,6 +114,8 @@ const blogPosts = [
 		image: blogCardA,
 	},
 ];
+
+const [metoceanService, dssService, extendedService] = services;
 ---
 
 <Layout title="Bhumi Warih">
@@ -131,15 +133,28 @@ const blogPosts = [
 
 			<div class="hero__content">
 				<p class="hero__headline">Meteorological &amp; Oceanographic Analysis to Connected Intelligence</p>
-				<a href="#glossary" class="pill pill--ghost">Glossary</a>
+				<a href="/glossary" class="pill pill--ghost hero__glossary">Glossary</a>
 			</div>
 		</section>
 
 		<section class="about-gap" id="about" aria-label="About Bhumi Warih">
-			<div class="section-tag">About</div>
-			<div class="about-gap__copy">
-				<p>Bhumi Warih is an Indonesian based company specializing in meteorological and oceanographic (Metocean) analysis.</p>
-				<p>Our knowledge and experience have been acquired from specialized services in the maritime industry since 2010, with strong access and local understanding across South East Asia.</p>
+			<div class="about-gap__copy" data-reveal-root>
+				<div class="about-gap__intro">
+					<p class="section-tag about-gap__tag" data-reveal data-reveal-delay="0">About</p>
+					<p class="about-gap__lead" data-reveal data-reveal-delay="120">
+						Bhumi Warih is an Indonesian based company specializing in meteorological and
+						oceanographic (Metocean) analysis.
+					</p>
+				</div>
+
+				<div class="about-gap__aside">
+					<p class="about-gap__body" data-reveal data-reveal-delay="240">
+						Our knowledge and experience have been acquired from specialized services in the
+						maritime industry since 2010, with strong access and local understanding across
+						South East Asia.
+					</p>
+					<a class="pill pill--outline-dark about-gap__cta" href="/about">About Us</a>
+				</div>
 			</div>
 		</section>
 
@@ -156,21 +171,43 @@ const blogPosts = [
 			</div>
 
 			<div class="service-grid">
-				{
-					services.map((service, index) => (
-						<article class={`service-card service-card--${service.tone} ${index === 1 ? 'service-card--wide' : ''}`}>
-							<div class="service-card__copy">
-								<img class="service-card__icon" src={service.icon} alt="" />
-								<h3>{service.title}</h3>
-								<p>{service.description}</p>
-								<a href="#contact" class="pill pill--outline-dark">Read More <span aria-hidden="true">→</span></a>
-							</div>
-							<div class="service-card__media">
-								<img src={service.image} alt="" />
-							</div>
-						</article>
-					))
-				}
+				<div class="service-grid__stack">
+					<article class={`service-card service-card--stacked service-card--metocean service-card--${metoceanService.tone}`}>
+						<div class="service-card__copy">
+							<img class="service-card__icon" src={metoceanService.icon} alt="" />
+							<h3>{metoceanService.title}</h3>
+							<p>{metoceanService.description}</p>
+							<a href="#contact" class="pill pill--outline-dark">Read More <span aria-hidden="true">→</span></a>
+						</div>
+						<div class="service-card__media">
+							<img src={metoceanService.image} alt="" />
+						</div>
+					</article>
+
+					<article class={`service-card service-card--stacked service-card--extended service-card--${extendedService.tone}`}>
+						<div class="service-card__copy">
+							<img class="service-card__icon" src={extendedService.icon} alt="" />
+							<h3>{extendedService.title}</h3>
+							<p>{extendedService.description}</p>
+							<a href="#contact" class="pill pill--outline-dark">Read More <span aria-hidden="true">→</span></a>
+						</div>
+						<div class="service-card__media">
+							<img src={extendedService.image} alt="" />
+						</div>
+					</article>
+				</div>
+
+				<article class={`service-card service-card--feature service-card--dss service-card--${dssService.tone}`}>
+					<div class="service-card__copy">
+						<img class="service-card__icon" src={dssService.icon} alt="" />
+						<h3>{dssService.title}</h3>
+						<p>{dssService.description}</p>
+						<a href="#contact" class="pill pill--outline-dark">Read More <span aria-hidden="true">→</span></a>
+					</div>
+					<div class="service-card__media">
+						<img src={dssService.image} alt="" />
+					</div>
+				</article>
 			</div>
 		</section>
 
@@ -250,6 +287,39 @@ const blogPosts = [
 	</main>
 </Layout>
 
+<script is:inline>
+	const aboutRevealRoots = document.querySelectorAll('[data-reveal-root]');
+	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	if (prefersReducedMotion) {
+		for (const root of aboutRevealRoots) {
+			root.classList.add('is-visible');
+		}
+	} else if ('IntersectionObserver' in window) {
+		const revealObserver = new IntersectionObserver(
+			(entries, observer) => {
+				for (const entry of entries) {
+					if (!entry.isIntersecting) continue;
+					entry.target.classList.add('is-visible');
+					observer.unobserve(entry.target);
+				}
+			},
+			{
+				threshold: 0.28,
+				rootMargin: '0px 0px -8% 0px',
+			}
+		);
+
+		for (const root of aboutRevealRoots) {
+			revealObserver.observe(root);
+		}
+	} else {
+		for (const root of aboutRevealRoots) {
+			root.classList.add('is-visible');
+		}
+	}
+</script>
+
 <style>
 	:global(:root) {
 		--bg: #f0ecea;
@@ -263,6 +333,7 @@ const blogPosts = [
 		--radius-xl: 1rem;
 		--radius-2xl: 1.5rem;
 		--page-pad: clamp(1rem, 4vw, 5rem);
+		--service-gap: 1.875rem;
 	}
 
 	.page-shell {
@@ -416,10 +487,11 @@ const blogPosts = [
 
 	.hero__content {
 		margin-top: 6rem;
-		max-width: 46rem;
-		display: flex;
+		width: 100%;
+		max-width: none;
+		display: grid;
+		grid-template-columns: minmax(0, 42.875rem) auto;
 		align-items: flex-end;
-		justify-content: space-between;
 		gap: 1.5rem;
 	}
 
@@ -431,10 +503,15 @@ const blogPosts = [
 		letter-spacing: -0.02em;
 	}
 
+	.hero__glossary {
+		justify-self: end;
+		align-self: end;
+	}
+
 	.about-gap {
 		min-height: 40rem;
-		padding-top: 3rem;
-		padding-bottom: 3rem;
+		padding-top: 3.1875rem;
+		padding-bottom: 3.5rem;
 		display: grid;
 		align-content: start;
 	}
@@ -442,11 +519,67 @@ const blogPosts = [
 	.about-gap__copy {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 6rem;
-		margin-top: 1.5rem;
-		opacity: 0.08;
+		gap: 6.5rem;
+		align-items: start;
+	}
+
+	.about-gap__intro {
+		max-width: 39.25rem;
+	}
+
+	.about-gap__tag {
+		margin-bottom: 1.25rem;
+	}
+
+	.about-gap__lead,
+	.about-gap__body {
+		margin: 0;
 		font-size: 2rem;
 		line-height: 1.12;
+		letter-spacing: -0.02em;
+	}
+
+	.about-gap__aside {
+		padding-top: 12.5rem;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 5.25rem;
+	}
+
+	.about-gap__body {
+		max-width: 39.25rem;
+	}
+
+	.about-gap__cta {
+		color: #1e1e1e;
+	}
+
+	[data-reveal-root] [data-reveal] {
+		opacity: 0;
+		transform: translate3d(0, 2rem, 0);
+		transition:
+			opacity 1100ms cubic-bezier(0.22, 1, 0.36, 1),
+			transform 1100ms cubic-bezier(0.22, 1, 0.36, 1);
+		transition-delay: var(--reveal-delay, 0ms);
+		will-change: opacity, transform;
+	}
+
+	[data-reveal-root] [data-reveal-delay='0'] {
+		--reveal-delay: 0ms;
+	}
+
+	[data-reveal-root] [data-reveal-delay='120'] {
+		--reveal-delay: 120ms;
+	}
+
+	[data-reveal-root] [data-reveal-delay='240'] {
+		--reveal-delay: 240ms;
+	}
+
+	[data-reveal-root].is-visible [data-reveal] {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
 	}
 
 	.section {
@@ -496,8 +629,16 @@ const blogPosts = [
 	.service-grid {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 1.875rem;
+		gap: var(--service-gap);
 		margin-top: 1.5rem;
+		align-items: stretch;
+	}
+
+	.service-grid__stack {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: repeat(2, minmax(0, 1fr));
+		gap: var(--service-gap);
 	}
 
 	.service-card {
@@ -510,8 +651,65 @@ const blogPosts = [
 		background: white;
 	}
 
-	.service-card--wide {
-		grid-column: span 2;
+	.service-card--feature {
+		min-height: 47.5rem;
+	}
+
+	.service-card--feature .service-card__copy {
+		padding-bottom: 2rem;
+	}
+
+	.service-card--feature .service-card__media img {
+		object-position: center bottom;
+	}
+
+	.service-card--dss {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		background: #e6e7ea;
+	}
+
+	.service-card--dss .service-card__copy {
+		width: 100%;
+		padding: 1.5rem;
+		background: transparent;
+		gap: 0.8125rem;
+	}
+
+	.service-card--dss .service-card__copy h3 {
+		max-width: 100%;
+		font-size: 2.25rem;
+		font-weight: 500;
+		line-height: 1.12;
+		letter-spacing: -0.02em;
+	}
+
+	.service-card--dss .service-card__copy p {
+		max-width: 100%;
+		font-size: 1.25rem;
+		line-height: 1.2;
+	}
+
+	.service-card--dss .service-card__copy .pill {
+		margin-top: 0;
+	}
+
+	.service-card--dss .service-card__media {
+		height: 27.1875rem;
+		background: transparent;
+		overflow: hidden;
+	}
+
+	.service-card--dss .service-card__media img {
+		position: absolute;
+		left: 0;
+		top: 0.5625rem;
+		width: 28.9375rem;
+		height: auto;
+		max-width: none;
+		object-fit: contain;
+		mix-blend-mode: multiply;
 	}
 
 	.service-card--light-blue .service-card__copy {
@@ -527,11 +725,11 @@ const blogPosts = [
 	}
 
 	.service-card__copy {
-		padding: 1.5rem;
+		padding: var(--service-gap);
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		gap: 0.875rem;
+		gap: 1rem;
 	}
 
 	.service-card__icon {
@@ -565,6 +763,8 @@ const blogPosts = [
 	}
 
 	.service-card__media {
+		position: relative;
+		overflow: hidden;
 		background: #edf2f6;
 	}
 
@@ -572,6 +772,113 @@ const blogPosts = [
 	.industry-card__image img {
 		display: block;
 		object-fit: cover;
+	}
+
+	.service-card--metocean {
+		position: relative;
+		display: block;
+		background: #dbe5f7;
+	}
+
+	.service-card--metocean .service-card__copy {
+		position: relative;
+		z-index: 1;
+		width: 50%;
+		max-width: none;
+		min-height: 100%;
+		padding: 1.5rem;
+		background: transparent;
+		gap: 0.8125rem;
+	}
+
+	.service-card--metocean .service-card__copy h3 {
+		max-width: 100%;
+		font-size: 2.25rem;
+		font-weight: 500;
+		line-height: 1.12;
+		letter-spacing: -0.02em;
+	}
+
+	.service-card--metocean .service-card__copy p {
+		max-width: 100%;
+		font-size: 1.25rem;
+		line-height: 1.2;
+	}
+
+	.service-card--metocean .service-card__copy .pill {
+		margin-top: 0.5rem;
+	}
+
+	.service-card--metocean .service-card__media {
+		position: absolute;
+		inset: 0 0 0 auto;
+		width: 51%;
+		background: transparent;
+		overflow: visible;
+	}
+
+	.service-card--metocean .service-card__media img {
+		position: absolute;
+		top: -0.125rem;
+		right: -2.125rem;
+		width: 18.5rem;
+		height: auto;
+		max-width: none;
+		object-fit: contain;
+	}
+
+	.service-card--extended {
+		position: relative;
+		display: block;
+		background: rgba(0, 161, 220, 0.08);
+	}
+
+	.service-card--extended .service-card__copy {
+		position: relative;
+		z-index: 1;
+		width: 50%;
+		max-width: none;
+		min-height: 100%;
+		padding: 1.5rem;
+		background: transparent;
+		gap: 0.8125rem;
+	}
+
+	.service-card--extended .service-card__copy h3 {
+		max-width: 100%;
+		font-size: 2.25rem;
+		font-weight: 500;
+		line-height: 1.12;
+		letter-spacing: -0.02em;
+	}
+
+	.service-card--extended .service-card__copy p {
+		max-width: 100%;
+		font-size: 1.25rem;
+		line-height: 1.2;
+	}
+
+	.service-card--extended .service-card__copy .pill {
+		margin-top: 0;
+	}
+
+	.service-card--extended .service-card__media {
+		position: absolute;
+		inset: 0 0 0 auto;
+		width: 50%;
+		background: transparent;
+		overflow: visible;
+		mix-blend-mode: multiply;
+	}
+
+	.service-card--extended .service-card__media img {
+		position: absolute;
+		right: -0.875rem;
+		bottom: -0.25rem;
+		width: 18.75rem;
+		height: auto;
+		max-width: none;
+		object-fit: contain;
 	}
 
 	.approach {
@@ -855,14 +1162,29 @@ const blogPosts = [
 			grid-template-columns: 1fr;
 		}
 
+		.service-grid__stack {
+			grid-template-rows: auto;
+		}
+
+		.about-gap__aside {
+			padding-top: 0;
+			gap: 2rem;
+		}
+
 		.hero__content {
+			grid-template-columns: 1fr;
 			align-items: flex-start;
 		}
 
+		.hero__glossary {
+			justify-self: start;
+		}
+
 		.service-card,
-		.service-card--wide {
+		.service-card--feature {
 			grid-column: auto;
 			grid-template-columns: 1fr;
+			min-height: auto;
 		}
 
 		.industry-card__detail {
@@ -902,8 +1224,12 @@ const blogPosts = [
 		}
 
 		.about-gap__copy {
-			font-size: 1.25rem;
 			gap: 1.5rem;
+		}
+
+		.about-gap__lead,
+		.about-gap__body {
+			font-size: 1.25rem;
 		}
 
 		.section,

@@ -7,6 +7,8 @@ const {
 	footerLegalHref = '/legal-and-privacy',
 } = Astro.props;
 
+const topNavLogo = '/figma/top-nav-logo.svg';
+
 const navItems = [
 	{ key: 'home', label: 'Home', href: '/' },
 	{ key: 'industry', label: 'Industry', href: '/industry' },
@@ -85,7 +87,7 @@ const navItems = [
 			</nav>
 
 			<a href="/" class="site-topbar__brand" aria-label="Bhumi Warih home">
-				<div class="site-brand-mark"></div>
+				<img class="site-brand-mark" src={topNavLogo} alt="" />
 			</a>
 
 			<div class="site-topbar__actions">
@@ -209,18 +211,17 @@ const navItems = [
 
 	.site-topbar__brand {
 		display: flex;
+		align-items: center;
 		justify-content: center;
+		width: min(100%, 17.204rem);
+		height: 3.5rem;
 		text-decoration: none;
 	}
 
 	.site-brand-mark {
-		width: 3.5rem;
-		height: 3.5rem;
-		border-radius: 999px;
-		background:
-			radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.25) 28%, transparent 30%),
-			conic-gradient(from 180deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.35));
-		box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.45);
+		display: block;
+		width: 2.82rem;
+		height: 2.82rem;
 	}
 
 	.site-pill {
@@ -452,6 +453,10 @@ const navItems = [
 		.site-topbar__actions,
 		.site-topbar__brand {
 			justify-content: center;
+		}
+
+		.site-topbar__brand {
+			width: 100%;
 		}
 
 		.layout-contact__grid {

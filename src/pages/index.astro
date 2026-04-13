@@ -48,6 +48,7 @@ const services = [
 const industries = [
 	{
 		eyebrow: 'Oil & Gas',
+		slug: 'metocean',
 		copy:
 			'Assist with the necessary information on atmospheric and oceanographic conditions on our client working sites. Metocean data and analysis will enable our clients’ engineers to refine plans with better cost conformity.',
 		image: industryOilImage,
@@ -63,6 +64,7 @@ const industries = [
 	},
 	{
 		eyebrow: 'Port and Harbor',
+		slug: 'dss',
 		copy:
 			'Develop an optimized port and harbor design that meets economic and technical viability criteria including design protection, engineering efficiency, and maintainability.',
 		image: industryPortImage,
@@ -77,6 +79,7 @@ const industries = [
 	},
 	{
 		eyebrow: 'Other Maritime Industry',
+		slug: 'extended',
 		copy:
 			'Bring clarity to any maritime industry problem at any stage. Before planning any maritime development, we need to understand the natural environment surrounding the project location.',
 		image: industryOtherImage,
@@ -273,7 +276,7 @@ const [metoceanService, dssService, extendedService] = services;
 									</div>
 									<div class="industry-card__body">
 										<p>{industry.copy}</p>
-										<a href="#contact" class="pill pill--blue">Read More <span aria-hidden="true">→</span></a>
+										<a href={`/service/${industry.slug}`} class="pill pill--blue">Read More <span aria-hidden="true">→</span></a>
 									</div>
 								</div>
 							</article>

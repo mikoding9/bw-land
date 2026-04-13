@@ -23,6 +23,7 @@ const blogCardC = '/figma/blog-card-c.png';
 
 const services = [
 	{
+		slug: 'metocean',
 		title: 'Metocean Design Criteria',
 		description: 'Extreme Value Analysis. Numerical Simulation. Ocean, Climate and Weather Analysis',
 		icon: iconEarth,
@@ -30,6 +31,7 @@ const services = [
 		tone: 'light-blue',
 	},
 	{
+		slug: 'dss',
 		title: 'Marine Operation Decision Support System (MO-DSS)',
 		description: 'Marine Sea State Prediction. Weather Forecast. Tow Route Forecast. Weather Window.',
 		icon: iconDroplet,
@@ -37,6 +39,7 @@ const services = [
 		tone: 'mist',
 	},
 	{
+		slug: 'extended',
 		title: 'Extended Services',
 		description: 'Our team can provide customized services tailored for your specific needs in maritime industry.',
 		icon: iconPeople,
@@ -192,7 +195,7 @@ const [metoceanService, dssService, extendedService] = services;
 							<img class="service-card__icon" src={metoceanService.icon} alt="" />
 							<h3>{metoceanService.title}</h3>
 							<p>{metoceanService.description}</p>
-							<a href="#contact" class="pill pill--outline-dark">Read More <span aria-hidden="true">→</span></a>
+							<a href={`/service/${metoceanService.slug}`} class="pill pill--outline-dark">Read More <span aria-hidden="true">→</span></a>
 						</div>
 						<div class="service-card__media">
 							<img src={metoceanService.image} alt="" />
@@ -204,7 +207,7 @@ const [metoceanService, dssService, extendedService] = services;
 							<img class="service-card__icon" src={extendedService.icon} alt="" />
 							<h3>{extendedService.title}</h3>
 							<p>{extendedService.description}</p>
-							<a href="#contact" class="pill pill--outline-dark">Read More <span aria-hidden="true">→</span></a>
+							<a href={`/service/${extendedService.slug}`} class="pill pill--outline-dark">Read More <span aria-hidden="true">→</span></a>
 						</div>
 						<div class="service-card__media">
 							<img src={extendedService.image} alt="" />
@@ -217,7 +220,7 @@ const [metoceanService, dssService, extendedService] = services;
 						<img class="service-card__icon" src={dssService.icon} alt="" />
 						<h3>{dssService.title}</h3>
 						<p>{dssService.description}</p>
-						<a href="#contact" class="pill pill--outline-dark">Read More <span aria-hidden="true">→</span></a>
+						<a href={`/service/${dssService.slug}`} class="pill pill--outline-dark">Read More <span aria-hidden="true">→</span></a>
 					</div>
 					<div class="service-card__media">
 						<img src={dssService.image} alt="" />

@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 
-const heroShape = '/figma/service-extended-hero-shape.svg';
+const heroShape = '/figma/service-extended-hero-wave.svg';
 const footerShape = '/figma/service-extended-contact-shape.svg';
 const iconSedimentation = '/figma/service-extended-icon-sedimentation.png';
 const iconWaterQuality = '/figma/service-extended-icon-water-quality.png';
@@ -77,7 +77,9 @@ const relatedServices = [
 	<main class="service-page">
 		<section class="service-hero">
 			<div class="service-hero__bg"></div>
-			<img class="service-hero__shape" src={heroShape} alt="" />
+			<div class="service-hero__shape-wrap" aria-hidden="true">
+				<img class="service-hero__shape" src={heroShape} alt="" />
+			</div>
 			<div class="service-hero__copy">
 				<p class="service-hero__eyebrow">/Service</p>
 				<h1>Extended Services</h1>
@@ -176,12 +178,20 @@ const relatedServices = [
 		background: var(--service-blue);
 	}
 
+	.service-hero__shape-wrap {
+		position: absolute;
+		inset: 0 auto 0 0;
+		width: min(74rem, 86vw);
+		overflow: hidden;
+	}
+
 	.service-hero__shape {
 		position: absolute;
-		inset: -23rem auto auto -13rem;
-		width: min(116rem, 136vw);
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: auto;
 		max-width: none;
-		transform: rotate(-90deg);
 		opacity: 0.95;
 	}
 
@@ -406,6 +416,10 @@ const relatedServices = [
 	}
 
 	@media (max-width: 72rem) {
+		.service-hero__shape-wrap {
+			width: min(62rem, 98vw);
+		}
+
 		.service-intro,
 		.related-services__intro,
 		.service-grid {
@@ -428,6 +442,10 @@ const relatedServices = [
 	@media (max-width: 56rem) {
 		.service-hero {
 			min-height: 30rem;
+		}
+
+		.service-hero__shape-wrap {
+			width: 100vw;
 		}
 
 		.service-hero__copy {

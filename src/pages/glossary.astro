@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const heroShape = '/figma/glossary-hero-shape.svg';
+const heroShape = '/figma/legal-glossary-hero-wave.svg';
 const footerShape = '/figma/glossary-contact-shape.svg';
 
 const introParagraphs = [
@@ -68,7 +68,9 @@ const glossaryRows = [
 	<main class="glossary-page">
 		<section class="glossary-hero">
 			<div class="glossary-hero__bg"></div>
-			<img class="glossary-hero__shape" src={heroShape} alt="" />
+			<div class="glossary-hero__shape-wrap" aria-hidden="true">
+				<img class="glossary-hero__shape" src={heroShape} alt="" />
+			</div>
 			<div class="glossary-hero__copy">
 				<p class="glossary-hero__eyebrow">/Glossary</p>
 				<h1>Metocean Glossary</h1>
@@ -170,12 +172,20 @@ const glossaryRows = [
 		background: var(--glossary-blue);
 	}
 
+	.glossary-hero__shape-wrap {
+		position: absolute;
+		inset: 0 auto 0 0;
+		width: min(56rem, 88vw);
+		overflow: hidden;
+	}
+
 	.glossary-hero__shape {
 		position: absolute;
-		inset: -25rem auto auto -10rem;
-		width: min(115rem, 135vw);
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: auto;
 		max-width: none;
-		transform: rotate(-90deg);
 		opacity: 0.95;
 	}
 
@@ -430,6 +440,10 @@ const glossaryRows = [
 	@media (max-width: 48rem) {
 		.glossary-hero {
 			min-height: 22rem;
+		}
+
+		.glossary-hero__shape-wrap {
+			width: 100vw;
 		}
 
 		.glossary-hero__copy {

@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const heroShapes = '/figma/industry-hero-shape.svg';
+const heroShapes = '/figma/industry-hero-wave.svg';
 const footerShapes = '/figma/contact-shape.svg';
 const oilThumbA = '/figma/industry-thumb-oil-a.png';
 const oilThumbB = '/figma/industry-thumb-oil-b.png';
@@ -60,7 +60,9 @@ const industries = [
 	<main class="industry-page">
 		<section class="industry-hero">
 			<div class="industry-hero__bg"></div>
-			<img class="industry-hero__shape" src={heroShapes} alt="" />
+			<div class="industry-hero__shape-wrap" aria-hidden="true">
+				<img class="industry-hero__shape" src={heroShapes} alt="" />
+			</div>
 
 			<div class="industry-hero__meta">Registered on CIVD System: SPDA Number 73970/EMP/2024</div>
 			<div class="industry-hero__copy">
@@ -141,13 +143,22 @@ const industries = [
 		background: var(--deep);
 	}
 
+	.industry-hero__shape-wrap {
+		position: absolute;
+		inset: 0 auto 0 0;
+		width: min(74rem, 86vw);
+		overflow: hidden;
+	}
+
 	.industry-hero__shape {
 		position: absolute;
-		inset: -24rem -12rem auto auto;
-		width: min(110rem, 132vw);
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: auto;
 		max-width: none;
-		transform: rotate(-90deg);
-		opacity: 0.92;
+		transform: translate(-13%, 0);
+		opacity: 0.96;
 	}
 
 	.topbar,
@@ -521,6 +532,10 @@ const industries = [
 			text-align: left;
 		}
 
+		.industry-hero__shape-wrap {
+			width: min(62rem, 98vw);
+		}
+
 		.contact__grid {
 			grid-template-columns: 1fr;
 		}
@@ -533,6 +548,14 @@ const industries = [
 	@media (max-width: 40rem) {
 		.industry-hero {
 			min-height: 28rem;
+		}
+
+		.industry-hero__shape-wrap {
+			width: 100vw;
+		}
+
+		.industry-hero__shape {
+			transform: translate(-8%, 0);
 		}
 
 		.topbar__menu {

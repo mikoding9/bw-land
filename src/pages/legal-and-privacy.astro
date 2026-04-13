@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const heroShape = '/figma/legal-hero-shape.svg';
+const heroShape = '/figma/legal-glossary-hero-wave.svg';
 const footerShape = '/figma/legal-contact-shape.svg';
 
 const sections = [
@@ -70,7 +70,9 @@ const sections = [
 	<main class="legal-page">
 		<section class="legal-hero">
 			<div class="legal-hero__bg"></div>
-			<img class="legal-hero__shape" src={heroShape} alt="" />
+			<div class="legal-hero__shape-wrap" aria-hidden="true">
+				<img class="legal-hero__shape" src={heroShape} alt="" />
+			</div>
 			<div class="legal-hero__copy">
 				<p class="legal-hero__eyebrow">/Legal and Privacy</p>
 				<h1>Legal and Privacy</h1>
@@ -117,12 +119,20 @@ const sections = [
 		background: #004991;
 	}
 
+	.legal-hero__shape-wrap {
+		position: absolute;
+		inset: 0 auto 0 0;
+		width: min(56rem, 88vw);
+		overflow: hidden;
+	}
+
 	.legal-hero__shape {
 		position: absolute;
-		inset: -25rem auto auto -8rem;
-		width: min(115rem, 130vw);
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: auto;
 		max-width: none;
-		transform: rotate(-90deg);
 		opacity: 0.95;
 	}
 
@@ -184,6 +194,10 @@ const sections = [
 	@media (max-width: 40rem) {
 		.legal-hero {
 			min-height: 21rem;
+		}
+
+		.legal-hero__shape-wrap {
+			width: 100vw;
 		}
 
 		.legal-hero__copy {

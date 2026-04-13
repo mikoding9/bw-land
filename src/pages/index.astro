@@ -9,6 +9,11 @@ const serviceWaveImage = '/figma/service-extended-card.png';
 const industryOilImage = '/figma/home-industry-oil.png';
 const industryPortImage = '/figma/home-industry-port.png';
 const industryOtherImage = '/figma/home-industry-other.png';
+const industryIconOilBase = '/figma/industry-icon-oil-base.png';
+const industryIconOilOverlay = '/figma/industry-icon-oil-overlay.png';
+const industryIconPortBase = '/figma/industry-icon-port-base.png';
+const industryIconOtherOverlay = '/figma/industry-icon-other-overlay.png';
+const industryListItemIcon = '/figma/industry-list-item-icon.svg';
 const iconDroplet = '/figma/icon-droplet.svg';
 const iconEarth = '/figma/icon-earth.svg';
 const iconPeople = '/figma/icon-people.svg';
@@ -47,6 +52,7 @@ const industries = [
 			'Assist with the necessary information on atmospheric and oceanographic conditions on our client working sites. Metocean data and analysis will enable our clients’ engineers to refine plans with better cost conformity.',
 		image: industryOilImage,
 		accent: '#cfd8ee',
+		iconLayers: [industryIconOilBase, industryIconOilOverlay],
 		items: [
 			'Marine Sea State Prediction',
 			'Metocean Study',
@@ -61,6 +67,7 @@ const industries = [
 			'Develop an optimized port and harbor design that meets economic and technical viability criteria including design protection, engineering efficiency, and maintainability.',
 		image: industryPortImage,
 		accent: '#ffffff',
+		iconLayers: [industryIconPortBase],
 		items: [
 			'Navigation Safety',
 			'Marine numerical simulation',
@@ -74,6 +81,7 @@ const industries = [
 			'Bring clarity to any maritime industry problem at any stage. Before planning any maritime development, we need to understand the natural environment surrounding the project location.',
 		image: industryOtherImage,
 		accent: '#e7ecec',
+		iconLayers: [industryIconPortBase, industryIconOtherOverlay],
 		items: [
 			'Environmental impact assessments (EIA)',
 			'Field observation',
@@ -234,28 +242,44 @@ const [metoceanService, dssService, extendedService] = services;
 				</p>
 			</div>
 
-			<div class="industry-stack">
-				{
-					industries.map((industry) => (
-						<article class="industry-card">
-							<div class="industry-card__summary" style={`--panel-accent:${industry.accent}`}>
-								<h3>{industry.eyebrow}</h3>
-								<ul>
-									{industry.items.map((item) => <li>{item}</li>)}
-								</ul>
-							</div>
-							<div class="industry-card__detail">
-								<div class="industry-card__image">
-									<img src={industry.image} alt="" />
+			<div class="industry-stack-shell">
+				<div class="industry-stack">
+					{
+						industries.map((industry, index) => (
+							<article class="industry-card" style={`--industry-index:${index}; --panel-accent:${industry.accent}`}>
+								<div class="industry-card__summary">
+									<h3>{industry.eyebrow}</h3>
+									<div class="industry-card__icon" aria-hidden="true">
+										{
+											industry.iconLayers.map((icon) => (
+												<img src={icon} alt="" />
+											))
+										}
+									</div>
+									<ul>
+										{
+											industry.items.map((item) => (
+												<li>
+													<span>{item}</span>
+													<img src={industryListItemIcon} alt="" aria-hidden="true" />
+												</li>
+											))
+										}
+									</ul>
 								</div>
-								<div class="industry-card__body">
-									<p>{industry.copy}</p>
-									<a href="#contact" class="pill pill--blue">Read More <span aria-hidden="true">→</span></a>
+								<div class="industry-card__detail">
+									<div class="industry-card__image">
+										<img src={industry.image} alt="" />
+									</div>
+									<div class="industry-card__body">
+										<p>{industry.copy}</p>
+										<a href="#contact" class="pill pill--blue">Read More <span aria-hidden="true">→</span></a>
+									</div>
 								</div>
-							</div>
-						</article>
-					))
-				}
+							</article>
+						))
+					}
+				</div>
 			</div>
 		</section>
 
@@ -774,6 +798,19 @@ const [metoceanService, dssService, extendedService] = services;
 		object-fit: cover;
 	}
 
+	.industry-card__image {
+		overflow: hidden;
+		min-height: 0;
+		border: 1px solid #b0b0b0;
+		border-radius: 0.5rem;
+	}
+
+	.industry-card__image img {
+		width: 100%;
+		height: 100%;
+		object-position: center;
+	}
+
 	.service-card--metocean {
 		position: relative;
 		display: block;
@@ -885,44 +922,87 @@ const [metoceanService, dssService, extendedService] = services;
 		max-width: 39.25rem;
 		margin-inline: auto;
 		grid-template-columns: 1fr;
-		text-align: center;
+		text-align: left;
+		justify-items: start;
+	}
+
+	.industry-stack-shell {
+		margin-top: 1.5rem;
+		padding: 0;
+		overflow: visible;
 	}
 
 	.industry-stack {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-		margin-top: 1.5rem;
+		--industry-card-height: 37.5rem;
+		--industry-stack-offset: 1rem;
+		position: relative;
+		height: var(--industry-card-height);
+		overflow-y: auto;
+		overflow-x: hidden;
+		border-radius: 0;
+		padding-bottom: 0;
 	}
 
 	.industry-card {
+		position: sticky;
+		top: 0;
+		z-index: calc(10 + var(--industry-index));
+		height: var(--industry-card-height);
+		margin-top: calc(var(--industry-index) * var(--industry-stack-offset));
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: 0;
 		border-radius: 0.75rem;
-		overflow: hidden;
-		border: 1px solid var(--line);
+		overflow: visible;
+		box-shadow: 0 1.25rem 3rem rgba(13, 25, 43, 0.08);
 	}
 
 	.industry-card__summary {
-		padding: 1rem;
+		display: flex;
+		flex-direction: column;
+		padding: 1rem 1rem 0;
 		background: var(--panel-accent);
+		overflow: hidden;
+		border: 1px solid #b0b0b0;
+		border-radius: 0.5rem;
 	}
 
 	.industry-card__summary h3 {
 		margin: 0 0 1.5rem;
-		font-size: clamp(2rem, 4vw, 3rem);
+		font-size: clamp(2rem, 4vw, 2.75rem);
 		line-height: 1.02;
 		letter-spacing: -0.03em;
 	}
 
+	.industry-card__icon {
+		position: relative;
+		width: 3.375rem;
+		height: 3.375rem;
+		margin-bottom: 0.875rem;
+		mix-blend-mode: multiply;
+	}
+
+	.industry-card__icon img {
+		position: absolute;
+		inset: 0;
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+	}
+
 	.industry-card__summary ul {
+		flex: 1 1 auto;
 		list-style: none;
 		padding: 0;
-		margin: 0;
+		width: calc(100% + 2rem);
+		margin: 0 -1rem;
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
+		padding: 1rem;
+		background: #f3f3f3;
+		border-top: 1px solid #b0b0b0;
 	}
 
 	.industry-card__summary li {
@@ -939,21 +1019,24 @@ const [metoceanService, dssService, extendedService] = services;
 		line-height: 1.1;
 	}
 
-	.industry-card__summary li::after {
-		content: '↗';
+	.industry-card__summary li span {
+		flex: 1 1 auto;
+	}
+
+	.industry-card__summary li img {
+		flex: 0 0 auto;
 		width: 2rem;
 		height: 2rem;
-		display: inline-grid;
-		place-items: center;
 		border-radius: 999px;
-		background: rgba(255, 255, 255, 0.9);
-		font-size: 1rem;
+		object-fit: cover;
 	}
 
 	.industry-card__detail {
 		display: grid;
-		grid-template-rows: 18.75rem 1fr;
-		background: var(--surface);
+		grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+		min-height: 0;
+		gap: 0;
+		margin-left: -1px;
 	}
 
 	.industry-card__body {
@@ -961,7 +1044,13 @@ const [metoceanService, dssService, extendedService] = services;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
+		justify-content: space-between;
 		gap: 1rem;
+		min-height: 0;
+		margin-top: -1px;
+		background: #f3f3f3;
+		border: 1px solid #b0b0b0;
+		border-radius: 0.5rem;
 	}
 
 	.blog-grid {
@@ -1160,6 +1249,28 @@ const [metoceanService, dssService, extendedService] = services;
 		.industry-card,
 		.blog-grid {
 			grid-template-columns: 1fr;
+		}
+
+		.industry-stack-shell {
+			margin-top: 1.5rem;
+			padding: 0;
+			border-radius: 0;
+			overflow: visible;
+		}
+
+		.industry-stack {
+			height: auto;
+			overflow: visible;
+			border-radius: 0;
+			padding-bottom: 0;
+		}
+
+		.industry-card {
+			position: static;
+			top: auto;
+			z-index: auto;
+			height: auto;
+			box-shadow: none;
 		}
 
 		.service-grid__stack {

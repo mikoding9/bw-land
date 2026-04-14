@@ -14,6 +14,10 @@ const teamShotB = '/figma/about-team-shot-b.png';
 const teamShotC = '/figma/about-team-shot-c.png';
 const teamShotD = '/figma/about-team-shot-d.png';
 const teamShotE = '/figma/about-team-shot-e.png';
+const socialLinkedIn = '/figma/social-linkedin.svg';
+const socialYouTube = '/figma/social-youtube.svg';
+const socialInstagram = '/figma/social-instagram.svg';
+const socialX = '/figma/social-x.svg';
 const footerShape = '/figma/about-contact-shape.svg';
 
 const clientAssets = [
@@ -169,10 +173,18 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 								<h4>{card.name}</h4>
 								<p>{card.description}</p>
 								<div class="team-card__socials">
-									<a href="#contact" aria-label="LinkedIn">in</a>
-									<a href="#contact" aria-label="YouTube">yt</a>
-									<a href="#contact" aria-label="Instagram">ig</a>
-									<a href="#contact" aria-label="Twitter">x</a>
+									<a href="#contact" aria-label="LinkedIn">
+										<img src={socialLinkedIn} alt="" />
+									</a>
+									<a href="#contact" aria-label="YouTube">
+										<img src={socialYouTube} alt="" />
+									</a>
+									<a href="#contact" aria-label="Instagram">
+										<img src={socialInstagram} alt="" />
+									</a>
+									<a href="#contact" aria-label="X">
+										<img src={socialX} alt="" />
+									</a>
 								</div>
 							</div>
 						</article>
@@ -582,8 +594,19 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 	}
 
 	.team-card__socials a {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.5rem;
+		height: 1.5rem;
 		text-decoration: none;
 		color: #1d7fc5;
+	}
+
+	.team-card__socials img {
+		width: 100%;
+		height: 100%;
+		display: block;
 	}
 
 	.contact {

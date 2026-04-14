@@ -147,7 +147,7 @@ const navItems = [
 					{
 						footerSocials.map((social) => (
 							<a href={social.href} aria-label={social.label}>
-								<img src={social.icon} alt="" aria-hidden="true" />
+								<span class="site-footer__social-icon" style={`--social-icon:url(${social.icon})`} aria-hidden="true"></span>
 							</a>
 						))
 					}
@@ -438,11 +438,13 @@ const navItems = [
 		text-decoration: none;
 	}
 
-	.site-footer__socials img {
+	.site-footer__social-icon {
 		display: block;
 		width: 1.5rem;
 		height: 1.5rem;
-		filter: brightness(0) invert(1);
+		background: currentColor;
+		-webkit-mask: var(--social-icon) center / contain no-repeat;
+		mask: var(--social-icon) center / contain no-repeat;
 	}
 
 	.site-footer__company {

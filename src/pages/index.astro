@@ -2,6 +2,7 @@
 import BlogSection from '../components/BlogSection.astro';
 import Layout from '../layouts/Layout.astro';
 import ServicesSection from '../components/ServicesSection.astro';
+import { blogPostSummaries } from '../data/blog';
 import { services } from '../data/services';
 
 const heroImage = '/figma/home-hero-bg.png';
@@ -14,10 +15,6 @@ const industryIconOilOverlay = '/figma/industry-icon-oil-overlay.png';
 const industryIconPortBase = '/figma/industry-icon-port-base.png';
 const industryIconOtherOverlay = '/figma/industry-icon-other-overlay.png';
 const industryListItemIcon = '/figma/industry-list-item-icon.svg';
-const blogCardA = '/figma/blog-card-a.png';
-const blogCardB = '/figma/blog-card-b.png';
-const blogCardC = '/figma/blog-card-c.png';
-
 const industries = [
 	{
 		eyebrow: 'Oil & Gas',
@@ -68,40 +65,10 @@ const industries = [
 	},
 ];
 
-const blogPosts = [
-	{
-		tag: 'Products',
-		title: 'Get To Know the Metocean Study, Assess Extreme Weather Risk for Your Project',
-		excerpt:
-			'Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering or renewable energy project site.',
-		image: blogCardA,
-		variant: 'metocean',
-	},
-	{
-		tag: 'Projects',
-		title: 'Smarter Land Decisions Start Here: Discover the Power of Land Forecasting',
-		excerpt:
-			'In dynamic and weather-sensitive sectors such as maritime operations, energy production, and resource exploration, atmospheric conditions matter.',
-		image: blogCardB,
-		variant: 'land',
-	},
-	{
-		tag: 'Projects',
-		title: 'Navigating Disaster Resilience: Flood and Tsunami Early Warning System',
-		excerpt:
-			'PT Bhumi Warih Geohydromatics supported the development of an Early Warning System platform for floods and tsunamis in the Palu region.',
-		image: blogCardC,
-		variant: 'warning',
-	},
-	{
-		tag: 'Science and Technology',
-		title: 'The Future is Bright: Unlocking Indonesia’s Solar Potential',
-		excerpt:
-			'Geospatial analysis and financial modelling have identified hundreds of viable renewable project locations across Indonesia.',
-		image: blogCardA,
-		variant: 'solar',
-	},
-];
+const blogPosts = blogPostSummaries.map((post) => ({
+	...post,
+	href: `/blog/${post.slug}`,
+}));
 ---
 
 <Layout title="Bhumi Warih">

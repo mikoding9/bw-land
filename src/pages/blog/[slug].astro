@@ -1,0 +1,166 @@
+---
+import BlogSection from '../../components/BlogSection.astro';
+import { blogPostSummaries, getBlogPostBySlug } from '../../data/blog';
+import Layout from '../../layouts/Layout.astro';
+
+export function getStaticPaths() {
+	return blogPostSummaries.map((post) => ({
+		params: { slug: post.slug },
+		props: { post: getBlogPostBySlug(post.slug)! },
+	}));
+}
+
+const { post } = Astro.props;
+const footerShape = '/figma/blog-contact-shape.svg';
+---
+
+<Layout title={`${post.title} | Bhumi Warih`} activeNav="blog" footerShape={footerShape}>
+	<main class="article-page">
+		<section class="article-hero">
+			<div class="article-hero__inner">
+				<p class="article-hero__breadcrumb">Blog / {post.tag}</p>
+				<h1>{post.heroTitle ?? post.title}</h1>
+				<p class="article-hero__meta">{post.dateLabel}</p>
+			</div>
+		</section>
+
+		<article class="article-body">
+			<div class="article-body__copy">
+				{
+					post.bodyParagraphs.map((paragraph) => (
+						<p>{paragraph}</p>
+					))
+				}
+
+				<figure class="article-body__figure">
+					<img src={post.reportImage} alt={post.reportImageAlt} loading="lazy" />
+				</figure>
+
+				<p class="article-body__callout">
+					{post.callout.beforeLink}
+					<a href={post.callout.reportHref} target="_blank" rel="noreferrer">here</a>
+					{post.callout.middleText}
+					<a href={post.callout.serviceHref} target="_blank" rel="noreferrer">here</a>.
+				</p>
+
+				<p>{post.closingParagraph}</p>
+			</div>
+		</article>
+
+		<BlogSection
+			id="read-more"
+			posts={blogPostSummaries.map((entry) => ({ ...entry, href: `/blog/${entry.slug}` }))}
+			eyebrow=""
+			title="Read More"
+			description="Our freshest thoughts on the latest trends -- ongoing, and upcoming."
+		/>
+	</main>
+</Layout>
+
+<style>
+	.article-page {
+		background: #ffffff;
+		color: #141414;
+	}
+
+	.article-hero {
+		background: #0b3479;
+		color: #ffffff;
+		padding: 13.75rem clamp(1rem, 5.56vw, 5rem) 3rem;
+	}
+
+	.article-hero__inner {
+		width: min(100%, 52.75rem);
+	}
+
+	.article-hero__breadcrumb,
+	.article-hero__meta {
+		margin: 0;
+		font-family: 'Host Grotesk', 'Inter', sans-serif;
+	}
+
+	.article-hero__breadcrumb {
+		font-size: clamp(1.25rem, 2vw, 2rem);
+		line-height: 1.15;
+	}
+
+	.article-hero h1 {
+		margin: 1rem 0;
+		font-size: clamp(2.5rem, 5vw, 4rem);
+		line-height: 0.98;
+		letter-spacing: -0.03em;
+	}
+
+	.article-hero__meta {
+		font-size: clamp(1rem, 1.8vw, 1.5rem);
+		line-height: 1.12;
+	}
+
+	.article-body {
+		padding: 2.5rem clamp(1rem, 5.56vw, 5rem) 0;
+	}
+
+	.article-body__copy {
+		width: min(100%, 52.8125rem);
+		font-family: 'Inter', sans-serif;
+		font-size: clamp(1rem, 1.6vw, 1.5rem);
+		line-height: 1.24;
+	}
+
+	.article-body__copy p {
+		margin: 0 0 1.5rem;
+	}
+
+	.article-body__figure {
+		margin: 3rem 0 2.5rem;
+	}
+
+	.article-body__figure img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.article-body__callout {
+		margin: 0 0 2.5rem;
+		padding-left: 1.625rem;
+		border-left: 2px solid #6aa7db;
+		font-size: clamp(1.125rem, 2.2vw, 2rem);
+		line-height: 1.24;
+	}
+
+	.article-body__callout a {
+		color: inherit;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.1em;
+	}
+
+	@media (max-width: 900px) {
+		.article-hero {
+			padding-top: 9rem;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.article-hero {
+			padding-bottom: 2rem;
+		}
+
+		.article-body {
+			padding-top: 1.5rem;
+		}
+
+		.article-body__copy {
+			font-size: 1rem;
+		}
+
+		.article-body__figure {
+			margin: 2rem 0;
+		}
+
+		.article-body__callout {
+			padding-left: 1rem;
+			font-size: 1.125rem;
+		}
+	}
+</style>

@@ -5,6 +5,7 @@ type BlogPost = {
 	excerpt: string;
 	image: string;
 	variant?: string;
+	href?: string;
 };
 
 interface Props {
@@ -50,7 +51,7 @@ const {
 							<h3>{post.title}</h3>
 							<p>{post.excerpt}</p>
 						</div>
-						<a href="#contact" class="blog-card__link">Read More <span aria-hidden="true">→</span></a>
+						<a href={post.href ?? '#contact'} class="blog-card__link">Read More <span aria-hidden="true">→</span></a>
 					</div>
 				</article>
 			))

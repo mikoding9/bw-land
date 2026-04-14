@@ -1,11 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ServicesSection from '../components/ServicesSection.astro';
+import { services } from '../data/services';
 
 const heroImage = '/figma/home-hero-bg.png';
 const rigImage = '/figma/home-hero-rig.png';
-const serviceOrbitImage = '/figma/service-metocean-card.png';
-const serviceMapImage = '/figma/service-dss-card.png';
-const serviceWaveImage = '/figma/service-extended-card.png';
 const industryOilImage = '/figma/home-industry-oil.png';
 const industryPortImage = '/figma/home-industry-port.png';
 const industryOtherImage = '/figma/home-industry-other.png';
@@ -14,39 +13,9 @@ const industryIconOilOverlay = '/figma/industry-icon-oil-overlay.png';
 const industryIconPortBase = '/figma/industry-icon-port-base.png';
 const industryIconOtherOverlay = '/figma/industry-icon-other-overlay.png';
 const industryListItemIcon = '/figma/industry-list-item-icon.svg';
-const iconDroplet = '/figma/icon-droplet.svg';
-const iconEarth = '/figma/icon-earth.svg';
-const iconPeople = '/figma/icon-people.svg';
 const blogCardA = '/figma/blog-card-a.png';
 const blogCardB = '/figma/blog-card-b.png';
 const blogCardC = '/figma/blog-card-c.png';
-
-const services = [
-	{
-		slug: 'metocean',
-		title: 'Metocean Design Criteria',
-		description: 'Extreme Value Analysis. Numerical Simulation. Ocean, Climate and Weather Analysis',
-		icon: iconEarth,
-		image: serviceOrbitImage,
-		tone: 'light-blue',
-	},
-	{
-		slug: 'dss',
-		title: 'Marine Operation Decision Support System (MO-DSS)',
-		description: 'Marine Sea State Prediction. Weather Forecast. Tow Route Forecast. Weather Window.',
-		icon: iconDroplet,
-		image: serviceMapImage,
-		tone: 'mist',
-	},
-	{
-		slug: 'extended',
-		title: 'Extended Services',
-		description: 'Our team can provide customized services tailored for your specific needs in maritime industry.',
-		icon: iconPeople,
-		image: serviceWaveImage,
-		tone: 'white',
-	},
-];
 
 const industries = [
 	{
@@ -132,8 +101,6 @@ const blogPosts = [
 		variant: 'solar',
 	},
 ];
-
-const [metoceanService, dssService, extendedService] = services;
 ---
 
 <Layout title="Bhumi Warih">
@@ -176,58 +143,7 @@ const [metoceanService, dssService, extendedService] = services;
 			</div>
 		</section>
 
-		<section class="services section" id="service">
-			<div class="section__intro">
-				<div>
-					<p class="section-tag">Services</p>
-					<h2>Offshore and Coastal Navigation Decision Making</h2>
-				</div>
-				<p>
-					Make informed decisions through accurate analysis and expert guidance, for safer
-					operations, optimized performance, and cost-efficient protection of marine assets.
-				</p>
-			</div>
-
-			<div class="service-grid">
-				<div class="service-grid__stack">
-					<article class={`service-card service-card--stacked service-card--metocean service-card--${metoceanService.tone}`}>
-						<div class="service-card__copy">
-							<img class="service-card__icon" src={metoceanService.icon} alt="" />
-							<h3>{metoceanService.title}</h3>
-							<p>{metoceanService.description}</p>
-							<a href={`/service/${metoceanService.slug}`} class="pill pill--outline-dark">Read More <span aria-hidden="true">→</span></a>
-						</div>
-						<div class="service-card__media">
-							<img src={metoceanService.image} alt="" />
-						</div>
-					</article>
-
-					<article class={`service-card service-card--stacked service-card--extended service-card--${extendedService.tone}`}>
-						<div class="service-card__copy">
-							<img class="service-card__icon" src={extendedService.icon} alt="" />
-							<h3>{extendedService.title}</h3>
-							<p>{extendedService.description}</p>
-							<a href={`/service/${extendedService.slug}`} class="pill pill--outline-dark">Read More <span aria-hidden="true">→</span></a>
-						</div>
-						<div class="service-card__media">
-							<img src={extendedService.image} alt="" />
-						</div>
-					</article>
-				</div>
-
-				<article class={`service-card service-card--feature service-card--dss service-card--${dssService.tone}`}>
-					<div class="service-card__copy">
-						<img class="service-card__icon" src={dssService.icon} alt="" />
-						<h3>{dssService.title}</h3>
-						<p>{dssService.description}</p>
-						<a href={`/service/${dssService.slug}`} class="pill pill--outline-dark">Read More <span aria-hidden="true">→</span></a>
-					</div>
-					<div class="service-card__media">
-						<img src={dssService.image} alt="" />
-					</div>
-				</article>
-			</div>
-		</section>
+		<ServicesSection services={services} />
 
 		<section class="approach section">
 			<p class="section-tag section-tag--center">Approach</p>
@@ -664,125 +580,6 @@ const [metoceanService, dssService, extendedService] = services;
 		color: var(--muted);
 	}
 
-	.service-grid {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: var(--service-gap);
-		margin-top: 1.5rem;
-		align-items: stretch;
-	}
-
-	.service-grid__stack {
-		display: grid;
-		grid-template-columns: 1fr;
-		grid-template-rows: repeat(2, minmax(0, 1fr));
-		gap: var(--service-gap);
-	}
-
-	.service-card {
-		display: grid;
-		grid-template-columns: minmax(16rem, 1fr) minmax(16rem, 1fr);
-		min-height: 22.8125rem;
-		border: 1px solid var(--line);
-		border-radius: 0.75rem;
-		overflow: clip;
-		background: white;
-	}
-
-	.service-card--feature {
-		min-height: 47.5rem;
-	}
-
-	.service-card--feature .service-card__copy {
-		padding-bottom: 2rem;
-	}
-
-	.service-card--feature .service-card__media img {
-		object-position: center bottom;
-	}
-
-	.service-card--dss {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		background: #e6e7ea;
-	}
-
-	.service-card--dss .service-card__copy {
-		width: 100%;
-		padding: 1.5rem;
-		background: transparent;
-		gap: 0.8125rem;
-	}
-
-	.service-card--dss .service-card__copy h3 {
-		max-width: 100%;
-		font-size: 2.25rem;
-		font-weight: 500;
-		line-height: 1.12;
-		letter-spacing: -0.02em;
-	}
-
-	.service-card--dss .service-card__copy p {
-		max-width: 100%;
-		font-size: 1.25rem;
-		line-height: 1.2;
-	}
-
-	.service-card--dss .service-card__copy .pill {
-		margin-top: 0;
-	}
-
-	.service-card--dss .service-card__media {
-		height: 27.1875rem;
-		background: transparent;
-		overflow: hidden;
-	}
-
-	.service-card--dss .service-card__media img {
-		position: absolute;
-		left: 0;
-		top: 0.5625rem;
-		width: 28.9375rem;
-		height: auto;
-		max-width: none;
-		object-fit: contain;
-		mix-blend-mode: multiply;
-	}
-
-	.service-card--light-blue .service-card__copy {
-		background: #dbe5f7;
-	}
-
-	.service-card--mist .service-card__copy {
-		background: #e6e7ea;
-	}
-
-	.service-card--white .service-card__copy {
-		background: white;
-	}
-
-	.service-card__copy {
-		padding: var(--service-gap);
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 1rem;
-	}
-
-	.service-card__icon {
-		width: 3rem;
-		height: 3rem;
-	}
-
-	.service-card__copy h3 {
-		margin: 0;
-		font-size: 2.25rem;
-		line-height: 1.12;
-		letter-spacing: -0.02em;
-	}
-
-	.service-card__copy p,
 	.industry-card__body p,
 	.blog-card p,
 	.contact address {
@@ -792,21 +589,12 @@ const [metoceanService, dssService, extendedService] = services;
 		color: var(--ink);
 	}
 
-	.service-card__media,
-	.service-card__media img,
 	.industry-card__image,
 	.industry-card__image img {
 		width: 100%;
 		height: 100%;
 	}
 
-	.service-card__media {
-		position: relative;
-		overflow: hidden;
-		background: #edf2f6;
-	}
-
-	.service-card__media img,
 	.industry-card__image img {
 		display: block;
 		object-fit: cover;
@@ -823,113 +611,6 @@ const [metoceanService, dssService, extendedService] = services;
 		width: 100%;
 		height: 100%;
 		object-position: center;
-	}
-
-	.service-card--metocean {
-		position: relative;
-		display: block;
-		background: #dbe5f7;
-	}
-
-	.service-card--metocean .service-card__copy {
-		position: relative;
-		z-index: 1;
-		width: 50%;
-		max-width: none;
-		min-height: 100%;
-		padding: 1.5rem;
-		background: transparent;
-		gap: 0.8125rem;
-	}
-
-	.service-card--metocean .service-card__copy h3 {
-		max-width: 100%;
-		font-size: 2.25rem;
-		font-weight: 500;
-		line-height: 1.12;
-		letter-spacing: -0.02em;
-	}
-
-	.service-card--metocean .service-card__copy p {
-		max-width: 100%;
-		font-size: 1.25rem;
-		line-height: 1.2;
-	}
-
-	.service-card--metocean .service-card__copy .pill {
-		margin-top: 0.5rem;
-	}
-
-	.service-card--metocean .service-card__media {
-		position: absolute;
-		inset: 0 0 0 auto;
-		width: 51%;
-		background: transparent;
-		overflow: visible;
-	}
-
-	.service-card--metocean .service-card__media img {
-		position: absolute;
-		top: -0.125rem;
-		right: -2.125rem;
-		width: 18.5rem;
-		height: auto;
-		max-width: none;
-		object-fit: contain;
-	}
-
-	.service-card--extended {
-		position: relative;
-		display: block;
-		background: rgba(0, 161, 220, 0.08);
-	}
-
-	.service-card--extended .service-card__copy {
-		position: relative;
-		z-index: 1;
-		width: 50%;
-		max-width: none;
-		min-height: 100%;
-		padding: 1.5rem;
-		background: transparent;
-		gap: 0.8125rem;
-	}
-
-	.service-card--extended .service-card__copy h3 {
-		max-width: 100%;
-		font-size: 2.25rem;
-		font-weight: 500;
-		line-height: 1.12;
-		letter-spacing: -0.02em;
-	}
-
-	.service-card--extended .service-card__copy p {
-		max-width: 100%;
-		font-size: 1.25rem;
-		line-height: 1.2;
-	}
-
-	.service-card--extended .service-card__copy .pill {
-		margin-top: 0;
-	}
-
-	.service-card--extended .service-card__media {
-		position: absolute;
-		inset: 0 0 0 auto;
-		width: 50%;
-		background: transparent;
-		overflow: visible;
-		mix-blend-mode: multiply;
-	}
-
-	.service-card--extended .service-card__media img {
-		position: absolute;
-		right: -0.875rem;
-		bottom: -0.25rem;
-		width: 18.75rem;
-		height: auto;
-		max-width: none;
-		object-fit: contain;
 	}
 
 	.approach {
@@ -1407,7 +1088,6 @@ const [metoceanService, dssService, extendedService] = services;
 		.contact__inner,
 		.footer,
 		.about-gap__copy,
-		.service-grid,
 		.industry-card,
 		.blog-grid {
 			grid-template-columns: 1fr;
@@ -1435,10 +1115,6 @@ const [metoceanService, dssService, extendedService] = services;
 			box-shadow: none;
 		}
 
-		.service-grid__stack {
-			grid-template-rows: auto;
-		}
-
 		.about-gap__aside {
 			padding-top: 0;
 			gap: 2rem;
@@ -1451,13 +1127,6 @@ const [metoceanService, dssService, extendedService] = services;
 
 		.hero__glossary {
 			justify-self: start;
-		}
-
-		.service-card,
-		.service-card--feature {
-			grid-column: auto;
-			grid-template-columns: 1fr;
-			min-height: auto;
 		}
 
 		.industry-card__detail {
@@ -1511,7 +1180,6 @@ const [metoceanService, dssService, extendedService] = services;
 			padding-bottom: 3rem;
 		}
 
-		.service-card__copy h3,
 		.blog-card h3 {
 			font-size: 1.75rem;
 		}

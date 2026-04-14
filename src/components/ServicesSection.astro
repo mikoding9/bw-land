@@ -1,0 +1,388 @@
+---
+import type { ServiceItem } from '../data/services';
+
+interface Props {
+	id?: string;
+	eyebrow?: string;
+	title?: string;
+	description?: string;
+	services: ServiceItem[];
+}
+
+const {
+	id = 'service',
+	eyebrow = 'Services',
+	title = 'Offshore and Coastal Navigation Decision Making',
+	description = 'Make informed decisions through accurate analysis and expert guidance, for safer operations, optimized performance, and cost-efficient protection of marine assets.',
+	services,
+} = Astro.props as Props;
+
+const featuredService = services.find((service) => service.slug === 'dss') ?? services[1] ?? services[0];
+const stackedServices = services.filter((service) => service.slug !== featuredService.slug);
+---
+
+<section class="services-section" id={id}>
+	<div class="services-section__intro">
+		<div>
+			<p class="services-section__tag">{eyebrow}</p>
+			<h2>{title}</h2>
+		</div>
+		<p>{description}</p>
+	</div>
+
+	<div class="services-section__grid">
+		<div class="services-section__stack">
+			{
+				stackedServices.map((service) => (
+					<article class={`services-card services-card--stacked services-card--${service.slug} services-card--${service.tone}`}>
+						<div class="services-card__copy">
+							<img class="services-card__icon" src={service.icon} alt="" />
+							<h3>{service.title}</h3>
+							<p>{service.description}</p>
+							<a href={`/service/${service.slug}`} class="services-card__link">
+								Read More <span aria-hidden="true">→</span>
+							</a>
+						</div>
+						<div class="services-card__media">
+							<img src={service.image} alt="" />
+						</div>
+					</article>
+				))
+			}
+		</div>
+
+		{
+			featuredService && (
+				<article class={`services-card services-card--feature services-card--${featuredService.slug} services-card--${featuredService.tone}`}>
+					<div class="services-card__copy">
+						<img class="services-card__icon" src={featuredService.icon} alt="" />
+						<h3>{featuredService.title}</h3>
+						<p>{featuredService.description}</p>
+						<a href={`/service/${featuredService.slug}`} class="services-card__link">
+							Read More <span aria-hidden="true">→</span>
+						</a>
+					</div>
+					<div class="services-card__media">
+						<img src={featuredService.image} alt="" />
+					</div>
+				</article>
+			)
+		}
+	</div>
+</section>
+
+<style>
+	.services-section {
+		padding: 5rem var(--page-pad, clamp(1rem, 4vw, 5rem));
+	}
+
+	.services-section__intro {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.5rem 2rem;
+		align-items: end;
+	}
+
+	.services-section__tag {
+		margin: 0 0 0.75rem;
+		font-size: 1.25rem;
+		color: var(--blue, var(--service-accent, #00a1dc));
+	}
+
+	.services-section__intro h2 {
+		margin: 0;
+		font-size: clamp(2.5rem, 4vw, 3.5rem);
+		line-height: 1.05;
+		letter-spacing: -0.03em;
+	}
+
+	.services-section__intro > p:last-child {
+		margin: 0;
+		font-size: 1.25rem;
+		line-height: 1.35;
+		color: var(--muted, var(--service-muted, #3d3d3d));
+	}
+
+	.services-section__grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--services-gap, 1.875rem);
+		margin-top: 1.5rem;
+		align-items: stretch;
+	}
+
+	.services-section__stack {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: repeat(2, minmax(0, 1fr));
+		gap: var(--services-gap, 1.875rem);
+	}
+
+	.services-card {
+		display: grid;
+		grid-template-columns: minmax(16rem, 1fr) minmax(16rem, 1fr);
+		min-height: 22.8125rem;
+		border: 1px solid var(--line, var(--service-line, #b7bcc5));
+		border-radius: 0.75rem;
+		overflow: clip;
+		background: white;
+	}
+
+	.services-card--feature {
+		min-height: 47.5rem;
+	}
+
+	.services-card--feature .services-card__copy {
+		padding-bottom: 2rem;
+	}
+
+	.services-card--feature .services-card__media img {
+		object-position: center bottom;
+	}
+
+	.services-card--dss {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		background: #e6e7ea;
+	}
+
+	.services-card--dss .services-card__copy {
+		width: 100%;
+		padding: 1.5rem;
+		background: transparent;
+		gap: 0.8125rem;
+	}
+
+	.services-card--dss .services-card__copy h3 {
+		max-width: 100%;
+		font-size: 2.25rem;
+		font-weight: 500;
+		line-height: 1.12;
+		letter-spacing: -0.02em;
+	}
+
+	.services-card--dss .services-card__copy p {
+		max-width: 100%;
+		font-size: 1.25rem;
+		line-height: 1.2;
+	}
+
+	.services-card--dss .services-card__copy .services-card__link {
+		margin-top: 0;
+	}
+
+	.services-card--dss .services-card__media {
+		height: 27.1875rem;
+		background: transparent;
+		overflow: hidden;
+	}
+
+	.services-card--dss .services-card__media img {
+		position: absolute;
+		left: 0;
+		top: 0.5625rem;
+		width: 28.9375rem;
+		height: auto;
+		max-width: none;
+		object-fit: contain;
+		mix-blend-mode: multiply;
+	}
+
+	.services-card__copy {
+		padding: var(--services-gap, 1.875rem);
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1rem;
+	}
+
+	.services-card__icon {
+		width: 3rem;
+		height: 3rem;
+	}
+
+	.services-card__copy h3 {
+		margin: 0;
+		font-size: 2.25rem;
+		line-height: 1.12;
+		letter-spacing: -0.02em;
+	}
+
+	.services-card__copy p {
+		margin: 0;
+		font-size: 1.25rem;
+		line-height: 1.35;
+		color: var(--ink, var(--service-text, #111111));
+	}
+
+	.services-card__media,
+	.services-card__media img {
+		width: 100%;
+		height: 100%;
+	}
+
+	.services-card__media {
+		position: relative;
+		overflow: hidden;
+		background: #edf2f6;
+	}
+
+	.services-card__media img {
+		display: block;
+		object-fit: cover;
+	}
+
+	.services-card__link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		min-height: 2.625rem;
+		margin-top: auto;
+		padding: 0.75rem 1rem;
+		border-radius: 999px;
+		border: 1px solid currentColor;
+		font-size: 1.125rem;
+		line-height: 1;
+		text-decoration: none;
+		white-space: nowrap;
+		color: var(--ink, var(--service-text, #111111));
+		background: transparent;
+	}
+
+	.services-card--metocean {
+		position: relative;
+		display: block;
+		background: #dbe5f7;
+	}
+
+	.services-card--metocean .services-card__copy {
+		position: relative;
+		z-index: 1;
+		width: 50%;
+		max-width: none;
+		min-height: 100%;
+		padding: 1.5rem;
+		background: transparent;
+		gap: 0.8125rem;
+	}
+
+	.services-card--metocean .services-card__copy h3 {
+		max-width: 100%;
+		font-size: 2.25rem;
+		font-weight: 500;
+		line-height: 1.12;
+		letter-spacing: -0.02em;
+	}
+
+	.services-card--metocean .services-card__copy p {
+		max-width: 100%;
+		font-size: 1.25rem;
+		line-height: 1.2;
+	}
+
+	.services-card--metocean .services-card__copy .services-card__link {
+		margin-top: 0.5rem;
+	}
+
+	.services-card--metocean .services-card__media {
+		position: absolute;
+		inset: 0 0 0 auto;
+		width: 51%;
+		background: transparent;
+		overflow: visible;
+	}
+
+	.services-card--metocean .services-card__media img {
+		position: absolute;
+		top: -0.125rem;
+		right: -2.125rem;
+		width: 18.5rem;
+		height: auto;
+		max-width: none;
+		object-fit: contain;
+	}
+
+	.services-card--extended {
+		position: relative;
+		display: block;
+		background: rgba(0, 161, 220, 0.08);
+	}
+
+	.services-card--extended .services-card__copy {
+		position: relative;
+		z-index: 1;
+		width: 50%;
+		max-width: none;
+		min-height: 100%;
+		padding: 1.5rem;
+		background: transparent;
+		gap: 0.8125rem;
+	}
+
+	.services-card--extended .services-card__copy h3 {
+		max-width: 100%;
+		font-size: 2.25rem;
+		font-weight: 500;
+		line-height: 1.12;
+		letter-spacing: -0.02em;
+	}
+
+	.services-card--extended .services-card__copy p {
+		max-width: 100%;
+		font-size: 1.25rem;
+		line-height: 1.2;
+	}
+
+	.services-card--extended .services-card__copy .services-card__link {
+		margin-top: 0;
+	}
+
+	.services-card--extended .services-card__media {
+		position: absolute;
+		inset: 0 0 0 auto;
+		width: 50%;
+		background: transparent;
+		overflow: visible;
+		mix-blend-mode: multiply;
+	}
+
+	.services-card--extended .services-card__media img {
+		position: absolute;
+		right: -0.875rem;
+		bottom: -0.25rem;
+		width: 18.75rem;
+		height: auto;
+		max-width: none;
+		object-fit: contain;
+	}
+
+	@media (max-width: 72rem) {
+		.services-section__intro,
+		.services-section__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.services-section__stack {
+			grid-template-rows: auto;
+		}
+
+		.services-card,
+		.services-card--feature {
+			grid-template-columns: 1fr;
+			min-height: auto;
+		}
+	}
+
+	@media (max-width: 40rem) {
+		.services-section {
+			padding-top: 3rem;
+			padding-bottom: 3rem;
+		}
+
+		.services-card__copy h3 {
+			font-size: 1.75rem;
+		}
+	}
+</style>

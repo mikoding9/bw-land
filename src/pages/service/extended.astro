@@ -1,4 +1,6 @@
 ---
+import ServicesSection from '../../components/ServicesSection.astro';
+import { services } from '../../data/services';
 import Layout from '../../layouts/Layout.astro';
 
 const heroShape = '/figma/service-extended-hero-wave.svg';
@@ -7,13 +9,6 @@ const iconSedimentation = '/figma/service-extended-icon-sedimentation.png';
 const iconWaterQuality = '/figma/service-extended-icon-water-quality.png';
 const iconRemoteSensing = '/figma/service-extended-icon-remote-sensing.png';
 const iconBaselineStudy = '/figma/service-extended-icon-baseline-study.png';
-const dssImage = '/figma/service-metocean-dss.png';
-const extendedImage = '/figma/service-metocean-extended.png';
-const serviceOrbitImage = '/figma/home-service-orbit.png';
-const iconDroplet = '/figma/icon-droplet.svg';
-const iconEarth = '/figma/icon-earth.svg';
-const iconPeople = '/figma/icon-people.svg';
-
 const capabilities = [
 	{
 		title: 'Sedimentation',
@@ -41,32 +36,6 @@ const capabilities = [
 	},
 ];
 
-const relatedServices = [
-	{
-		title: 'Metocean Design Criteria',
-		description: 'Extreme Value Analysis. Numerical Simulation. Ocean, Climate and Weather Analysis',
-		icon: iconEarth,
-		image: serviceOrbitImage,
-		href: '/service/metocean',
-		tone: 'light-blue',
-	},
-	{
-		title: 'Marine Operation Decision Support System (MO-DSS)',
-		description: 'Marine Sea State Prediction. Weather Forecast. Tow Route Forecast. Weather Window.',
-		icon: iconDroplet,
-		image: dssImage,
-		href: '/service/dss',
-		tone: 'mist',
-	},
-	{
-		title: 'Extended Services',
-		description: 'Our team can provide customized services tailored for your specific needs in maritime industry.',
-		icon: iconPeople,
-		image: extendedImage,
-		href: '/service/extended',
-		tone: 'white',
-	},
-];
 ---
 
 <Layout
@@ -117,36 +86,7 @@ const relatedServices = [
 			</div>
 		</section>
 
-		<section class="related-services" id="service">
-			<div class="related-services__intro">
-				<div>
-					<p class="section-tag">Services</p>
-					<h2>Offshore and Coastal Navigation Decision Making</h2>
-				</div>
-				<p>
-					Make informed decisions through accurate analysis and expert guidance, for safer
-					operations, optimized performance, and cost-efficient protection of marine assets.
-				</p>
-			</div>
-
-			<div class="service-grid">
-				{
-					relatedServices.map((service, index) => (
-						<article class={`service-card service-card--${service.tone} ${index === 1 ? 'service-card--wide' : ''}`}>
-							<div class="service-card__copy">
-								<img class="service-card__icon-main" src={service.icon} alt="" />
-								<h3>{service.title}</h3>
-								<p>{service.description}</p>
-								<a href={service.href} class="pill pill--outline-dark">Read More <span aria-hidden="true">→</span></a>
-							</div>
-							<div class="service-card__media">
-								<img src={service.image} alt="" />
-							</div>
-						</article>
-					))
-				}
-			</div>
-		</section>
+		<ServicesSection services={services} />
 	</main>
 </Layout>
 
@@ -230,8 +170,7 @@ const relatedServices = [
 		line-height: 1.25;
 	}
 
-	.service-intro,
-	.related-services {
+	.service-intro {
 		padding: 4rem var(--page-pad) 5rem;
 	}
 
@@ -305,139 +244,13 @@ const relatedServices = [
 		flex: none;
 	}
 
-	.related-services__intro {
-		display: grid;
-		grid-template-columns: minmax(0, 1fr) minmax(18rem, 39.25rem);
-		gap: 2rem;
-		margin-bottom: 2rem;
-		align-items: end;
-	}
-
-	.related-services__intro h2 {
-		margin: 0;
-		max-width: 38rem;
-		font-size: clamp(2rem, 4vw, 2.75rem);
-		line-height: 1;
-		letter-spacing: -0.04em;
-	}
-
-	.related-services__intro p {
-		margin: 0;
-		font-size: 1rem;
-		line-height: 1.45;
-		color: var(--service-muted);
-	}
-
-	.service-grid {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 1.5rem;
-	}
-
-	.service-card {
-		position: relative;
-		display: grid;
-		grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-		overflow: hidden;
-		border-radius: 0.75rem;
-		min-height: 23rem;
-	}
-
-	.service-card--wide {
-		grid-column: span 2;
-	}
-
-	.service-card--light-blue .service-card__copy {
-		background: rgba(0, 81, 255, 0.08);
-	}
-
-	.service-card--mist .service-card__copy {
-		background: #e6e7ea;
-	}
-
-	.service-card--white .service-card__copy {
-		background: rgba(0, 161, 220, 0.08);
-	}
-
-	.service-card__copy {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 0.875rem;
-		padding: 1.5rem;
-	}
-
-	.service-card__icon-main {
-		width: 3rem;
-		height: 3rem;
-	}
-
-	.service-card__copy h3 {
-		margin: 0;
-		font-size: clamp(2rem, 4vw, 2.25rem);
-		line-height: 1.05;
-	}
-
-	.service-card__copy p {
-		margin: 0;
-		max-width: 18rem;
-		font-size: 1rem;
-		line-height: 1.4;
-	}
-
-	.service-card__media {
-		position: relative;
-		overflow: hidden;
-		min-height: 19rem;
-	}
-
-	.service-card__media img {
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-
-	.pill {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		min-height: 2.625rem;
-		padding: 0.75rem 1rem;
-		border-radius: 999px;
-		font-size: 1.125rem;
-		line-height: 1;
-		text-decoration: none;
-		white-space: nowrap;
-	}
-
-	.pill--outline-dark {
-		border: 1px solid currentColor;
-		color: #101010;
-	}
-
 	@media (max-width: 72rem) {
 		.service-hero__shape-wrap {
 			width: min(62rem, 98vw);
 		}
 
-		.service-intro,
-		.related-services__intro,
-		.service-grid {
+		.service-intro {
 			grid-template-columns: 1fr;
-		}
-
-		.service-card--wide {
-			grid-column: auto;
-		}
-
-		.service-card {
-			grid-template-columns: 1fr;
-		}
-
-		.service-card__copy p {
-			max-width: none;
 		}
 	}
 
@@ -467,8 +280,7 @@ const relatedServices = [
 	}
 
 	@media (max-width: 40rem) {
-		.service-intro,
-		.related-services {
+		.service-intro {
 			padding-top: 3rem;
 			padding-bottom: 3rem;
 		}
@@ -482,9 +294,5 @@ const relatedServices = [
 			height: 2.5rem;
 		}
 
-		.service-card__media img {
-			position: static;
-			height: auto;
-		}
 	}
 </style>

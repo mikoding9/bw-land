@@ -1,10 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const heroBase = '/figma/about-hero-base.jpg';
-const heroBand = '/figma/about-hero-band.png';
-const heroGraphicA = '/figma/about-hero-graphic-a.svg';
-const heroGraphicB = '/figma/about-hero-graphic-b.svg';
+const heroBase = '/export/ship-with-ocean.jpg';
+const heroBand = '/export/ship-only.png';
+const heroGraphicA = '/export/supergraphics-1-below-ship.svg';
+const heroGraphicB = '/export/supergraphics-2-above-ship.svg';
 const serviceImage = '/figma/about-service-image.png';
 const clientLogoA = '/figma/about-client-logos-a.png';
 const clientLogoB = '/figma/about-client-logos-b.png';
@@ -47,9 +47,13 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 	<main class="about-page">
 		<section class="about-hero">
 			<div class="about-hero__bg">
-				<img class="about-hero__base" src={heroBase} alt="" />
-				<img class="about-hero__band" src={heroBand} alt="" />
+				<div class="about-hero__base-wrap">
+					<img class="about-hero__base" src={heroBase} alt="" />
+				</div>
 				<img class="about-hero__graphic about-hero__graphic--a" src={heroGraphicA} alt="" />
+				<div class="about-hero__band-wrap">
+					<img class="about-hero__band" src={heroBand} alt="" />
+				</div>
 				<img class="about-hero__graphic about-hero__graphic--b" src={heroGraphicB} alt="" />
 				<div class="about-hero__veil"></div>
 			</div>
@@ -188,6 +192,7 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 		--text: #151515;
 		--muted: #00a1dc;
 		--page-pad: clamp(1rem, 4vw, 5rem);
+		--about-page-pad: clamp(1rem, 13vw, 11.75rem);
 	}
 
 	.about-page {
@@ -201,56 +206,78 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 		padding: 2rem var(--page-pad) 3rem;
 		overflow: clip;
 		color: white;
+		background: #031422;
 	}
 
 	.about-hero__bg,
-	.about-hero__bg img,
 	.about-hero__veil {
 		position: absolute;
 		inset: 0;
 	}
 
+	.about-hero__base-wrap,
+	.about-hero__band-wrap {
+		position: absolute;
+	}
+
+	.about-hero__base-wrap {
+		inset: 0;
+		z-index: 0;
+	}
+
+	.about-hero__band-wrap {
+		inset: 0;
+		z-index: 2;
+	}
+
 	.about-hero__base,
 	.about-hero__band {
+		display: block;
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		object-position: center center;
 	}
 
 	.about-hero__band {
-		mix-blend-mode: screen;
+		object-fit: cover;
 	}
 
 	.about-hero__graphic {
+		position: absolute;
+		top: 0;
 		height: 100%;
 		width: auto;
 		max-width: none;
-		object-fit: contain;
 		mix-blend-mode: hard-light;
+		pointer-events: none;
 	}
 
 	.about-hero__graphic--a {
-		left: -0.5rem;
-		width: min(57rem, 56vw);
+		left: -0.5625rem;
+		width: min(51.6875rem, 57vw);
+		z-index: 1;
 	}
 
 	.about-hero__graphic--b {
-		left: -1rem;
-		width: min(48rem, 52vw);
+		left: -1.125rem;
+		width: min(46.5625rem, 51vw);
+		z-index: 3;
 	}
 
 	.about-hero__veil {
 		backdrop-filter: blur(5px);
 		background: rgba(217, 217, 217, 0.01);
 		opacity: 0.3;
-		inset: 5.5rem 1rem 1.5rem;
+		inset: 5.4375rem 0.875rem 1.375rem;
+		z-index: 4;
 	}
 
 	.topbar,
 	.about-hero__meta,
 	.about-hero__copy {
 		position: relative;
-		z-index: 1;
+		z-index: 5;
 	}
 
 	.topbar {
@@ -322,14 +349,16 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 		position: absolute;
 		top: 11.5rem;
 		right: clamp(2rem, 8.25vw, 7.75rem);
-		width: min(20.625rem, calc(100% - (2 * clamp(1rem, 13vw, 11.75rem))));
+		width: min(20.625rem, calc(100% - (2 * var(--about-page-pad))));
 		font-size: 1.25rem;
 		line-height: 1.35;
 		text-align: left;
 	}
 
 	.about-hero__copy {
-		margin-top: 19rem;
+		position: absolute;
+		left: var(--page-pad);
+		bottom: 3.25rem;
 		max-width: 42.875rem;
 	}
 
@@ -355,7 +384,7 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 	.service-overview,
 	.clients,
 	.team {
-		padding-inline: clamp(1rem, 13vw, 11.75rem);
+		padding-inline: var(--about-page-pad);
 	}
 
 	.about-intro {
@@ -693,6 +722,13 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 			width: min(20.625rem, 100%);
 			margin-top: 3.5rem;
 			text-align: left;
+		}
+
+		.about-hero__copy {
+			position: relative;
+			left: auto;
+			bottom: auto;
+			margin-top: 18rem;
 		}
 
 		.clients__grid {

@@ -1,4 +1,5 @@
 ---
+import BlogSection from '../components/BlogSection.astro';
 import Layout from '../layouts/Layout.astro';
 
 const heroImage = '/figma/blog-hero-image.png';
@@ -21,7 +22,7 @@ const latestPosts = [
 		excerpt:
 			'Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering, or renewable energy, project site.',
 		image: blogCardA,
-		tone: 'bright',
+		variant: 'metocean',
 	},
 	{
 		tag: 'Projects',
@@ -29,7 +30,7 @@ const latestPosts = [
 		excerpt:
 			'In dynamic and weather-sensitive sectors such as maritime operations, energy production, and resource exploration, atmospheric conditions are far more than a backdrop.',
 		image: heroImage,
-		tone: 'dark',
+		variant: 'land',
 	},
 	{
 		tag: 'Projects',
@@ -37,7 +38,7 @@ const latestPosts = [
 		excerpt:
 			'PT Bhumi Warih Geohydromatics supported the development of an Early Warning System platform for floods and tsunamis in the Palu region.',
 		image: blogCardB,
-		tone: 'mono',
+		variant: 'warning',
 	},
 	{
 		tag: 'Science and Technology',
@@ -45,7 +46,7 @@ const latestPosts = [
 		excerpt:
 			'Recent studies highlight the enormous renewable energy potential that Indonesia can harness through geospatial analysis and financial modelling.',
 		image: blogCardA,
-		tone: 'bright',
+		variant: 'solar',
 	},
 ];
 
@@ -144,30 +145,13 @@ const sections = [
 			</div>
 		</section>
 
-		<section class="latest" id="latest">
-			<div class="section-head">
-				<h2>Latest Blogs</h2>
-				<p>Our freshest thoughts on the latest trends, ongoing, and upcoming.</p>
-			</div>
-
-			<div class="latest__grid">
-				{
-					latestPosts.map((post) => (
-						<article class={`feature-card feature-card--${post.tone}`}>
-							<div class="feature-card__bg">
-								<img src={post.image} alt="" />
-							</div>
-							<div class="meta-pill">{post.tag}</div>
-							<div class="feature-card__content">
-								<h3>{post.title}</h3>
-								<p>{post.excerpt}</p>
-							</div>
-							<a href="#contact" class="pill pill--ghost pill--small">Read More <span aria-hidden="true">→</span></a>
-						</article>
-					))
-				}
-			</div>
-		</section>
+		<BlogSection
+			id="latest"
+			posts={latestPosts}
+			eyebrow=""
+			title="Latest Blogs"
+			description="Our freshest thoughts on the latest trends -- ongoing, and upcoming."
+		/>
 
 		<section class="blog-sections">
 			{
@@ -365,41 +349,14 @@ const sections = [
 		max-width: 34rem;
 	}
 
-	.latest,
 	.blog-sections {
 		padding-inline: var(--page-pad);
 	}
 
-	.latest {
-		padding-top: 3rem;
-	}
-
-	.section-head {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 1rem 2rem;
-		align-items: end;
-		margin-bottom: 1.5rem;
-	}
-
-	.section-head h2,
 	.blog-column h2 {
 		margin: 0;
 		font-size: 2rem;
 		line-height: 1.12;
-	}
-
-	.section-head p {
-		margin: 0;
-		font-size: 1rem;
-		line-height: 1.4;
-		max-width: 32rem;
-	}
-
-	.latest__grid {
-		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-		gap: 1.5rem;
 	}
 
 	.feature-card {
@@ -658,11 +615,9 @@ const sections = [
 
 	@media (max-width: 72rem) {
 		.topbar,
-		.section-head,
 		.blog-sections,
 		.contact__inner,
-		.footer,
-		.latest__grid {
+		.footer {
 			grid-template-columns: 1fr;
 		}
 

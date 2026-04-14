@@ -494,12 +494,13 @@ const [metoceanService, dssService, extendedService] = services;
 	}
 
 	.hero__meta {
-		margin-top: 3.75rem;
-		margin-left: auto;
-		max-width: 20.625rem;
+		position: absolute;
+		top: 11.5rem;
+		right: clamp(2rem, 8.25vw, 7.75rem);
+		width: min(20.625rem, calc(100% - (2 * var(--page-pad))));
 		font-size: 0.9375rem;
 		line-height: 1.6;
-		text-align: right;
+		text-align: left;
 	}
 
 	.hero__wordmark {
@@ -1384,8 +1385,11 @@ const [metoceanService, dssService, extendedService] = services;
 		}
 
 		.hero__meta {
-			margin-right: auto;
-			margin-left: 0;
+			position: relative;
+			top: auto;
+			right: auto;
+			width: min(20.625rem, 100%);
+			margin-top: 3.75rem;
 			text-align: left;
 		}
 

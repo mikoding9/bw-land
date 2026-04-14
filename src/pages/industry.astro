@@ -232,16 +232,19 @@ const industries = [
 	}
 
 	.industry-hero__meta {
-		margin-top: 3.5rem;
-		margin-left: auto;
-		max-width: 20.625rem;
+		position: absolute;
+		top: 11.4375rem;
+		right: clamp(2rem, 8.25vw, 7.75rem);
+		width: min(20.625rem, calc(100% - (2 * var(--page-pad))));
 		font-size: 1.25rem;
 		line-height: 1.35;
-		text-align: right;
+		text-align: left;
 	}
 
 	.industry-hero__copy {
-		margin-top: 5rem;
+		position: absolute;
+		left: var(--page-pad);
+		bottom: 3.25rem;
 		max-width: 42.875rem;
 	}
 
@@ -528,8 +531,19 @@ const industries = [
 		}
 
 		.industry-hero__meta {
-			margin-left: 0;
+			position: relative;
+			top: auto;
+			right: auto;
+			width: min(20.625rem, 100%);
+			margin-top: 3.5rem;
 			text-align: left;
+		}
+
+		.industry-hero__copy {
+			position: relative;
+			left: auto;
+			bottom: auto;
+			margin-top: 5rem;
 		}
 
 		.industry-hero__shape-wrap {

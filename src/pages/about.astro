@@ -319,12 +319,13 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 	}
 
 	.about-hero__meta {
-		margin-top: 3.5rem;
-		margin-left: auto;
-		max-width: 20.625rem;
+		position: absolute;
+		top: 11.5rem;
+		right: clamp(2rem, 8.25vw, 7.75rem);
+		width: min(20.625rem, calc(100% - (2 * clamp(1rem, 13vw, 11.75rem))));
 		font-size: 1.25rem;
 		line-height: 1.35;
-		text-align: right;
+		text-align: left;
 	}
 
 	.about-hero__copy {
@@ -686,7 +687,11 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 		}
 
 		.about-hero__meta {
-			margin-left: 0;
+			position: relative;
+			top: auto;
+			right: auto;
+			width: min(20.625rem, 100%);
+			margin-top: 3.5rem;
 			text-align: left;
 		}
 

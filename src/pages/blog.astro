@@ -92,7 +92,7 @@ const sections = [
 			excerpt:
 				'PT Bhumi Warih Geohydromatics supported by our expert, in collaboration with PT Telkom Indonesia and PT Metra-Net, has successfully developed an Early Warning System platform for floods and tsunamis in the Palu region.',
 			image: heroImage,
-			tone: 'dark',
+			tone: 'layered',
 		},
 		list: listPosts,
 	},
@@ -123,7 +123,7 @@ const sections = [
 			excerpt:
 				'PT Bhumi Warih Geohydromatics supported by our expert, in collaboration with PT Telkom Indonesia and PT Metra-Net, has successfully developed an Early Warning System platform for floods and tsunamis in the Palu region.',
 			image: heroImage,
-			tone: 'dark',
+			tone: 'layered',
 		},
 		list: listPosts,
 	},
@@ -158,16 +158,19 @@ const sections = [
 				sections.map((section) => (
 					<div class="blog-column">
 						<h2>{section.title}</h2>
-						<article class={`feature-card feature-card--${section.feature.tone} feature-card--large`}>
-							<div class="feature-card__bg">
-								<img src={section.feature.image} alt="" />
-							</div>
+						<article
+							class={`feature-card feature-card--${section.feature.tone} feature-card--large`}
+							style={`--feature-card-image:url(${section.feature.image})`}
+						>
 							<div class="meta-pill">{section.feature.tag}</div>
-							<div class="feature-card__content">
-								<h3>{section.feature.title}</h3>
-								<p>{section.feature.excerpt}</p>
+							<div class="feature-card__spacer" aria-hidden="true"></div>
+							<div class="feature-card__footer">
+								<div class="feature-card__content">
+									<h3>{section.feature.title}</h3>
+									<p>{section.feature.excerpt}</p>
+								</div>
+								<a href="#contact" class="pill pill--ghost pill--small">Read More <span aria-hidden="true">→</span></a>
 							</div>
-							<a href="#contact" class="pill pill--ghost pill--small">Read More <span aria-hidden="true">→</span></a>
 						</article>
 
 						<div class="list-panel">
@@ -361,71 +364,109 @@ const sections = [
 
 	.feature-card {
 		position: relative;
-		min-height: 25rem;
+		min-height: 25.125rem;
 		padding: 1rem;
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between;
+		align-items: flex-start;
+		gap: 0.75rem;
 		border-radius: 0.75rem;
 		border: 1px solid #b0b0b0;
 		overflow: clip;
 		color: white;
+		isolation: isolate;
+		background: #3b3b3b;
 	}
 
-	.feature-card--large {
-		min-height: 25rem;
-	}
-
-	.feature-card__bg,
-	.feature-card__bg img {
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-	}
-
-	.feature-card__bg img {
-		object-fit: cover;
-	}
-
-	.feature-card__bg::after {
+	.feature-card::before,
+	.feature-card::after {
 		content: '';
 		position: absolute;
 		inset: 0;
+		border-radius: inherit;
+	}
+
+	.feature-card::before {
+		background:
+			var(--feature-card-image) lightgray var(--feature-card-image-position, center) / cover no-repeat;
+		filter: var(--feature-card-filter, grayscale(1));
+		z-index: 0;
+	}
+
+	.feature-card::after {
+		background:
+			var(--feature-card-overlay-top, linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%)),
+			var(--feature-card-overlay-bottom, linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.32) 100%));
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	.feature-card--large {
+		min-height: 25.125rem;
 	}
 
 	.feature-card--bright .feature-card__bg::after {
 		background: linear-gradient(180deg, rgba(0, 161, 220, 0.1) 0%, rgba(20, 93, 133, 0.9) 78%);
 	}
 
-	.feature-card--dark .feature-card__bg::after {
-		background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.48) 100%);
+	.feature-card--bright {
+		--feature-card-filter: grayscale(1);
+		--feature-card-overlay-bottom: linear-gradient(180deg, rgba(0, 161, 220, 0.1) 0%, rgba(20, 93, 133, 0.9) 78%);
 	}
 
-	.feature-card--mono .feature-card__bg::after {
-		background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.4) 100%);
+	.feature-card--dark,
+	.feature-card--mono {
+		--feature-card-filter: grayscale(1);
+		--feature-card-overlay-bottom: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.32) 100%);
 	}
 
-	.feature-card--mono .feature-card__bg img {
-		filter: grayscale(1);
+	.feature-card--layered {
+		--feature-card-filter: none;
+		--feature-card-overlay-top: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.12) 100%);
+		--feature-card-overlay-bottom: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.32) 100%);
+		--feature-card-image-position: center 42%;
 	}
 
 	.feature-card > * {
 		position: relative;
-		z-index: 1;
+		z-index: 2;
+	}
+
+	.feature-card .meta-pill {
+		padding: 0.375rem 0.5rem;
+		border-color: rgba(255, 255, 255, 1);
+		background: transparent;
+		font-size: 0.625rem;
+		line-height: 1;
+		letter-spacing: -0.01em;
+	}
+
+	.feature-card__spacer {
+		flex: 1 1 auto;
+		width: 100%;
+		min-height: 0;
+	}
+
+	.feature-card__footer {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		width: 100%;
 	}
 
 	.feature-card__content {
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
+		width: 100%;
 	}
 
 	.feature-card__content h3,
 	.list-item h3 {
 		margin: 0;
-		font-size: 1.25rem;
+		font-size: 2rem;
 		line-height: 1.12;
+		letter-spacing: -0.02em;
 	}
 
 	.feature-card__content p,
@@ -433,7 +474,14 @@ const sections = [
 	.contact address {
 		margin: 0;
 		font-size: 0.875rem;
-		line-height: 1.4;
+		line-height: 1.12;
+	}
+
+	.feature-card .pill {
+		min-height: 2.625rem;
+		padding: 0.75rem 1rem;
+		border-color: rgba(255, 255, 255, 1);
+		font-size: 1.125rem;
 	}
 
 	.blog-sections {
@@ -647,6 +695,10 @@ const sections = [
 
 		.blog-hero__content {
 			padding-top: 11rem;
+		}
+
+		.feature-card__content h3 {
+			font-size: 1.5rem;
 		}
 
 		.contact {

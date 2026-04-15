@@ -16,7 +16,7 @@ const footerShape = '/figma/blog-contact-shape.svg';
 
 <Layout title={`${post.title} | Bhumi Warih`} activeNav="blog" footerShape={footerShape}>
 	<main class="article-page">
-		<section class="article-hero">
+		<section class="article-hero" data-nav-hero>
 			<div class="article-hero__inner">
 				<p class="article-hero__breadcrumb">Blog / {post.tag}</p>
 				<h1>{post.heroTitle ?? post.title}</h1>

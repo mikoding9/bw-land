@@ -160,12 +160,30 @@ const navItems = [
 				<div class="site-footer__company">PT. Bhumi Warih Geohydromatics</div>
 			</footer>
 		</section>
+
+		<script is:inline>
+			const topbar = document.querySelector('.site-topbar');
+			const heroTrigger = document.querySelector('[data-nav-hero]');
+
+			if (topbar && heroTrigger) {
+				const updateTopbarState = () => {
+					const triggerBottom = heroTrigger.getBoundingClientRect().bottom;
+					const threshold = topbar.getBoundingClientRect().height;
+					topbar.classList.toggle('is-scrolled', triggerBottom <= threshold);
+				};
+
+				updateTopbarState();
+				window.addEventListener('scroll', updateTopbarState, { passive: true });
+				window.addEventListener('resize', updateTopbarState);
+			}
+		</script>
 	</body>
 </html>
 
 <style>
 	:global(html) {
 		scroll-behavior: smooth;
+		scroll-padding-top: 7rem;
 	}
 
 	html,
@@ -193,16 +211,40 @@ const navItems = [
 	}
 
 	.site-topbar {
-		position: absolute;
+		position: fixed;
 		top: 0;
 		left: 0;
 		right: 0;
-		z-index: 30;
+		z-index: 100;
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
 		align-items: center;
 		gap: 1rem;
-		padding: 2rem clamp(1rem, 4vw, 5rem) 0;
+		padding: 1rem clamp(1rem, 4vw, 5rem);
+		background: transparent;
+		box-shadow: none;
+		isolation: isolate;
+	}
+
+	.site-topbar::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background: rgba(18, 24, 38, 0.72);
+		backdrop-filter: blur(14px);
+		-webkit-backdrop-filter: blur(14px);
+		opacity: 0;
+		transition: opacity 220ms ease;
+		pointer-events: none;
+	}
+
+	.site-topbar.is-scrolled {
+		background: transparent;
+	}
+
+	.site-topbar.is-scrolled::before {
+		opacity: 1;
 	}
 
 	.site-topbar__menu,

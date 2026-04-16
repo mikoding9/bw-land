@@ -8,6 +8,7 @@ const {
 } = Astro.props;
 
 const topNavLogo = '/figma/top-nav-logo.svg';
+const topNavLogoScrolled = '/export/menu-mid.svg';
 const footerWavePattern = '/figma/footer-wave-union.svg';
 const footerSocials = [
 	{ label: 'LinkedIn', href: '#contact', icon: '/figma/social-linkedin.svg' },
@@ -99,7 +100,13 @@ const navItems = [
 			</nav>
 
 			<a href="/" class="site-topbar__brand" aria-label="Bhumi Warih home">
-				<img class="site-brand-mark" src={topNavLogo} alt="" />
+				<img
+					class="site-brand-mark"
+					src={topNavLogo}
+					alt=""
+					data-logo-default={topNavLogo}
+					data-logo-scrolled={topNavLogoScrolled}
+				/>
 			</a>
 
 			<div class="site-topbar__actions">
@@ -164,12 +171,18 @@ const navItems = [
 		<script is:inline>
 			const topbar = document.querySelector('.site-topbar');
 			const heroTrigger = document.querySelector('[data-nav-hero]');
+			const brandMark = document.querySelector('.site-brand-mark');
 
-			if (topbar && heroTrigger) {
+			if (topbar && heroTrigger && brandMark instanceof HTMLImageElement) {
 				const updateTopbarState = () => {
 					const triggerBottom = heroTrigger.getBoundingClientRect().bottom;
 					const threshold = topbar.getBoundingClientRect().height;
-					topbar.classList.toggle('is-scrolled', triggerBottom <= threshold);
+					const isScrolled = triggerBottom <= threshold;
+					topbar.classList.toggle('is-scrolled', isScrolled);
+					brandMark.classList.toggle('is-logo-scrolled', isScrolled);
+					brandMark.src = isScrolled
+						? brandMark.dataset.logoScrolled || brandMark.src
+						: brandMark.dataset.logoDefault || brandMark.src;
 				};
 
 				updateTopbarState();
@@ -263,6 +276,7 @@ const navItems = [
 	}
 
 	.site-topbar__brand {
+		position: relative;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -275,6 +289,14 @@ const navItems = [
 		display: block;
 		width: 2.82rem;
 		height: 2.82rem;
+		object-fit: contain;
+		transition: opacity 220ms ease;
+	}
+
+	.site-brand-mark.is-logo-scrolled {
+		width: auto;
+		height: 100%;
+		max-width: 100%;
 	}
 
 	.site-pill {
@@ -290,6 +312,10 @@ const navItems = [
 		line-height: 1;
 		text-decoration: none;
 		white-space: nowrap;
+		transition:
+			color 220ms ease,
+			background-color 220ms ease,
+			border-color 220ms ease;
 	}
 
 	.site-pill--ghost {
@@ -301,6 +327,22 @@ const navItems = [
 		background: white;
 		color: #01a1dc;
 		font-weight: 600;
+	}
+
+	.site-topbar.is-scrolled .site-topbar__menu .site-pill--ghost {
+		color: #0083d5;
+		border-color: #0083d5;
+	}
+
+	.site-topbar.is-scrolled .site-topbar__menu .site-pill--ghost.is-active {
+		background: rgba(0, 131, 213, 0.12);
+		color: #0083d5;
+		border-color: #0083d5;
+	}
+
+	.site-topbar.is-scrolled .site-topbar__actions .site-pill--ghost {
+		color: #0083d5;
+		border-color: #0083d5;
 	}
 
 	.site-dropdown__trigger span {
@@ -358,6 +400,12 @@ const navItems = [
 		color: black;
 		background: white;
 		border-color: white;
+	}
+
+	.site-topbar.is-scrolled .site-topbar__actions .site-pill--solid {
+		color: white;
+		background: #0083d5;
+		border-color: #0083d5;
 	}
 
 	.layout-contact {

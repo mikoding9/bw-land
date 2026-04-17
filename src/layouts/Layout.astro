@@ -171,13 +171,17 @@ const navItems = [
 		<script is:inline>
 			const topbar = document.querySelector('.site-topbar');
 			const heroTrigger = document.querySelector('[data-nav-hero]');
+			const footerTrigger = document.querySelector('.layout-contact');
 			const brandMark = document.querySelector('.site-brand-mark');
 
-			if (topbar && heroTrigger && brandMark instanceof HTMLImageElement) {
+			if (topbar && heroTrigger && footerTrigger && brandMark instanceof HTMLImageElement) {
 				const updateTopbarState = () => {
 					const triggerBottom = heroTrigger.getBoundingClientRect().bottom;
+					const footerTop = footerTrigger.getBoundingClientRect().top;
 					const threshold = topbar.getBoundingClientRect().height;
-					const isScrolled = triggerBottom <= threshold;
+					const isBetweenHeroAndFooter =
+						triggerBottom <= threshold && footerTop > threshold;
+					const isScrolled = isBetweenHeroAndFooter;
 					topbar.classList.toggle('is-scrolled', isScrolled);
 					brandMark.classList.toggle('is-logo-scrolled', isScrolled);
 					brandMark.src = isScrolled

@@ -297,6 +297,9 @@ const industries = [
 	}
 
 	.industry-row__title {
+		position: sticky;
+		top: 6.5rem;
+		align-self: start;
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
@@ -522,6 +525,10 @@ const industries = [
 		.footer,
 		.industry-row {
 			grid-template-columns: 1fr;
+		}
+
+		.industry-row__title {
+			position: static;
 		}
 
 		.topbar__menu,

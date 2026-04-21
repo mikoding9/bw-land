@@ -11,10 +11,16 @@ const topNavLogo = '/figma/top-nav-logo.svg';
 const topNavLogoScrolled = '/figma/top-nav-logo-scrolled.svg';
 const footerWavePattern = '/figma/footer-wave-union.svg';
 const footerSocials = [
-	{ label: 'LinkedIn', href: '#contact', icon: '/figma/social-linkedin.svg' },
-	{ label: 'YouTube', href: '#contact', icon: '/figma/social-youtube.svg' },
-	{ label: 'Instagram', href: '#contact', icon: '/figma/social-instagram.svg' },
-	{ label: 'X', href: '#contact', icon: '/figma/social-x.svg' },
+	{
+		label: 'Facebook',
+		href: 'https://www.facebook.com/profile.php?id=100009719311453',
+		shortLabel: 'f',
+	},
+	{
+		label: 'LinkedIn',
+		href: 'https://www.linkedin.com/company/bwgeohydromatics/posts/?feedView=all',
+		icon: '/figma/social-linkedin.svg',
+	},
 ];
 
 const navItems = [
@@ -124,8 +130,11 @@ const navItems = [
 					<p class="layout-contact__eyebrow">/Contact Us</p>
 					<h2>Planning an Offshore Project? Let&apos;s Talk About Your Metocean Needs.</h2>
 					<address>
-						Non Stop Building, Jl. Tubagus Ismail No.40 Lt. 2 Unit 7, Sekeloa, Kecamatan
-						Coblong, Kota Bandung, Jawa Barat, Indonesia 40134
+						Non Stop Building 2nd Floor Unit 7
+						<br />
+						Jl. Tubagus Ismail No.40 Bandung
+						<br />
+						40134
 					</address>
 				</div>
 
@@ -158,8 +167,14 @@ const navItems = [
 				<div class="site-footer__socials">
 					{
 						footerSocials.map((social) => (
-							<a href={social.href} aria-label={social.label}>
-								<span class="site-footer__social-icon" style={`--social-icon:url(${social.icon})`} aria-hidden="true"></span>
+							<a href={social.href} aria-label={social.label} target="_blank" rel="noreferrer">
+								{
+									social.icon ? (
+										<span class="site-footer__social-icon" style={`--social-icon:url(${social.icon})`} aria-hidden="true"></span>
+									) : (
+										<span class="site-footer__social-badge" aria-hidden="true">{social.shortLabel}</span>
+									)
+								}
 							</a>
 						))
 					}
@@ -544,6 +559,19 @@ const navItems = [
 		background: currentColor;
 		-webkit-mask: var(--social-icon) center / contain no-repeat;
 		mask: var(--social-icon) center / contain no-repeat;
+	}
+
+	.site-footer__social-badge {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.5rem;
+		height: 1.5rem;
+		font-size: 1.55rem;
+		font-weight: 700;
+		line-height: 1;
+		text-transform: lowercase;
+		transform: translateY(0.03rem);
 	}
 
 	.site-footer__company {

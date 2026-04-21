@@ -89,13 +89,14 @@ const navItems = [
 									]}
 									aria-current={activeNav === item.key ? 'page' : undefined}
 									aria-haspopup="menu"
+									data-astro-prefetch="hover"
 								>
 									{item.label} <span aria-hidden="true">▾</span>
 								</a>
 								<div class="site-dropdown__menu" role="menu" aria-label="Service links">
 									{
 										item.children.map((child) => (
-											<a href={child.href} class="site-dropdown__item" role="menuitem">
+											<a href={child.href} class="site-dropdown__item" role="menuitem" data-astro-prefetch="hover">
 												{child.label}
 											</a>
 										))
@@ -107,6 +108,7 @@ const navItems = [
 								href={item.href}
 								class:list={['site-pill', 'site-pill--ghost', activeNav === item.key && 'is-active']}
 								aria-current={activeNav === item.key ? 'page' : undefined}
+								data-astro-prefetch="hover"
 							>
 								{item.label}
 							</a>
@@ -139,7 +141,7 @@ const navItems = [
 				>
 					<span class="site-topbar__mobile-close-lines" aria-hidden="true"></span>
 				</button>
-				<a href="/" class="site-topbar__mobile-brand" aria-label="Bhumi Warih home">
+				<a href="/" class="site-topbar__mobile-brand" aria-label="Bhumi Warih home" data-astro-prefetch="tap">
 					<img class="site-topbar__mobile-brand-mark" src={mobileOverlayLogo} alt="" />
 				</a>
 				<div class="site-topbar__mobile-top-spacer" aria-hidden="true"></div>
@@ -166,7 +168,7 @@ const navItems = [
 									<div class="site-topbar__mobile-subnav-inner">
 										{
 											item.children.map((child) => (
-												<a href={child.href} class="site-topbar__mobile-sublink">
+												<a href={child.href} class="site-topbar__mobile-sublink" data-astro-prefetch="tap">
 													{child.label}
 												</a>
 											))
@@ -175,7 +177,7 @@ const navItems = [
 								</div>
 							</div>
 						) : (
-							<a href={item.href} class:list={['site-topbar__mobile-link', activeNav === item.key && 'is-active']}>
+							<a href={item.href} class:list={['site-topbar__mobile-link', activeNav === item.key && 'is-active']} data-astro-prefetch="tap">
 								{item.label}
 							</a>
 						)

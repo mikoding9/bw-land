@@ -95,7 +95,7 @@ const capabilities = [
 		--page-pad: clamp(1rem, 4vw, 5rem);
 		--service-blue: #0080cf;
 		--service-accent: #00a1dc;
-		--service-line: #d2d5db;
+		--service-line: #b0b0b0;
 		--service-text: #111111;
 		--service-muted: #3d3d3d;
 	}
@@ -177,14 +177,14 @@ const capabilities = [
 	.service-intro {
 		display: grid;
 		grid-template-columns: minmax(0, 0.84fr) minmax(0, 1fr);
-		gap: clamp(2rem, 4vw, 5rem);
+		gap: clamp(2rem, 3.5vw, 4.5rem);
 		align-items: start;
 	}
 
 	.section-tag {
 		margin: 0 0 1rem;
 		color: var(--service-accent);
-		font-size: 1rem;
+		font-size: 1.25rem;
 		line-height: 1;
 	}
 
@@ -197,28 +197,29 @@ const capabilities = [
 
 	.service-intro__lead {
 		margin: 0 0 1.25rem;
-		font-size: clamp(1.75rem, 3vw, 2rem);
+		font-size: clamp(1.85rem, 3vw, 2rem);
 		line-height: 1.12;
+		color: var(--service-text);
 	}
 
 	.service-intro__copy p:last-child {
 		margin: 0;
-		font-size: 1rem;
-		line-height: 1.45;
-		color: var(--service-muted);
+		font-size: 1.25rem;
+		line-height: 1.25;
+		color: var(--service-text);
 	}
 
 	.capability-stack {
 		display: grid;
-		gap: 0.9rem;
+		gap: 1rem;
 	}
 
 	.capability-card {
 		display: flex;
 		align-items: flex-start;
 		justify-content: space-between;
-		gap: 1rem;
-		padding: 1.4rem 1.5rem;
+		gap: 0.8125rem;
+		padding: 1.5rem;
 		border: 1px solid var(--service-line);
 		border-radius: 0.75rem;
 		background: white;
@@ -229,16 +230,17 @@ const capabilities = [
 	}
 
 	.capability-card__copy h2 {
-		margin: 0 0 0.45rem;
+		margin: 0 0 0.5rem;
 		font-size: 2rem;
-		line-height: 1.08;
+		line-height: 1.12;
+		font-weight: 700;
 	}
 
 	.capability-card__copy p {
 		margin: 0;
-		font-size: 1rem;
-		line-height: 1.4;
-		color: var(--service-muted);
+		font-size: 1.25rem;
+		line-height: 1.25;
+		color: var(--service-text);
 	}
 
 	.capability-card__icon {
@@ -294,6 +296,16 @@ const capabilities = [
 
 		.capability-card {
 			padding: 1rem;
+		}
+
+		.service-intro__copy p:last-child,
+		.capability-card__copy p {
+			font-size: 1rem;
+			line-height: 1.4;
+		}
+
+		.capability-card__copy h2 {
+			font-size: 1.5rem;
 		}
 
 		.capability-card__icon {

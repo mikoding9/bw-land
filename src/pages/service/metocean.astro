@@ -104,7 +104,7 @@ const studies = [
 		--page-pad: clamp(1rem, 4vw, 5rem);
 		--service-blue: #044ecc;
 		--service-accent: #00a1dc;
-		--service-line: #b7bcc5;
+		--service-line: #b0b0b0;
 		--service-text: #111111;
 		--service-muted: #3d3d3d;
 	}
@@ -186,14 +186,14 @@ const studies = [
 	.service-intro {
 		display: grid;
 		grid-template-columns: minmax(0, 0.86fr) minmax(0, 1fr);
-		gap: clamp(2rem, 4vw, 5rem);
+		gap: clamp(2rem, 3.5vw, 4.5rem);
 		align-items: start;
 	}
 
 	.section-tag {
 		margin: 0 0 1rem;
 		color: var(--service-accent);
-		font-size: 1rem;
+		font-size: 1.25rem;
 		line-height: 1;
 	}
 
@@ -206,21 +206,21 @@ const studies = [
 
 	.service-intro__lead {
 		margin: 0 0 1.25rem;
-		font-size: clamp(1.75rem, 3vw, 2rem);
+		font-size: clamp(1.85rem, 3vw, 2rem);
 		line-height: 1.12;
 	}
 
 	.service-intro__copy p:last-child {
 		margin: 0;
-		font-size: 1rem;
-		line-height: 1.45;
-		color: var(--service-muted);
+		font-size: 1.25rem;
+		line-height: 1.25;
+		color: var(--service-text);
 	}
 
 	.study-stack {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: 1.75rem;
+		gap: 1.5rem;
 	}
 
 	.study-card {
@@ -263,8 +263,8 @@ const studies = [
 
 	.study-card__body p {
 		margin: 0;
-		font-size: 1rem;
-		line-height: 1.45;
+		font-size: 1.25rem;
+		line-height: 1.25;
 	}
 
 	@media (max-width: 72rem) {
@@ -314,6 +314,12 @@ const studies = [
 		.service-intro {
 			padding-top: 3rem;
 			padding-bottom: 3rem;
+		}
+
+		.service-intro__copy p:last-child,
+		.study-card__body p {
+			font-size: 1rem;
+			line-height: 1.4;
 		}
 	}
 </style>

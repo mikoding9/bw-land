@@ -70,7 +70,7 @@ const solutions = [
 					parameters. As the expansion of maritime industries, reliable metocean parameters
 					information are considered a remarkable matter.
 				</p>
-				<p>
+				<p class="service-intro__body">
 					Some operational information is critically dependent on accurate metocean parameters
 					information. If we don’t have this information, when bad weather, say, a storm comes,
 					we will not have any idea what kind of decision we have to take to save our assets. A
@@ -112,7 +112,7 @@ const solutions = [
 		--page-pad: clamp(1rem, 4vw, 5rem);
 		--service-blue: #044ecc;
 		--service-accent: #00a1dc;
-		--service-line: #b7bcc5;
+		--service-line: #b0b0b0;
 		--service-text: #111111;
 		--service-muted: #3d3d3d;
 	}
@@ -195,14 +195,14 @@ const solutions = [
 	.service-intro {
 		display: grid;
 		grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr);
-		gap: clamp(2rem, 4vw, 5rem);
+		gap: clamp(2rem, 3.5vw, 4.5rem);
 		align-items: start;
 	}
 
 	.section-tag {
 		margin: 0 0 1rem;
 		color: var(--service-accent);
-		font-size: 1rem;
+		font-size: 1.25rem;
 		line-height: 1;
 	}
 
@@ -210,29 +210,35 @@ const solutions = [
 		position: sticky;
 		top: 6.5rem;
 		align-self: start;
-		max-width: 32.3125rem;
+		max-width: 32.4375rem;
 	}
 
 	.service-intro__lead {
 		margin: 0 0 1.25rem;
-		font-size: clamp(1.75rem, 3vw, 2rem);
+		font-size: clamp(1.85rem, 3vw, 2rem);
 		line-height: 1.12;
+		color: var(--service-text);
 	}
 
-	.service-intro__copy p:not(.section-tag) {
+	.service-intro__body,
+	.service-intro__kicker {
 		margin-top: 0;
 		font-size: 1rem;
 		line-height: 1.45;
 		color: var(--service-muted);
 	}
 
+	.service-intro__body {
+		margin-bottom: 1rem;
+	}
+
 	.service-intro__kicker {
-		color: var(--service-text);
+		margin-bottom: 0;
 	}
 
 	.solution-stack {
 		display: grid;
-		gap: 1.75rem;
+		gap: 1.5rem;
 	}
 
 	.solution-card {
@@ -256,7 +262,7 @@ const solutions = [
 
 	.solution-card__body {
 		display: flex;
-		gap: 1rem;
+		gap: 0.8125rem;
 		align-items: flex-start;
 		justify-content: space-between;
 		padding: 1.5rem;
@@ -267,15 +273,16 @@ const solutions = [
 	}
 
 	.solution-card__copy h2 {
-		margin: 0 0 0.45rem;
-		font-size: 1.75rem;
-		line-height: 1.08;
+		margin: 0 0 0.5rem;
+		font-size: 2rem;
+		line-height: 1.12;
+		font-weight: 700;
 	}
 
 	.solution-card__copy p {
 		margin: 0;
-		font-size: 1rem;
-		line-height: 1.45;
+		font-size: 1.25rem;
+		line-height: 1.25;
 	}
 
 	.solution-card__icon {
@@ -335,6 +342,17 @@ const solutions = [
 
 		.solution-card__body {
 			padding: 1rem;
+		}
+
+		.service-intro__body,
+		.service-intro__kicker,
+		.solution-card__copy p {
+			font-size: 1rem;
+			line-height: 1.4;
+		}
+
+		.solution-card__copy h2 {
+			font-size: 1.5rem;
 		}
 
 		.solution-card__icon {

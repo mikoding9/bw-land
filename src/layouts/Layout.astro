@@ -146,11 +146,40 @@ const navItems = [
 			</div>
 			<div class="site-topbar__mobile-nav-list">
 				{
-					navItems.map((item) => (
-						<a href={item.href} class:list={['site-topbar__mobile-link', activeNav === item.key && 'is-active']}>
-							{item.label}
-						</a>
-					))
+					navItems.map((item) =>
+						item.children ? (
+							<div class="site-topbar__mobile-item">
+								<button
+									type="button"
+									class:list={['site-topbar__mobile-link', 'site-topbar__mobile-link--toggle', activeNav === item.key && 'is-active']}
+									aria-expanded="false"
+									aria-controls={`mobile-subnav-${item.key}`}
+								>
+									<span>{item.label}</span>
+									<span class="site-topbar__mobile-link-caret" aria-hidden="true"></span>
+								</button>
+								<div
+									id={`mobile-subnav-${item.key}`}
+									class="site-topbar__mobile-subnav"
+									aria-hidden="true"
+								>
+									<div class="site-topbar__mobile-subnav-inner">
+										{
+											item.children.map((child) => (
+												<a href={child.href} class="site-topbar__mobile-sublink">
+													{child.label}
+												</a>
+											))
+										}
+									</div>
+								</div>
+							</div>
+						) : (
+							<a href={item.href} class:list={['site-topbar__mobile-link', activeNav === item.key && 'is-active']}>
+								{item.label}
+							</a>
+						)
+					)
 				}
 			</div>
 			<div class="site-topbar__mobile-actions">
@@ -279,6 +308,8 @@ const navItems = [
 			}
 
 			if (topbar && menuToggle instanceof HTMLButtonElement && mobilePanel instanceof HTMLElement) {
+				const mobileSubnavToggles = mobilePanel.querySelectorAll('.site-topbar__mobile-link--toggle');
+
 				const closeMobileNav = () => {
 					topbar.classList.remove('is-mobile-open');
 					menuToggle.setAttribute('aria-expanded', 'false');
@@ -294,6 +325,22 @@ const navItems = [
 				if (mobileClose instanceof HTMLButtonElement) {
 					mobileClose.addEventListener('click', closeMobileNav);
 				}
+
+				mobileSubnavToggles.forEach((toggle) => {
+					if (!(toggle instanceof HTMLButtonElement)) return;
+
+					toggle.addEventListener('click', () => {
+						const targetId = toggle.getAttribute('aria-controls');
+						if (!targetId) return;
+
+						const subnav = mobilePanel.querySelector(`#${targetId}`);
+						if (!(subnav instanceof HTMLElement)) return;
+
+						const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+						toggle.setAttribute('aria-expanded', String(!isOpen));
+						subnav.setAttribute('aria-hidden', String(isOpen));
+					});
+				});
 
 				mobilePanel.querySelectorAll('a').forEach((link) =>
 					link.addEventListener('click', closeMobileNav)
@@ -939,18 +986,102 @@ const navItems = [
 			text-decoration: none;
 		}
 
+		.site-topbar__mobile-item {
+			display: flex;
+			flex-direction: column;
+			gap: 0.625rem;
+		}
+
+		.site-topbar__mobile-link--toggle {
+			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			background: transparent;
+			cursor: pointer;
+		}
+
+		.site-topbar__mobile-link-caret {
+			position: absolute;
+			right: 1rem;
+			width: 0.7rem;
+			height: 0.7rem;
+			border-right: 2px solid currentColor;
+			border-bottom: 2px solid currentColor;
+			transform: translateY(-0.15rem) rotate(45deg);
+			transition: transform 160ms ease;
+		}
+
+		.site-topbar__mobile-link--toggle[aria-expanded='true'] .site-topbar__mobile-link-caret {
+			transform: translateY(0.1rem) rotate(-135deg);
+		}
+
 		.site-topbar__mobile-link.is-active {
 			background: rgba(0, 131, 213, 0.08);
 		}
 
+		.site-topbar__mobile-subnav {
+			max-height: 0;
+			overflow: hidden;
+			padding: 0 0.5rem 0 1rem;
+			opacity: 0;
+			transform: translateY(-0.35rem);
+			transition:
+				max-height 220ms ease,
+				opacity 180ms ease,
+				transform 220ms ease,
+				padding-top 220ms ease;
+		}
+
+		.site-topbar__mobile-subnav[aria-hidden='false'] {
+			max-height: 12rem;
+			padding-top: 0.2rem;
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		.site-topbar__mobile-subnav-inner {
+			display: grid;
+			gap: 0.55rem;
+		}
+
+		.site-topbar__mobile-sublink {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 0.25rem 0 0.25rem 1rem;
+			color: #0d4e7c;
+			font-size: 1rem;
+			line-height: 1.35;
+			text-decoration: none;
+		}
+
+		.site-topbar__mobile-sublink::before {
+			content: '';
+			width: 0.45rem;
+			height: 0.45rem;
+			margin-right: 0.75rem;
+			border-radius: 999px;
+			background: rgba(0, 131, 213, 0.28);
+			flex: 0 0 auto;
+		}
+
 		.site-topbar__mobile-link:hover,
 		.site-topbar__mobile-link:focus-visible,
+		.site-topbar__mobile-sublink:hover,
+		.site-topbar__mobile-sublink:focus-visible,
 		.site-topbar__mobile-cta:hover,
 		.site-topbar__mobile-cta:focus-visible,
 		.site-topbar__mobile-lang:hover,
 		.site-topbar__mobile-lang:focus-visible {
 			background: rgba(0, 131, 213, 0.08);
 			outline: none;
+		}
+
+		.site-topbar__mobile-sublink:hover,
+		.site-topbar__mobile-sublink:focus-visible {
+			color: #0083d5;
 		}
 
 		.site-topbar__mobile-actions {

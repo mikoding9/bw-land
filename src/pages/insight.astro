@@ -23,7 +23,7 @@ const latestPosts = [
 			'Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering, or renewable energy, project site.',
 		image: blogCardA,
 		variant: 'metocean',
-		href: '/blog/metocean-study-extreme-weather-risk',
+		href: '/insight/metocean-study-extreme-weather-risk',
 	},
 	{
 		tag: 'Projects',
@@ -32,7 +32,7 @@ const latestPosts = [
 			'In dynamic and weather-sensitive sectors such as maritime operations, energy production, and resource exploration, atmospheric conditions are far more than a backdrop.',
 		image: heroImage,
 		variant: 'land',
-		href: '/blog/smarter-land-decisions-start-here',
+		href: '/insight/smarter-land-decisions-start-here',
 	},
 	{
 		tag: 'Projects',
@@ -41,7 +41,7 @@ const latestPosts = [
 			'PT Bhumi Warih Geohydromatics supported the development of an Early Warning System platform for floods and tsunamis in the Palu region.',
 		image: blogCardB,
 		variant: 'warning',
-		href: '/blog/disaster-resilience-early-warning-systems',
+		href: '/insight/disaster-resilience-early-warning-systems',
 	},
 	{
 		tag: 'Science and Technology',
@@ -50,7 +50,7 @@ const latestPosts = [
 			'Recent studies highlight the enormous renewable energy potential that Indonesia can harness through geospatial analysis and financial modelling.',
 		image: blogCardA,
 		variant: 'solar',
-		href: '/blog/unlocking-indonesia-solar-potential',
+		href: '/insight/unlocking-indonesia-solar-potential',
 	},
 ];
 
@@ -60,21 +60,21 @@ const listPosts = [
 		title: 'Get To Know the Metocean Study, Assess Extreme Weather Risk for Your Project',
 		excerpt:
 			'Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering, or renewable energy, project site.',
-		href: '/blog/metocean-study-extreme-weather-risk',
+		href: '/insight/metocean-study-extreme-weather-risk',
 	},
 	{
 		tag: 'Products',
 		title: 'Get To Know the Metocean Study, Assess Extreme Weather Risk for Your Project',
 		excerpt:
 			'Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering, or renewable energy, project site.',
-		href: '/blog/metocean-study-extreme-weather-risk',
+		href: '/insight/metocean-study-extreme-weather-risk',
 	},
 	{
 		tag: 'Products',
 		title: 'Get To Know the Metocean Study, Assess Extreme Weather Risk for Your Project',
 		excerpt:
 			'Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering, or renewable energy, project site.',
-		href: '/blog/metocean-study-extreme-weather-risk',
+		href: '/insight/metocean-study-extreme-weather-risk',
 	},
 ];
 
@@ -88,7 +88,7 @@ const sections = [
 				'PT Bhumi Warih Geohydromatics supported by our expert, in collaboration with PT Telkom Indonesia and PT Metra-Net, has successfully developed an Early Warning System platform for floods and tsunamis in the Palu region.',
 			image: blogCardB,
 			tone: 'mono',
-			href: '/blog/disaster-resilience-early-warning-systems',
+			href: '/insight/disaster-resilience-early-warning-systems',
 		},
 		list: listPosts,
 	},
@@ -101,7 +101,7 @@ const sections = [
 				'PT Bhumi Warih Geohydromatics supported by our expert, in collaboration with PT Telkom Indonesia and PT Metra-Net, has successfully developed an Early Warning System platform for floods and tsunamis in the Palu region.',
 			image: heroImage,
 			tone: 'layered',
-			href: '/blog/disaster-resilience-early-warning-systems',
+			href: '/insight/disaster-resilience-early-warning-systems',
 		},
 		list: listPosts,
 	},
@@ -114,7 +114,7 @@ const sections = [
 				'PT Bhumi Warih Geohydromatics supported by our expert, in collaboration with PT Telkom Indonesia and PT Metra-Net, has successfully developed an Early Warning System platform for floods and tsunamis in the Palu region.',
 			image: blogCardB,
 			tone: 'mono',
-			href: '/blog/disaster-resilience-early-warning-systems',
+			href: '/insight/disaster-resilience-early-warning-systems',
 		},
 		list: [
 			{
@@ -122,7 +122,7 @@ const sections = [
 				title: 'Navigating Disaster Resilience: Flood and Tsunami Early Warning Systems with Machine Learning',
 				excerpt:
 					'PT Bhumi Warih Geohydromatics supported by our expert, in collaboration with PT Telkom Indonesia and PT Metra-Net.',
-				href: '/blog/disaster-resilience-early-warning-systems',
+				href: '/insight/disaster-resilience-early-warning-systems',
 			},
 		],
 	},
@@ -135,14 +135,14 @@ const sections = [
 				'PT Bhumi Warih Geohydromatics supported by our expert, in collaboration with PT Telkom Indonesia and PT Metra-Net, has successfully developed an Early Warning System platform for floods and tsunamis in the Palu region.',
 			image: heroImage,
 			tone: 'layered',
-			href: '/blog/disaster-resilience-early-warning-systems',
+			href: '/insight/disaster-resilience-early-warning-systems',
 		},
 		list: listPosts,
 	},
 ];
 ---
 
-<Layout title="Blog | Bhumi Warih" activeNav="blog" footerShape={footerShape}>
+<Layout title="Insight | Bhumi Warih" activeNav="insight" footerShape={footerShape}>
 	<main class="blog-page">
 		<section class="blog-hero" data-nav-hero>
 			<div class="blog-hero__media">
@@ -153,7 +153,7 @@ const sections = [
 				<div class="meta-pill">{featuredPost.tag}</div>
 				<h1>{featuredPost.title}</h1>
 				<p>{featuredPost.excerpt}</p>
-				<a href="/blog/metocean-study-extreme-weather-risk" class="pill pill--solid">Read <span aria-hidden="true">→</span></a>
+				<a href="/insight/metocean-study-extreme-weather-risk" class="pill pill--solid">Read <span aria-hidden="true">→</span></a>
 			</div>
 		</section>
 
@@ -161,7 +161,7 @@ const sections = [
 			id="latest"
 			posts={latestPosts}
 			eyebrow=""
-			title="Latest Blogs"
+			title="Latest Insights"
 			description="Our freshest thoughts on the latest trends -- ongoing, and upcoming."
 		/>
 

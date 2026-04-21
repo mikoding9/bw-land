@@ -143,7 +143,7 @@ export const blogPosts: BlogPostArticle[] = [
 			serviceHref: 'https://bwgeohydromatics.com/modss/',
 		},
 		closingParagraph:
-			'This makes the `/blog/{slug}` route useful immediately while leaving clear room for real article content to replace the dummy copy later.',
+			'This makes the `/insight/{slug}` route useful immediately while leaving clear room for real article content to replace the dummy copy later.',
 	},
 ];
 

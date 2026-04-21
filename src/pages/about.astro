@@ -258,9 +258,12 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 	.about-hero__graphic {
 		position: absolute;
 		top: 0;
-		height: 100%;
+		bottom: 0;
+		height: auto;
+		min-height: 100%;
 		width: auto;
 		max-width: none;
+		object-fit: cover;
 		mix-blend-mode: hard-light;
 		pointer-events: none;
 	}
@@ -784,6 +787,14 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 	@media (max-width: 40rem) {
 		.about-hero {
 			min-height: 32rem;
+		}
+
+		.about-hero__graphic--a {
+			width: max(38rem, 118vw);
+		}
+
+		.about-hero__graphic--b {
+			width: max(34rem, 108vw);
 		}
 
 		.topbar__menu {

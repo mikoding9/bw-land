@@ -219,6 +219,7 @@ const glossaryRows = [
 
 	.glossary-content__intro {
 		max-width: 28rem;
+		min-width: 0;
 	}
 
 	.glossary-content__intro h2 {
@@ -237,6 +238,7 @@ const glossaryRows = [
 
 	.glossary-card {
 		padding: 1.5rem;
+		min-width: 0;
 		border: 1px solid var(--glossary-line);
 		border-radius: 2rem;
 		background: white;
@@ -321,7 +323,9 @@ const glossaryRows = [
 	}
 
 	.glossary-table-wrap {
+		max-width: 100%;
 		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
 		border: 1px solid var(--glossary-line);
 		border-radius: 1.5rem;
 	}

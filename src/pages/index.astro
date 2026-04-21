@@ -1,15 +1,16 @@
 ---
+import { Image } from "astro:assets";
 import BlogSection from "../components/BlogSection.astro";
 import Layout from "../layouts/Layout.astro";
 import ServicesSection from "../components/ServicesSection.astro";
 import { blogPostSummaries } from "../data/blog";
 import { services } from "../data/services";
+import heroBackdropImage from "../assets/home/hero-bg.png";
+import heroRigImage from "../assets/home/hero-rig.png";
+import industryOilCardImage from "../assets/home/industry-oil.png";
+import industryPortCardImage from "../assets/home/industry-port.png";
+import industryOtherCardImage from "../assets/home/industry-other.png";
 
-const heroImage = "/figma/home-hero-bg.png";
-const rigImage = "/figma/home-hero-rig.png";
-const industryOilImage = "/figma/home-industry-oil.png";
-const industryPortImage = "/figma/home-industry-port.png";
-const industryOtherImage = "/figma/home-industry-other.png";
 const industryIconOilBase = "/figma/industry-icon-oil-base.png";
 const industryIconOilOverlay = "/figma/industry-icon-oil-overlay.png";
 const industryIconPortBase = "/figma/industry-icon-port-base.png";
@@ -20,7 +21,7 @@ const industries = [
         eyebrow: "Oil & Gas",
         slug: "metocean",
         copy: "Assist with the necessary information on atmospheric and oceanographic conditions on our client working sites. Metocean data and analysis will enable our clients’ engineers to refine plans with better cost conformity.",
-        image: industryOilImage,
+        image: industryOilCardImage,
         accent: "#cfd8ee",
         iconLayers: [industryIconOilBase, industryIconOilOverlay],
         items: [
@@ -35,7 +36,7 @@ const industries = [
         eyebrow: "Port and Harbor",
         slug: "dss",
         copy: "Develop an optimized port and harbor design that meets economic and technical viability criteria including design protection, engineering efficiency, and maintainability.",
-        image: industryPortImage,
+        image: industryPortCardImage,
         accent: "#ffffff",
         iconLayers: [industryIconPortBase],
         items: [
@@ -49,7 +50,7 @@ const industries = [
         eyebrow: "Other Maritime Industry",
         slug: "extended",
         copy: "Bring clarity to any maritime industry problem at any stage. Before planning any maritime development, we need to understand the natural environment surrounding the project location.",
-        image: industryOtherImage,
+        image: industryOtherCardImage,
         accent: "#e7ecec",
         iconLayers: [industryIconPortBase, industryIconOtherOverlay],
         items: [
@@ -72,11 +73,13 @@ const blogPosts = blogPostSummaries.map((post) => ({
     <main class="page-shell">
         <section class="hero" id="home" data-nav-hero>
             <div class="hero__backdrop">
-                <img
-                    src={heroImage}
+                <Image
+                    class="hero__backdrop-image"
+                    src={heroBackdropImage}
                     alt=""
                     loading="eager"
                     fetchpriority="high"
+                    quality={80}
                 />
             </div>
 
@@ -85,7 +88,14 @@ const blogPosts = blogPostSummaries.map((post) => ({
             </div>
             <h1 class="hero__wordmark">BHUMI WARIH</h1>
             <div class="hero__rig">
-                <img src={rigImage} alt="Offshore platform" />
+                <Image
+                    class="hero__rig-image"
+                    src={heroRigImage}
+                    alt="Offshore platform"
+                    loading="eager"
+                    fetchpriority="high"
+                    quality={80}
+                />
             </div>
 
             <div class="hero__content">
@@ -203,7 +213,13 @@ const blogPosts = blogPostSummaries.map((post) => ({
                                 </div>
                                 <div class="industry-card__detail">
                                     <div class="industry-card__image">
-                                        <img src={industry.image} alt="" />
+                                        <Image
+                                            class="industry-card__img"
+                                            src={industry.image}
+                                            alt={industry.eyebrow}
+                                            loading="lazy"
+                                            quality={78}
+                                        />
                                     </div>
                                     <div class="industry-card__body">
                                         <p>{industry.copy}</p>
@@ -305,14 +321,14 @@ const blogPosts = blogPostSummaries.map((post) => ({
     }
 
     .hero__backdrop,
-    .hero__backdrop img {
+    .hero__backdrop-image {
         position: absolute;
         inset: 0;
         width: 100%;
         height: 100%;
     }
 
-    .hero__backdrop img {
+    .hero__backdrop-image {
         object-fit: cover;
     }
 
@@ -449,7 +465,7 @@ const blogPosts = blogPostSummaries.map((post) => ({
         width: min(57vw, 51rem);
     }
 
-    .hero__rig img {
+    .hero__rig-image {
         display: block;
         width: 100%;
         height: auto;
@@ -605,12 +621,12 @@ const blogPosts = blogPostSummaries.map((post) => ({
     }
 
     .industry-card__image,
-    .industry-card__image img {
+    .industry-card__img {
         width: 100%;
         height: 100%;
     }
 
-    .industry-card__image img {
+    .industry-card__img {
         display: block;
         object-fit: cover;
     }
@@ -622,7 +638,7 @@ const blogPosts = blogPostSummaries.map((post) => ({
         border-radius: 0.5rem;
     }
 
-    .industry-card__image img {
+    .industry-card__img {
         width: 100%;
         height: 100%;
         object-position: center;

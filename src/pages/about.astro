@@ -1,11 +1,12 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import aboutHeroBaseImage from '../assets/about/hero-base.jpg';
+import aboutServiceImage from '../assets/about/service-image.png';
 
-const heroBase = '/figma/about-hero-base.jpg';
 const heroBand = '/figma/about-hero-band.png';
 const heroGraphicA = '/figma/about-hero-graphic-a.svg';
 const heroGraphicB = '/figma/about-hero-graphic-b.svg';
-const serviceImage = '/figma/about-service-image.png';
 const teamShotA = '/figma/about-team-shot-a.png';
 const teamShotB = '/figma/about-team-shot-b.png';
 const teamShotC = '/figma/about-team-shot-c.png';
@@ -52,7 +53,7 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 		<section class="about-hero" data-nav-hero>
 			<div class="about-hero__bg">
 				<div class="about-hero__base-wrap">
-					<img class="about-hero__base" src={heroBase} alt="" />
+					<Image class="about-hero__base" src={aboutHeroBaseImage} alt="" loading="eager" fetchpriority="high" quality={82} />
 				</div>
 				<img class="about-hero__graphic about-hero__graphic--a" src={heroGraphicA} alt="" />
 				<div class="about-hero__band-wrap">
@@ -117,7 +118,13 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 				</p>
 			</div>
 			<div class="service-overview__media">
-				<img src={serviceImage} alt="Offshore instrument in clear water" />
+				<Image
+					class="service-overview__image"
+					src={aboutServiceImage}
+					alt="Offshore instrument in clear water"
+					loading="lazy"
+					quality={80}
+				/>
 			</div>
 		</section>
 
@@ -475,7 +482,7 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 		min-height: 32rem;
 	}
 
-	.service-overview__media img {
+	.service-overview__image {
 		width: 100%;
 		height: 100%;
 		display: block;

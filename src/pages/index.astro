@@ -11,10 +11,9 @@ import industryOilCardImage from "../assets/home/industry-oil.png";
 import industryPortCardImage from "../assets/home/industry-port.png";
 import industryOtherCardImage from "../assets/home/industry-other.png";
 
-const industryIconOilBase = "/figma/industry-icon-oil-base.png";
-const industryIconOilOverlay = "/figma/industry-icon-oil-overlay.png";
-const industryIconPortBase = "/figma/industry-icon-port-base.png";
-const industryIconOtherOverlay = "/figma/industry-icon-other-overlay.png";
+const industryIconOil = "/figma/industry-icon-oil.png";
+const industryIconPort = "/figma/industry-icon-port.png";
+const industryIconOther = "/figma/industry-icon-other.png";
 const industryListItemIcon = "/figma/industry-list-item-icon.svg";
 const industries = [
     {
@@ -23,7 +22,7 @@ const industries = [
         copy: "Assist with the necessary information on atmospheric and oceanographic conditions on our client working sites. Metocean data and analysis will enable our clients’ engineers to refine plans with better cost conformity.",
         image: industryOilCardImage,
         accent: "#cfd8ee",
-        iconLayers: [industryIconOilBase, industryIconOilOverlay],
+        icon: industryIconOil,
         items: [
             "Marine Sea State Prediction",
             "Metocean Study",
@@ -38,7 +37,7 @@ const industries = [
         copy: "Develop an optimized port and harbor design that meets economic and technical viability criteria including design protection, engineering efficiency, and maintainability.",
         image: industryPortCardImage,
         accent: "#ffffff",
-        iconLayers: [industryIconPortBase],
+        icon: industryIconPort,
         items: [
             "Navigation Safety",
             "Marine numerical simulation",
@@ -52,7 +51,7 @@ const industries = [
         copy: "Bring clarity to any maritime industry problem at any stage. Before planning any maritime development, we need to understand the natural environment surrounding the project location.",
         image: industryOtherCardImage,
         accent: "#e7ecec",
-        iconLayers: [industryIconPortBase, industryIconOtherOverlay],
+        icon: industryIconOther,
         items: [
             "Environmental impact assessments (EIA)",
             "Field observation",
@@ -194,9 +193,7 @@ const blogPosts = blogPostSummaries.map((post) => ({
                                         class="industry-card__icon"
                                         aria-hidden="true"
                                     >
-                                        {industry.iconLayers.map((icon) => (
-                                            <img src={icon} alt="" />
-                                        ))}
+                                        <img src={industry.icon} alt="" />
                                     </div>
                                     <ul>
                                         {industry.items.map((item) => (

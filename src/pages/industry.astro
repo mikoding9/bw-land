@@ -3,18 +3,17 @@ import Layout from '../layouts/Layout.astro';
 
 const heroShapes = '/figma/industry-hero-wave.svg';
 const footerShapes = '/figma/contact-shape.svg';
-const oilThumbA = '/figma/industry-thumb-oil-a.png';
-const oilThumbB = '/figma/industry-thumb-oil-b.png';
-const otherThumbA = '/figma/industry-thumb-other-a.png';
-const otherThumbB = '/figma/industry-thumb-other-b.png';
 const oilImage = '/figma/industry-oil-main.png';
 const portImage = '/figma/industry-port-main.png';
 const otherImage = '/figma/industry-other-main.png';
+const industryIconOil = '/figma/industry-icon-oil.png';
+const industryIconPort = '/figma/industry-icon-port.png';
+const industryIconOther = '/figma/industry-icon-other.png';
 
 const industries = [
 	{
 		title: 'Oil & Gas',
-		icon: [oilThumbA, oilThumbB],
+		icon: industryIconOil,
 		image: oilImage,
 		copy:
 			'BWgeohydromatics is well known in the oil & gas industry, with our team that possesses a strong knowledge of the South East Asian waters. We are able to provide an integrated service that supports the exploration of oil and gas development opportunities. The combination of our experience and skills allows us to work with our clients to understand the challenges and define the most appropriate solutions. Our team are able to assist with the necessary information on atmospheric and oceanographic conditions on our client working sites. Metocean data and analysis will enable our clients’s engineer to do their best-refined plan and with better cost conformity.',
@@ -28,7 +27,7 @@ const industries = [
 	},
 	{
 		title: 'Port & Harbor',
-		icon: [oilThumbA, oilThumbB],
+		icon: industryIconPort,
 		image: portImage,
 		copy:
 			'The primary objective of port engineers is to create safe and efficient harbor infrastructures. The design process involves technical disciplines and interaction with future users in order to define the requirements from the user’s perspective. Metocean data is an essential engineering requirement in order to develop an optimized port and harbor design that meets economic and technical viability criteria including optimizing design engineering and protection, and system maintainability. BWgeohydromatics is highly experienced in undertaking and managing data for port and harbor design. We have been entrusted to work with these great companies for the past ten years.',
@@ -41,7 +40,7 @@ const industries = [
 	},
 	{
 		title: 'Other Maritime Industry',
-		icon: [otherThumbA, otherThumbB],
+		icon: industryIconOther,
 		image: otherImage,
 		copy:
 			'BWgeohydromatics has been successful over the last decade in helping our clients to assess and align the critical elements needed in maritime industry. We can bring clarity to any maritime industry’s problem at any stage. Before planning any maritime development, we need to understand the natural environment surrounding the project location. BWgeohydromatics conduct detailed analysis using metocean data such as wind, wave, weather, and other specific engineering parameters to provide our clients with an environmental overview in the project location. This includes the analysis of potential impacts of the elements in maritime industry, so that decisions can be well-made.',
@@ -87,7 +86,7 @@ const industries = [
 						<div class="industry-row__title">
 							<h2>{industry.title}</h2>
 							<div class="industry-row__icon" aria-hidden="true">
-								{industry.icon.map((asset) => <img src={asset} alt="" />)}
+								<img src={industry.icon} alt="" />
 							</div>
 						</div>
 
@@ -317,14 +316,16 @@ const industries = [
 		position: relative;
 		width: 3.375rem;
 		height: 3.375rem;
+		mix-blend-mode: multiply;
 	}
 
 	.industry-row__icon img {
 		position: absolute;
 		inset: 0;
+		display: block;
 		width: 100%;
 		height: 100%;
-		object-fit: cover;
+		object-fit: contain;
 	}
 
 	.industry-row__content {

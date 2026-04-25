@@ -17,7 +17,7 @@ const {
 	services,
 } = Astro.props as Props;
 
-const featuredService = services.find((service) => service.slug === 'dss') ?? services[1] ?? services[0];
+const featuredService = services.find((service) => service.slug === 'metocean-dss') ?? services[1] ?? services[0];
 const stackedServices = services.filter((service) => service.slug !== featuredService.slug);
 ---
 

@@ -11,6 +11,9 @@ const topNavLogo = '/figma/top-nav-logo.svg';
 const topNavLogoScrolled = '/figma/top-nav-logo-scrolled.svg';
 const mobileOverlayLogo = '/figma/mobile-menu-logo.svg';
 const footerWavePattern = '/figma/footer-wave-union.svg';
+const directusMessagesAdminUrl = 'https://panel.braga.co.id/panel/admin/content/Messages';
+const directusMessagesApiUrl = directusMessagesAdminUrl.replace('/admin/content/', '/items/');
+const directusStaticToken = 'F7WXBm590W2sO3cpb4Cf4I_kcu4alJQ4';
 const footerSocials = [
 	{
 		label: 'Facebook',
@@ -235,22 +238,27 @@ const navItems = [
 					</address>
 				</div>
 
-				<form class="layout-contact__form">
+				<form
+					class="layout-contact__form"
+					data-contact-form
+					data-directus-endpoint={directusMessagesApiUrl}
+					data-directus-token={directusStaticToken}
+				>
 					<div class="layout-contact__grid">
 						<label>
 							<span class="sr-only">Your Name</span>
-							<input type="text" name="name" placeholder="Your Name" />
+							<input type="text" name="name" placeholder="Your Name" autocomplete="name" required />
 						</label>
 						<label>
 							<span class="sr-only">Your Email</span>
-							<input type="email" name="email" placeholder="Your Email" />
+							<input type="email" name="email" placeholder="Your Email" autocomplete="email" required />
 						</label>
 					</div>
 					<label>
 						<span class="sr-only">Your Message</span>
-						<textarea name="message" rows="6" placeholder="Tell us what you need..."></textarea>
+						<textarea name="message" rows="6" placeholder="Tell us what you need..." required></textarea>
 					</label>
-					<button type="submit" class="site-pill site-pill--solid">Send Message <span aria-hidden="true">→</span></button>
+					<button type="submit" class="site-pill site-pill--solid" data-contact-submit>Send Message <span aria-hidden="true">→</span></button>
 				</form>
 			</div>
 
@@ -280,6 +288,8 @@ const navItems = [
 			</footer>
 		</section>
 
+		<div class="site-toast-stack" aria-live="polite" aria-atomic="true" data-toast-stack></div>
+
 		<script is:inline>
 			const topbar = document.querySelector('.site-topbar');
 			const heroTrigger = document.querySelector('[data-nav-hero]');
@@ -288,6 +298,26 @@ const navItems = [
 			const menuToggle = document.querySelector('.site-topbar__menu-toggle');
 			const mobilePanel = document.querySelector('.site-topbar__mobile-panel');
 			const mobileClose = document.querySelector('.site-topbar__mobile-close');
+			const contactForm = document.querySelector('[data-contact-form]');
+			const toastStack = document.querySelector('[data-toast-stack]');
+
+			const showToast = (message, tone = 'info') => {
+				if (!(toastStack instanceof HTMLElement)) return;
+
+				const toast = document.createElement('div');
+				toast.className = `site-toast site-toast--${tone}`;
+				toast.textContent = message;
+				toastStack.appendChild(toast);
+
+				requestAnimationFrame(() => {
+					toast.dataset.visible = 'true';
+				});
+
+				window.setTimeout(() => {
+					toast.dataset.visible = 'false';
+					window.setTimeout(() => toast.remove(), 220);
+				}, 3400);
+			};
 
 			if (topbar && heroTrigger && footerTrigger && brandMark instanceof HTMLImageElement) {
 				const updateTopbarState = () => {
@@ -350,6 +380,66 @@ const navItems = [
 
 				window.addEventListener('resize', () => {
 					if (window.innerWidth > 640) closeMobileNav();
+				});
+			}
+
+			if (contactForm instanceof HTMLFormElement) {
+				const submitButton = contactForm.querySelector('[data-contact-submit]');
+				const endpoint = contactForm.dataset.directusEndpoint;
+				const token = contactForm.dataset.directusToken;
+
+				contactForm.addEventListener('submit', async (event) => {
+					event.preventDefault();
+
+					if (!endpoint || !token) {
+						showToast('Message service is not configured.', 'error');
+						return;
+					}
+
+					const formData = new FormData(contactForm);
+					const payload = {
+						name: String(formData.get('name') || '').trim(),
+						email: String(formData.get('email') || '').trim(),
+						message: String(formData.get('message') || '').trim(),
+					};
+
+					if (!payload.name || !payload.email || !payload.message) {
+						showToast('Please complete all fields before sending.', 'error');
+						return;
+					}
+
+					if (submitButton instanceof HTMLButtonElement) {
+						submitButton.disabled = true;
+						submitButton.dataset.label = submitButton.innerHTML;
+						submitButton.innerHTML = 'Sending...';
+					}
+
+					try {
+						const response = await fetch(endpoint, {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+								Authorization: `Bearer ${token}`,
+							},
+							body: JSON.stringify(payload),
+						});
+
+						if (!response.ok) {
+							const errorText = await response.text();
+							throw new Error(errorText || `Request failed with status ${response.status}`);
+						}
+
+						contactForm.reset();
+						showToast('Message sent successfully.', 'success');
+					} catch (error) {
+						console.error(error);
+						showToast('Failed to send message. Please try again.', 'error');
+					} finally {
+						if (submitButton instanceof HTMLButtonElement) {
+							submitButton.disabled = false;
+							submitButton.innerHTML = submitButton.dataset.label || 'Send Message';
+						}
+					}
 				});
 			}
 		</script>
@@ -732,6 +822,84 @@ const navItems = [
 	.layout-contact input::placeholder,
 	.layout-contact textarea::placeholder {
 		color: rgba(255, 255, 255, 0.55);
+	}
+
+	.layout-contact button[disabled] {
+		opacity: 0.72;
+		cursor: wait;
+	}
+
+	:global(.site-toast-stack) {
+		position: fixed;
+		right: 1rem;
+		bottom: 1rem;
+		z-index: 300;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		pointer-events: none;
+	}
+
+	:global(.site-toast) {
+		position: relative;
+		max-width: min(24rem, calc(100vw - 2rem));
+		padding: 1rem 1.45rem 1rem 2.15rem;
+		border-radius: 1.1rem;
+		border: 1px solid rgba(255, 255, 255, 0.22);
+		background:
+			linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08)),
+			linear-gradient(122deg, rgba(1, 161, 220, 0.92), rgba(25, 82, 210, 0.94));
+		backdrop-filter: blur(14px);
+		-webkit-backdrop-filter: blur(14px);
+		box-shadow:
+			0 1.1rem 2.6rem rgba(8, 24, 62, 0.28),
+			inset 0 1px 0 rgba(255, 255, 255, 0.18);
+		color: white;
+		font-size: 0.98rem;
+		font-weight: 500;
+		line-height: 1.4;
+		letter-spacing: -0.01em;
+		opacity: 0;
+		transform: translateY(0.5rem);
+		transition:
+			opacity 220ms ease,
+			transform 220ms ease;
+	}
+
+	:global(.site-toast)::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 0.9rem;
+		width: 0.42rem;
+		height: 0.42rem;
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.96);
+		box-shadow: 0 0 0 0.28rem rgba(255, 255, 255, 0.14);
+		transform: translateY(-50%);
+	}
+
+	:global(.site-toast[data-visible='true']) {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	:global(.site-toast--info) {
+		background:
+			linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08)),
+			linear-gradient(122deg, rgba(1, 161, 220, 0.92), rgba(25, 82, 210, 0.94));
+	}
+
+	:global(.site-toast--success) {
+		background:
+			linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.07)),
+			linear-gradient(122deg, rgba(0, 168, 142, 0.94), rgba(25, 82, 210, 0.92));
+	}
+
+	:global(.site-toast--error) {
+		background:
+			linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.07)),
+			linear-gradient(122deg, rgba(190, 73, 92, 0.94), rgba(25, 82, 210, 0.92));
 	}
 
 	.site-footer {

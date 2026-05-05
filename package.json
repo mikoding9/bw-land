@@ -8,7 +8,9 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "deploy": "pnpm build && aws s3 sync ./dist s3://bw-land --delete --region ap-southeast-1 --profile braga",
+    "deploy:s3": "aws s3 sync ./dist s3://bw-land --delete --region ap-southeast-1 --profile braga",
+    "deploy:invalidate": "aws cloudfront create-invalidation --distribution-id E3IG4E9B14OUX6 --paths '/*' --profile braga",
+    "deploy": "pnpm build && pnpm deploy:s3 && pnpm deploy:invalidate",
     "preview": "astro preview",
     "astro": "astro"
   },

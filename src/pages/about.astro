@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import aboutHeroBaseImage from '../assets/about/hero-base.jpg';
 import aboutServiceImage from '../assets/about/service-image.png';
+import { directusStaticToken, directusTeamMembersApiUrl } from '../data/directus';
 
 const heroBand = '/figma/about-hero-band.png';
 const heroGraphicA = '/figma/about-hero-graphic-a.svg';
@@ -13,9 +14,7 @@ const teamShotC = '/figma/about-team-shot-c.png';
 const teamShotD = '/figma/about-team-shot-d.png';
 const teamShotE = '/figma/about-team-shot-e.png';
 const socialLinkedIn = '/figma/social-linkedin.svg';
-const socialYouTube = '/figma/social-youtube.svg';
 const socialInstagram = '/figma/social-instagram.svg';
-const socialX = '/figma/social-x.svg';
 const footerShape = '/figma/about-contact-shape.svg';
 
 const clientAssets = [
@@ -40,12 +39,6 @@ const clientAssets = [
 ];
 
 const teamShots = [teamShotA, teamShotB, teamShotC, teamShotD, teamShotE];
-
-const teamCards = Array.from({ length: 9 }, (_, index) => ({
-	role: 'Jabatan',
-	name: 'Nama Lengkap, Gelar',
-	description: 'Description or profile (If Any)',
-}));
 ---
 
 <Layout title="BhumiWarih Profile | Bhumi Warih" activeNav="about" footerShape={footerShape}>
@@ -170,38 +163,154 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 				</p>
 			</div>
 
-			<div class="team__cards">
-				{
-					teamCards.map((card) => (
-						<article class="team-card">
-							<div class="team-card__photo"></div>
-							<div class="team-card__body">
-								<p class="team-card__role">{card.role}</p>
-								<h4>{card.name}</h4>
-								<p>{card.description}</p>
-								<div class="team-card__socials">
-									<a href="#contact" aria-label="LinkedIn">
-										<img src={socialLinkedIn} alt="" />
-									</a>
-									<a href="#contact" aria-label="YouTube">
-										<img src={socialYouTube} alt="" />
-									</a>
-									<a href="#contact" aria-label="Instagram">
-										<img src={socialInstagram} alt="" />
-									</a>
-									<a href="#contact" aria-label="X">
-										<img src={socialX} alt="" />
-									</a>
-								</div>
-							</div>
-						</article>
-					))
-				}
+			<div
+				class="team__cards"
+				data-team-cards
+				data-directus-endpoint={directusTeamMembersApiUrl}
+				data-directus-token={directusStaticToken}
+				data-linkedin-icon={socialLinkedIn}
+				data-instagram-icon={socialInstagram}
+			>
+				<p class="team__status" data-team-status>Loading team members...</p>
 			</div>
 		</section>
 
 	</main>
 </Layout>
+
+<script is:inline>
+	const teamCardsRoot = document.querySelector('[data-team-cards]');
+
+	if (teamCardsRoot instanceof HTMLElement) {
+		const endpoint = teamCardsRoot.dataset.directusEndpoint;
+		const token = teamCardsRoot.dataset.directusToken;
+		const linkedInIcon = teamCardsRoot.dataset.linkedinIcon;
+		const instagramIcon = teamCardsRoot.dataset.instagramIcon;
+
+		const buildTeamCard = (member) => {
+			const article = document.createElement('article');
+			article.className = 'team-card';
+
+			const media = document.createElement('div');
+			media.className = 'team-card__media';
+
+			if (member.photo) {
+				const image = document.createElement('img');
+				image.className = 'team-card__photo';
+				image.src = `https://panel.braga.co.id/panel/assets/${member.photo}`;
+				image.alt = member.name || 'Bhumi Warih team member';
+				image.loading = 'lazy';
+				media.appendChild(image);
+			} else {
+				const photoFallback = document.createElement('div');
+				photoFallback.className = 'team-card__photo team-card__photo--empty';
+				photoFallback.setAttribute('aria-hidden', 'true');
+				media.appendChild(photoFallback);
+			}
+
+			article.appendChild(media);
+
+			const body = document.createElement('div');
+			body.className = 'team-card__body';
+
+			const role = document.createElement('p');
+			role.className = 'team-card__role';
+			role.textContent = member.role || 'Team Member';
+			body.appendChild(role);
+
+			const name = document.createElement('h4');
+			name.textContent = member.name || 'Bhumi Warih Team';
+			body.appendChild(name);
+
+			if (member.description && member.description !== '-') {
+				const description = document.createElement('p');
+				description.textContent = member.description;
+				body.appendChild(description);
+			}
+
+			const socials = [
+				member.linkedin && linkedInIcon
+					? { href: member.linkedin, label: 'LinkedIn', icon: linkedInIcon }
+					: null,
+				member.instagram && instagramIcon
+					? { href: member.instagram, label: 'Instagram', icon: instagramIcon }
+					: null,
+			].filter(Boolean);
+
+			if (socials.length > 0) {
+				const socialsWrap = document.createElement('div');
+				socialsWrap.className = 'team-card__socials';
+
+				for (const social of socials) {
+					const anchor = document.createElement('a');
+					anchor.href = social.href;
+					anchor.setAttribute('aria-label', social.label);
+					anchor.target = '_blank';
+					anchor.rel = 'noreferrer';
+
+					const icon = document.createElement('img');
+					icon.src = social.icon;
+					icon.alt = '';
+					anchor.appendChild(icon);
+					socialsWrap.appendChild(anchor);
+				}
+
+				body.appendChild(socialsWrap);
+			}
+
+			article.appendChild(body);
+			return article;
+		};
+
+		const showStatus = (message) => {
+			teamCardsRoot.innerHTML = '';
+			const status = document.createElement('p');
+			status.className = 'team__status';
+			status.textContent = message;
+			teamCardsRoot.appendChild(status);
+		};
+
+		if (!endpoint || !token) {
+			showStatus('Team members are unavailable right now.');
+		} else {
+			const params = new URLSearchParams({
+				sort: 'sort',
+				fields: 'id,sort,date_updated,role,name,description,linkedin,instagram,photo',
+			});
+
+			fetch(`${endpoint}?${params.toString()}`, {
+				headers: {
+					Accept: 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			})
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error(`Failed to load team members: ${response.status}`);
+					}
+
+					return response.json();
+				})
+				.then((payload) => {
+					const members = Array.isArray(payload?.data) ? payload.data : [];
+					teamCardsRoot.innerHTML = '';
+
+					if (members.length === 0) {
+						showStatus('No team members found.');
+						return;
+					}
+
+					for (const member of members) {
+						teamCardsRoot.appendChild(buildTeamCard(member));
+					}
+				})
+				.catch((error) => {
+					console.error('Failed to load team members for /about:', error);
+					showStatus('Team members are unavailable right now.');
+				});
+		}
+	}
+</script>
 
 <style>
 	:global(:root) {
@@ -570,37 +679,67 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 		margin-top: 2rem;
 	}
 
-	.team-card {
+	:global(.team__status) {
+		grid-column: 1 / -1;
+		margin: 0;
+		padding: 1.25rem 1.5rem;
+		border: 1px solid var(--line);
+		border-radius: 0.75rem;
+		background: white;
+		font-size: 1rem;
+		color: #4e4e4e;
+	}
+
+	:global(.team-card) {
 		border: 1px solid var(--line);
 		border-radius: 0.75rem;
 		padding: 1.5rem;
 		background: white;
+		box-sizing: border-box;
 	}
 
-	.team-card__photo {
-		height: 17.8125rem;
+	:global(.team-card__media) {
+		position: relative;
+		width: 18rem;
+		height: 22.5rem;
+		max-width: 100%;
+		margin-inline: auto;
 		border-radius: 0.5rem;
+		overflow: hidden;
 		background: #d9d9d9;
 	}
 
-	.team-card__body {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
+	:global(.team-card__photo) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: top center;
+		display: block;
+	}
+
+	:global(.team-card__photo--empty) {
+		background:
+			radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.5), transparent 28%),
+			linear-gradient(135deg, #d9d9d9, #ececec);
+	}
+
+	:global(.team-card__body) {
 		margin-top: 1rem;
 	}
 
-	.team-card__role {
+	:global(.team-card__role) {
 		font-weight: 500;
 	}
 
-	.team-card h4 {
+	:global(.team-card h4) {
 		margin: 0;
 		font-size: 1.5rem;
 		line-height: 1.12;
 	}
 
-	.team-card__socials,
+	:global(.team-card__socials),
 	.footer__links,
 	.footer__socials {
 		display: flex;
@@ -609,7 +748,7 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 		gap: 0.75rem;
 	}
 
-	.team-card__socials a {
+	:global(.team-card__socials a) {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
@@ -619,7 +758,7 @@ const teamCards = Array.from({ length: 9 }, (_, index) => ({
 		color: #1d7fc5;
 	}
 
-	.team-card__socials img {
+	:global(.team-card__socials img) {
 		width: 100%;
 		height: 100%;
 		display: block;

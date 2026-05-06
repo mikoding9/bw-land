@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "page": "service-metocean-design-criteria",
+  "route": "/service/metocean-design-criteria",
+  "navigation_key": "service",
+  "seo": {
+    "title": "MetOcean Design Criteria | Bhumi Warih"
+  },
+  "hero": {
+    "eyebrow": "/Service",
+    "title": "MetOcean Design Criteria",
+    "meta": "Registered on CIVD System: SPDA Number 73970/EMP/2024",
+    "assets": {
+      "shape": "/figma/service-metocean-hero-wave.svg",
+      "footer_shape": "/figma/service-metocean-contact-shape.svg"
+    }
+  },
+  "sections": [
+    {
+      "id": "about",
+      "type": "intro_with_cards",
+      "eyebrow": "About",
+      "lead": "Metocean is a set of atmospheric and oceanic parameters (i.e. wind, wave, current, tide level) that are essential in ensuring the safety and reliability of various coastal and marine operations and constructions.",
+      "body": "Metocean Design Criteria is developed to deliver the probabilistic behavior of representative metocean parameters for coastal and offshore construction and structure planning and design. MODC provides engineers the data to minimize uncertainty for optimal resource allocation in order to ensure cost-efficient engineering practices in compliance with international standards. We present metocean information as a prediction of normal and extreme conditions of wind, tides, waves, and currents.",
+      "items": [
+        {
+          "title": "Metocean Atlas",
+          "description": "Metocean Atlas (map) of physical parameters (wind, wave, currents, and tides) in coastal and ocean environments.",
+          "image": "/figma/service-metocean-atlas.png",
+          "tone": "white"
+        },
+        {
+          "title": "Directional Analysis",
+          "description": "Directional analyses of long-term winds, waves, and currents in coastal and ocean environments.",
+          "image": "/figma/service-metocean-directional.png",
+          "tone": "mist"
+        },
+        {
+          "title": "Numerical Simulations",
+          "description": "Simulation of waves, currents, and tides, and conception from several scenarios that could occur on work sites.",
+          "image": "/figma/service-metocean-simulation.png",
+          "tone": "lime"
+        },
+        {
+          "title": "Extreme Values Analysis",
+          "description": "Using a vast amount of historical data, extreme values analysis gives prediction of extreme events from waves, currents, and tides on work sites.",
+          "image": "/figma/service-metocean-extreme.png",
+          "tone": "white"
+        }
+      ]
+    },
+    {
+      "id": "related_services",
+      "type": "service_cards",
+      "eyebrow": "Services",
+      "title": "Offshore and Coastal Navigation Decision Making",
+      "description": "Make informed decisions through accurate analysis and expert guidance, for safer operations, optimized performance, and cost-efficient protection of marine assets.",
+      "feature_slug": "metocean-dss",
+      "items": [
+        {
+          "slug": "metocean-design-criteria",
+          "title": "MetOcean Design Criteria",
+          "description": "Extreme Value Analysis. Numerical Simulation. Ocean, Climate and Weather Analysis",
+          "icon": "/figma/icon-earth.svg",
+          "image": "/figma/service-metocean-card.png",
+          "tone": "light-blue"
+        },
+        {
+          "slug": "metocean-dss",
+          "title": "MetOcean DSS",
+          "description": "Marine Sea State Prediction. Weather Forecast. Tow Route Forecast. Weather Window.",
+          "icon": "/figma/icon-droplet.svg",
+          "image": "/figma/service-dss-card.png",
+          "tone": "mist"
+        },
+        {
+          "slug": "extended-services",
+          "title": "Extended Services",
+          "description": "Our team can provide customized services tailored for your specific needs in maritime industry.",
+          "icon": "/figma/icon-people.svg",
+          "image": "/figma/service-extended-card.png",
+          "tone": "white"
+        }
+      ]
+    }
+  ]
+}

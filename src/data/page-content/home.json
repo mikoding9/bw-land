@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "page": "home",
+  "route": "/",
+  "navigation_key": "home",
+  "seo": {
+    "title": "Bhumi Warih"
+  },
+  "hero": {
+    "eyebrow": null,
+    "title": "BHUMI WARIH",
+    "meta": "Registered on CIVD System: SPDA Number 73970/EMP/2024",
+    "headline": "SAFE Marine Operations,\nSECURE Maritime Investments",
+    "glossary_cta": {
+      "label": "Glossary",
+      "href": "/glossary"
+    },
+    "assets": {
+      "background_image": "/src/assets/home/hero-bg.png",
+      "foreground_image": "/src/assets/home/hero-rig.png"
+    }
+  },
+  "sections": [
+    {
+      "id": "about",
+      "type": "teaser",
+      "eyebrow": "About",
+      "title": "Bhumi Warih is an Indonesian based company specializing in meteorological and oceanographic (Metocean) analysis.",
+      "body": "Our knowledge and experience have been acquired from specialized services in the maritime industry since 2010, with strong access and local understanding across South East Asia.",
+      "cta": {
+        "label": "About Us",
+        "href": "/about"
+      }
+    },
+    {
+      "id": "services",
+      "type": "service_cards",
+      "eyebrow": "Services",
+      "title": "Offshore and Coastal Navigation Decision Making",
+      "description": "Make informed decisions through accurate analysis and expert guidance, for safer operations, optimized performance, and cost-efficient protection of marine assets.",
+      "feature_slug": "metocean-dss",
+      "items": [
+        {
+          "slug": "metocean-design-criteria",
+          "title": "MetOcean Design Criteria",
+          "description": "Extreme Value Analysis. Numerical Simulation. Ocean, Climate and Weather Analysis",
+          "icon": "/figma/icon-earth.svg",
+          "image": "/figma/service-metocean-card.png",
+          "tone": "light-blue"
+        },
+        {
+          "slug": "metocean-dss",
+          "title": "MetOcean DSS",
+          "description": "Marine Sea State Prediction. Weather Forecast. Tow Route Forecast. Weather Window.",
+          "icon": "/figma/icon-droplet.svg",
+          "image": "/figma/service-dss-card.png",
+          "tone": "mist"
+        },
+        {
+          "slug": "extended-services",
+          "title": "Extended Services",
+          "description": "Our team can provide customized services tailored for your specific needs in maritime industry.",
+          "icon": "/figma/icon-people.svg",
+          "image": "/figma/service-extended-card.png",
+          "tone": "white"
+        }
+      ]
+    },
+    {
+      "id": "approach",
+      "type": "copy_block",
+      "eyebrow": "Approach",
+      "title": "Integrated Marine Intelligence & Business Insight Ecosystem",
+      "body": "The collaboration between oceanographic science, geospatial engineering, and GeoAI platforms enhances research capabilities, R&D, and predictive models for national maritime disasters and climate."
+    },
+    {
+      "id": "industries",
+      "type": "industry_cards",
+      "eyebrow": "Industries",
+      "title": "Bringing Clarity Across Industries",
+      "description": "Assess and align the critical elements needed in various maritime industry. Our team possesses a strong knowledge of South East Asian waters that brings clarity to any maritime industry’s problem at any stage of development.",
+      "items": [
+        {
+          "title": "Oil & Gas",
+          "service_slug": "metocean-design-criteria",
+          "copy": "Assist with the necessary information on atmospheric and oceanographic conditions on our client working sites. Metocean data and analysis will enable our clients’ engineers to refine plans with better cost conformity.",
+          "image": "/src/assets/home/industry-oil.png",
+          "icon": "/figma/industry-icon-oil.png",
+          "accent": "#cfd8ee",
+          "items": [
+            "Marine Sea State Prediction",
+            "Metocean Study",
+            "Pipeline Planning and Routing",
+            "Weather Window",
+            "Oil Spill Modelling"
+          ]
+        },
+        {
+          "title": "Port and Harbor",
+          "service_slug": "metocean-dss",
+          "copy": "Develop an optimized port and harbor design that meets economic and technical viability criteria including design protection, engineering efficiency, and maintainability.",
+          "image": "/src/assets/home/industry-port.png",
+          "icon": "/figma/industry-icon-port.png",
+          "accent": "#ffffff",
+          "items": [
+            "Navigation Safety",
+            "Marine numerical simulation",
+            "Environmental study at port and harbour area",
+            "Marine sea state prediction"
+          ]
+        },
+        {
+          "title": "Other Maritime Industry",
+          "service_slug": "extended-services",
+          "copy": "Bring clarity to any maritime industry problem at any stage. Before planning any maritime development, we need to understand the natural environment surrounding the project location.",
+          "image": "/src/assets/home/industry-other.png",
+          "icon": "/figma/industry-icon-other.png",
+          "accent": "#e7ecec",
+          "items": [
+            "Environmental impact assessments (EIA)",
+            "Field observation",
+            "Simulation and modelling",
+            "Geographical information system (GIS)",
+            "Meteorological and oceanographic study"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "insight",
+      "type": "deferred",
+      "status": "pending",
+      "note": "Insight page and article content will be extracted later."
+    }
+  ]
+}

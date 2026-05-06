@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "page": "glossary",
+  "route": "/glossary",
+  "navigation_key": null,
+  "seo": {
+    "title": "Metocean Glossary | Bhumi Warih"
+  },
+  "hero": {
+    "eyebrow": "/Glossary",
+    "title": "Metocean Glossary",
+    "assets": {
+      "shape": "/figma/legal-glossary-hero-wave.svg",
+      "footer_shape": "/figma/glossary-contact-shape.svg"
+    }
+  },
+  "sections": [
+    {
+      "id": "intro",
+      "type": "copy_block",
+      "title": "A trusted hydrography reference for the maritime industry.",
+      "paragraphs": [
+        "Metocean glossary is a dictionary that is authoritative reference to hydrographic related terms and definitions used in various standards, specifications and other informative referred in Maritime Industry.",
+        "In Indonesian hydrography, The International Hydrographics Dictionary (S-32) is the main standards of terms and definition used.",
+        "Use the relevance 2-3 words from the desired term to get the best result from our search feature. Example: to find HAT refering to Tidal Level, please type \"HAT Tidal Level\" in the search box."
+      ]
+    },
+    {
+      "id": "glossary_table",
+      "type": "table_listing",
+      "toolbar": {
+        "entries_label": "Menampilkan",
+        "entries_default": 20,
+        "search_placeholder": "Cari Istilah"
+      },
+      "columns": [
+        "No.",
+        "Term",
+        "Description"
+      ],
+      "rows": [
+        {
+          "no": "1",
+          "term": "Point",
+          "description": "One thirty-second of a circle, that is 11 15', reckoned clockwise from north at the horizon."
+        },
+        {
+          "no": "2",
+          "term": "Time",
+          "description": "The measurable aspect of duration. It may be expressed in relation to a reference phenomenon."
+        },
+        {
+          "no": "3",
+          "term": "Ice",
+          "description": "The solid form of water."
+        },
+        {
+          "no": "4",
+          "term": "Ria",
+          "description": "A long narrow inlet with depth gradually diminishing inward."
+        },
+        {
+          "no": "5",
+          "term": "Surf",
+          "description": "Collective term for breakers, bores, swash and backwash on a shore."
+        },
+        {
+          "no": "6",
+          "term": "Gat",
+          "description": "A natural or artificial passage or small channel through shoals, breakers, coral or mangrove areas, among banks or islands, or from lagoons or estuaries through a barrier beach."
+        },
+        {
+          "no": "7",
+          "term": "Wave",
+          "description": "A disturbance which moves through or over the surface of a medium with accompanying propagation of energy."
+        },
+        {
+          "no": "8",
+          "term": "Light",
+          "description": "A luminous or lighted aid to navigation; a distinctive indication of a danger."
+        },
+        {
+          "no": "9",
+          "term": "Earth",
+          "description": "The planet which we inhabit, third in distance from the Sun."
+        },
+        {
+          "no": "10",
+          "term": "Area",
+          "description": "In United Nations law of the sea terminology, the sea-bed and ocean floor and subsoil thereof, beyond the limits of national jurisdiction."
+        }
+      ],
+      "pagination": {
+        "summary": "Menampilkan 1 to 10 of 6,500 entries",
+        "pages": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "650"
+        ]
+      }
+    }
+  ]
+}

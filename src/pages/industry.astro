@@ -1,5 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { fetchDirectusPage } from '../data/directus';
+import industryPageFallback from '../data/page-content/industry.json';
 
 const heroShapes = '/figma/industry-hero-wave.svg';
 const footerShapes = '/figma/contact-shape.svg';
@@ -10,7 +12,7 @@ const industryIconOil = '/figma/industry-icon-oil.png';
 const industryIconPort = '/figma/industry-icon-port.png';
 const industryIconOther = '/figma/industry-icon-other.png';
 
-const industries = [
+const fallbackIndustries = [
 	{
 		title: 'Oil & Gas',
 		icon: industryIconOil,
@@ -53,9 +55,48 @@ const industries = [
 		],
 	},
 ];
+
+const fallbackPage = await fetchDirectusPage('industry').catch((error) => {
+	console.error('Failed to load industry page content from Directus:', error);
+	return null;
+});
+
+const pageRecord = fallbackPage ?? {
+	seo_title: industryPageFallback.seo.title,
+	hero_eyebrow: industryPageFallback.hero.eyebrow,
+	hero_title: industryPageFallback.hero.title,
+	hero_meta: industryPageFallback.hero.meta,
+	sections: industryPageFallback.sections,
+};
+
+const sectionById = Object.fromEntries((pageRecord.sections ?? []).map((section) => [section.id, section]));
+const introSection = sectionById.intro ?? industryPageFallback.sections.find((section) => section.id === 'intro');
+const industriesSection = sectionById.industries ?? industryPageFallback.sections.find((section) => section.id === 'industries');
+
+const iconMap = {
+	'Oil & Gas': industryIconOil,
+	'Port & Harbor': industryIconPort,
+	'Other Maritime Industry': industryIconOther,
+};
+
+const imageMap = {
+	'Oil & Gas': oilImage,
+	'Port & Harbor': portImage,
+	'Other Maritime Industry': otherImage,
+};
+
+const industries = Array.isArray(industriesSection?.items)
+	? industriesSection.items.map((industry) => ({
+			title: industry.title,
+			icon: iconMap[industry.title] ?? industryIconOil,
+			image: imageMap[industry.title] ?? oilImage,
+			copy: industry.copy,
+			items: industry.items,
+		}))
+	: fallbackIndustries;
 ---
 
-<Layout title="Industry Solutions | Bhumi Warih" activeNav="industry" footerShape={footerShapes}>
+<Layout title={pageRecord.seo_title ?? 'Industry Solutions | Bhumi Warih'} activeNav="industry" footerShape={footerShapes}>
 	<main class="industry-page">
 		<section class="industry-hero" data-nav-hero>
 			<div class="industry-hero__bg"></div>
@@ -63,20 +104,16 @@ const industries = [
 				<img class="industry-hero__shape" src={heroShapes} alt="" />
 			</div>
 
-			<div class="industry-hero__meta">Registered on CIVD System: SPDA Number 73970/EMP/2024</div>
+			<div class="industry-hero__meta">{pageRecord.hero_meta ?? industryPageFallback.hero.meta}</div>
 			<div class="industry-hero__copy">
-				<p class="section-tag section-tag--inverse">/Industry</p>
-				<h1>Industry Solutions</h1>
+				<p class="section-tag section-tag--inverse">{pageRecord.hero_eyebrow ?? industryPageFallback.hero.eyebrow}</p>
+				<h1>{pageRecord.hero_title ?? industryPageFallback.hero.title}</h1>
 			</div>
 		</section>
 
 		<section class="industry-intro">
-			<p class="section-tag">Bringing Clarity Across Industries</p>
-			<p>
-				Assess and align the critical elements needed in various maritime industry. Our team
-				possesses a strong knowledge of the South East Asian waters that brings clarity to any
-				maritime industry’s problem at any stage of development.
-			</p>
+			<p class="section-tag">{introSection.eyebrow}</p>
+			<p>{introSection.body}</p>
 		</section>
 
 		<section class="industry-list">

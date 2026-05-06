@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "page": "industry",
+  "route": "/industry",
+  "navigation_key": "industry",
+  "seo": {
+    "title": "Industry Solutions | Bhumi Warih"
+  },
+  "hero": {
+    "eyebrow": "/Industry",
+    "title": "Industry Solutions",
+    "meta": "Registered on CIVD System: SPDA Number 73970/EMP/2024",
+    "assets": {
+      "shape": "/figma/industry-hero-wave.svg",
+      "footer_shape": "/figma/contact-shape.svg"
+    }
+  },
+  "sections": [
+    {
+      "id": "intro",
+      "type": "copy_block",
+      "eyebrow": "Bringing Clarity Across Industries",
+      "body": "Assess and align the critical elements needed in various maritime industry. Our team possesses a strong knowledge of the South East Asian waters that brings clarity to any maritime industry’s problem at any stage of development."
+    },
+    {
+      "id": "industries",
+      "type": "industry_rows",
+      "items": [
+        {
+          "title": "Oil & Gas",
+          "icon": "/figma/industry-icon-oil.png",
+          "image": "/figma/industry-oil-main.png",
+          "copy": "BWgeohydromatics is well known in the oil & gas industry, with our team that possesses a strong knowledge of the South East Asian waters. We are able to provide an integrated service that supports the exploration of oil and gas development opportunities. The combination of our experience and skills allows us to work with our clients to understand the challenges and define the most appropriate solutions. Our team are able to assist with the necessary information on atmospheric and oceanographic conditions on our client working sites. Metocean data and analysis will enable our clients’s engineer to do their best-refined plan and with better cost conformity.",
+          "items": [
+            "Marine Sea State Prediction",
+            "Metocean Study",
+            "Pipeline Planning and Routing",
+            "Weather Window",
+            "Oil Spill Modelling"
+          ]
+        },
+        {
+          "title": "Port & Harbor",
+          "icon": "/figma/industry-icon-port.png",
+          "image": "/figma/industry-port-main.png",
+          "copy": "The primary objective of port engineers is to create safe and efficient harbor infrastructures. The design process involves technical disciplines and interaction with future users in order to define the requirements from the user’s perspective. Metocean data is an essential engineering requirement in order to develop an optimized port and harbor design that meets economic and technical viability criteria including optimizing design engineering and protection, and system maintainability. BWgeohydromatics is highly experienced in undertaking and managing data for port and harbor design. We have been entrusted to work with these great companies for the past ten years.",
+          "items": [
+            "Navigation Safety",
+            "Marine numerical simulation",
+            "Environmental study at port and harbour area",
+            "Marine sea state prediction"
+          ]
+        },
+        {
+          "title": "Other Maritime Industry",
+          "icon": "/figma/industry-icon-other.png",
+          "image": "/figma/industry-other-main.png",
+          "copy": "BWgeohydromatics has been successful over the last decade in helping our clients to assess and align the critical elements needed in maritime industry. We can bring clarity to any maritime industry’s problem at any stage. Before planning any maritime development, we need to understand the natural environment surrounding the project location. BWgeohydromatics conduct detailed analysis using metocean data such as wind, wave, weather, and other specific engineering parameters to provide our clients with an environmental overview in the project location. This includes the analysis of potential impacts of the elements in maritime industry, so that decisions can be well-made.",
+          "items": [
+            "Environmental impact assessments (EIA)",
+            "Field observation",
+            "Simulation and modelling",
+            "Geographical information system (GIS)",
+            "Meteorological and oceanographic study"
+          ]
+        }
+      ]
+    }
+  ]
+}

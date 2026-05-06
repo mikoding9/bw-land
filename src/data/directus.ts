@@ -25,6 +25,21 @@ type DirectusItemsResponse<T> = {
 	data: T[];
 };
 
+export type DirectusPageRecord = {
+	id: string | number;
+	page_key: string;
+	language: string;
+	schema_version: number;
+	route: string | null;
+	navigation_key: string | null;
+	seo_title: string | null;
+	hero_eyebrow: string | null;
+	hero_title: string | null;
+	hero_meta: string | null;
+	hero_assets: Record<string, unknown> | null;
+	sections: Array<Record<string, unknown>>;
+};
+
 export function getDirectusAssetUrl(assetId: string) {
 	return `${directusPanelBaseUrl}/assets/${assetId}`;
 }
@@ -46,4 +61,15 @@ export async function fetchDirectusCollection<T>(collection: string, params?: UR
 
 	const payload = (await response.json()) as DirectusItemsResponse<T>;
 	return payload.data;
+}
+
+export async function fetchDirectusPage(pageKey: string, language = 'en') {
+	const params = new URLSearchParams({
+		'filter[page_key][_eq]': pageKey,
+		'filter[language][_eq]': language,
+		limit: '1',
+	});
+
+	const records = await fetchDirectusCollection<DirectusPageRecord>('bw-pages', params);
+	return records[0] ?? null;
 }

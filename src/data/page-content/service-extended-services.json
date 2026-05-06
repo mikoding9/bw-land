@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "page": "service-extended-services",
+  "route": "/service/extended-services",
+  "navigation_key": "service",
+  "seo": {
+    "title": "Extended Services | Bhumi Warih"
+  },
+  "hero": {
+    "eyebrow": "/Service",
+    "title": "Extended Services",
+    "meta": "Registered on CIVD System: SPDA Number 73970/EMP/2024",
+    "assets": {
+      "shape": "/figma/service-extended-hero-wave.svg",
+      "footer_shape": "/figma/service-extended-contact-shape.svg"
+    }
+  },
+  "sections": [
+    {
+      "id": "about",
+      "type": "intro_with_cards",
+      "eyebrow": "About",
+      "lead": "A business in marine area frequently needs a specific service and only an expert in each particular subject is able to conduct the calculations and measurements.",
+      "body": "We provide our clients with full expert assistance throughout every step of the additional services. Our highly skilled and experienced professional consultants have helped enable hundreds of clients to achieve success and maximize performance in metocean scope or other scope related to metocean.",
+      "items": [
+        {
+          "title": "Sedimentation",
+          "description": "Sedimentation analysis is crucial for MetOcean's services, helping to predict sediment transport and deposition patterns. This aids in coastal management and infrastructure planning, ensuring environmental sustainability and operational efficiency.",
+          "icon": "/figma/service-extended-icon-sedimentation.png"
+        },
+        {
+          "title": "Marine Water Quality",
+          "description": "Marine Water Quality assessments by MetOcean leverage advanced modeling techniques, including WRF and WaveWatch III, to predict conditions like winds and currents, ensuring safe and efficient maritime operations.",
+          "icon": "/figma/service-extended-icon-water-quality.png"
+        },
+        {
+          "title": "Ocean Remote Sensing",
+          "description": "Ocean Remote Sensing at MetOcean provides precise analysis of historical climate data, focusing on marine locations. We detail winds, waves, currents, and tidal patterns to enhance maritime operations and environmental monitoring.",
+          "icon": "/figma/service-extended-icon-remote-sensing.png"
+        },
+        {
+          "title": "Environmental Baseline Study",
+          "description": "The Environmental Baseline Study by MetOcean assesses operational windows and downtime probabilities, ensuring optimal performance and minimal disruption in marine environments.",
+          "icon": "/figma/service-extended-icon-baseline-study.png"
+        }
+      ]
+    },
+    {
+      "id": "related_services",
+      "type": "service_cards",
+      "eyebrow": "Services",
+      "title": "Offshore and Coastal Navigation Decision Making",
+      "description": "Make informed decisions through accurate analysis and expert guidance, for safer operations, optimized performance, and cost-efficient protection of marine assets.",
+      "feature_slug": "metocean-dss",
+      "items": [
+        {
+          "slug": "metocean-design-criteria",
+          "title": "MetOcean Design Criteria",
+          "description": "Extreme Value Analysis. Numerical Simulation. Ocean, Climate and Weather Analysis",
+          "icon": "/figma/icon-earth.svg",
+          "image": "/figma/service-metocean-card.png",
+          "tone": "light-blue"
+        },
+        {
+          "slug": "metocean-dss",
+          "title": "MetOcean DSS",
+          "description": "Marine Sea State Prediction. Weather Forecast. Tow Route Forecast. Weather Window.",
+          "icon": "/figma/icon-droplet.svg",
+          "image": "/figma/service-dss-card.png",
+          "tone": "mist"
+        },
+        {
+          "slug": "extended-services",
+          "title": "Extended Services",
+          "description": "Our team can provide customized services tailored for your specific needs in maritime industry.",
+          "icon": "/figma/icon-people.svg",
+          "image": "/figma/service-extended-card.png",
+          "tone": "white"
+        }
+      ]
+    }
+  ]
+}

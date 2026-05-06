@@ -3,7 +3,8 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import aboutHeroBaseImage from '../assets/about/hero-base.jpg';
 import aboutServiceImage from '../assets/about/service-image.png';
-import { directusStaticToken, directusTeamMembersApiUrl } from '../data/directus';
+import { directusStaticToken, directusTeamMembersApiUrl, fetchDirectusPage } from '../data/directus';
+import aboutPageFallback from '../data/page-content/about.json';
 
 const heroBand = '/figma/about-hero-band.png';
 const heroGraphicA = '/figma/about-hero-graphic-a.svg';
@@ -17,31 +18,30 @@ const socialLinkedIn = '/figma/social-linkedin.svg';
 const socialInstagram = '/figma/social-instagram.svg';
 const footerShape = '/figma/about-contact-shape.svg';
 
-const clientAssets = [
-	'/figma/about-client-logo-01.png',
-	'/figma/about-client-logo-02.png',
-	'/figma/about-client-logo-03.png',
-	'/figma/about-client-logo-04.png',
-	'/figma/about-client-logo-05.png',
-	'/figma/about-client-logo-06.png',
-	'/figma/about-client-logo-07.png',
-	'/figma/about-client-logo-08.png',
-	'/figma/about-client-logo-09.png',
-	'/figma/about-client-logo-10.png',
-	'/figma/about-client-logo-11.png',
-	'/figma/about-client-logo-12.png',
-	'/figma/about-client-logo-13.png',
-	'/figma/about-client-logo-14.png',
-	'/figma/about-client-logo-15.png',
-	'/figma/about-client-logo-16.png',
-	'/figma/about-client-logo-17.png',
-	'/figma/about-client-logo-18.png',
-];
+const fallbackPage = await fetchDirectusPage('about').catch((error) => {
+	console.error('Failed to load about page content from Directus:', error);
+	return null;
+});
 
-const teamShots = [teamShotA, teamShotB, teamShotC, teamShotD, teamShotE];
+const pageRecord = fallbackPage ?? {
+	seo_title: aboutPageFallback.seo.title,
+	hero_eyebrow: aboutPageFallback.hero.eyebrow,
+	hero_title: aboutPageFallback.hero.title,
+	hero_meta: aboutPageFallback.hero.meta,
+	sections: aboutPageFallback.sections,
+};
+
+const sectionById = Object.fromEntries((pageRecord.sections ?? []).map((section) => [section.id, section]));
+const introSection = sectionById.intro ?? aboutPageFallback.sections.find((section) => section.id === 'intro');
+const serviceOverviewSection = sectionById.service_overview ?? aboutPageFallback.sections.find((section) => section.id === 'service_overview');
+const clientsSection = sectionById.clients ?? aboutPageFallback.sections.find((section) => section.id === 'clients');
+const teamSection = sectionById.team ?? aboutPageFallback.sections.find((section) => section.id === 'team');
+
+const clientAssets = clientsSection.logos ?? [];
+const teamShots = Array.isArray(teamSection.gallery_images) ? teamSection.gallery_images : [teamShotA, teamShotB, teamShotC, teamShotD, teamShotE];
 ---
 
-<Layout title="BhumiWarih Profile | Bhumi Warih" activeNav="about" footerShape={footerShape}>
+<Layout title={pageRecord.seo_title ?? 'BhumiWarih Profile | Bhumi Warih'} activeNav="about" footerShape={footerShape}>
 	<main class="about-page">
 		<section class="about-hero" data-nav-hero>
 			<div class="about-hero__bg">
@@ -56,59 +56,35 @@ const teamShots = [teamShotA, teamShotB, teamShotC, teamShotD, teamShotE];
 				<div class="about-hero__veil"></div>
 			</div>
 
-			<div class="about-hero__meta">
-				Specializing in Information and Knowledge of Meteorological and Oceanographic (MEtocean)
-				field.
-			</div>
+			<div class="about-hero__meta">{pageRecord.hero_meta ?? aboutPageFallback.hero.meta}</div>
 
 			<div class="about-hero__copy">
-				<p class="section-tag section-tag--inverse">/About</p>
-				<h1>BhumiWarih Profile</h1>
+				<p class="section-tag section-tag--inverse">{pageRecord.hero_eyebrow ?? aboutPageFallback.hero.eyebrow}</p>
+				<h1>{pageRecord.hero_title ?? aboutPageFallback.hero.title}</h1>
 			</div>
 		</section>
 
 		<section class="about-intro">
-			<p class="section-tag">What We Do</p>
-			<h2>
-				Delivering clear ‘picture’ of various parameter and ranges of marine physical environmental
-				factors which are of substantial to our client investments.
-			</h2>
+			<p class="section-tag">{introSection.eyebrow}</p>
+			<h2>{introSection.title}</h2>
 
 			<div class="about-intro__columns">
 				<div>
-					<p class="section-tag">How We Do</p>
-					<p>
-						We will produce this ‘picture’ as metocean information and knowledge of a given site
-						of interest and present them as standard hardcopy report, offline data base retrieval
-						system with interactive user interface, regular push-mail report, or online access to
-						our operational metocean system, including involvement of front line service.
-					</p>
+					<p class="section-tag">{introSection.columns?.[0]?.title}</p>
+					<p>{introSection.columns?.[0]?.body}</p>
 				</div>
 				<div>
-					<p class="section-tag">Our Mission</p>
-					<p>
-						BhumiWarih’s mission is to provide support to the improvement of accuracy, security,
-						and safety of the coastal and offshore design, planning, and investment.
-					</p>
+					<p class="section-tag">{introSection.columns?.[1]?.title}</p>
+					<p>{introSection.columns?.[1]?.body}</p>
 				</div>
 			</div>
 		</section>
 
 		<section class="service-overview">
 			<div class="service-overview__copy">
-				<p class="section-tag">Service Overview</p>
-				<h3>
-					A specialized competence of the company is the capability to involve state-of-the-art
-					scientific methods and novel techniques in improving the reliability and merit of marine
-					environmental information.
-				</h3>
-				<p>
-					Our core of competences are based on long experience and academic training of its
-					personnel in dealing with studies of mean and extreme values of wind, wave, current, and
-					tide, for the purpose of design criteria or front end engineering of fix or floating
-					structures and underwater constructions, as well as real-time and forecast systems for
-					planning and monitoring of sea-state sensitive operations.
-				</p>
+				<p class="section-tag">{serviceOverviewSection.eyebrow}</p>
+				<h3>{serviceOverviewSection.title}</h3>
+				<p>{serviceOverviewSection.body}</p>
 			</div>
 			<div class="service-overview__media">
 				<Image
@@ -123,8 +99,8 @@ const teamShots = [teamShotA, teamShotB, teamShotC, teamShotD, teamShotE];
 
 		<section class="clients">
 			<div class="clients__intro">
-				<p class="section-tag">Our Clients</p>
-				<h3>We’re Trusted by Government Bodies and Private Sectors Across the Globe</h3>
+				<p class="section-tag">{clientsSection.eyebrow}</p>
+				<h3>{clientsSection.title}</h3>
 			</div>
 
 			<div class="clients__grid">
@@ -135,32 +111,20 @@ const teamShots = [teamShotA, teamShotB, teamShotC, teamShotD, teamShotE];
 						</div>
 					))
 				}
-				<div class="clients__more">and by 999+ More since YYYY</div>
+				<div class="clients__more">{clientsSection.footer_note}</div>
 			</div>
 		</section>
 
 		<section class="team">
 			<div class="team__intro">
-				<p class="section-tag">Our Team</p>
-				<h3>
-					Experiments, diversity in perspective and multi disciplinary set of mind are our beliefs
-					in delivering innovative and creative solutions to our client’s problems.
-				</h3>
+				<p class="section-tag">{teamSection.eyebrow}</p>
+				<h3>{teamSection.title}</h3>
 
 				<div class="team__gallery">
 					{teamShots.map((asset) => <img src={asset} alt="" />)}
 				</div>
 
-				<p>
-					BWgeohydromatics’ key people are entrepreneur researchers, who have been accumulating
-					knowledge in theoretical and practical spheres of applications of various disciplines
-					covering coastal engineering, environmental science, physical geography, hydrography,
-					and oceanography.
-				</p>
-				<p>
-					To date, our key team members are well trained and exposed physical oceanographers with
-					strong support from computation and information technology team.
-				</p>
+				{teamSection.intro_paragraphs?.map((paragraph) => <p>{paragraph}</p>)}
 			</div>
 
 			<div

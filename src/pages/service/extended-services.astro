@@ -1,6 +1,8 @@
 ---
 import ServicesSection from '../../components/ServicesSection.astro';
-import { services } from '../../data/services';
+import { fetchDirectusPage } from '../../data/directus';
+import { services, type ServiceItem } from '../../data/services';
+import servicePageFallback from '../../data/page-content/service-extended-services.json';
 import Layout from '../../layouts/Layout.astro';
 
 const heroShape = '/figma/service-extended-hero-wave.svg';
@@ -9,7 +11,7 @@ const iconSedimentation = '/figma/service-extended-icon-sedimentation.png';
 const iconWaterQuality = '/figma/service-extended-icon-water-quality.png';
 const iconRemoteSensing = '/figma/service-extended-icon-remote-sensing.png';
 const iconBaselineStudy = '/figma/service-extended-icon-baseline-study.png';
-const capabilities = [
+const fallbackCapabilities = [
 	{
 		title: 'Sedimentation',
 		description:
@@ -36,10 +38,38 @@ const capabilities = [
 	},
 ];
 
+const fallbackPage = await fetchDirectusPage('service-extended-services').catch((error) => {
+	console.error('Failed to load extended services page content from Directus:', error);
+	return null;
+});
+
+const pageRecord = fallbackPage ?? {
+	seo_title: servicePageFallback.seo.title,
+	hero_eyebrow: servicePageFallback.hero.eyebrow,
+	hero_title: servicePageFallback.hero.title,
+	hero_meta: servicePageFallback.hero.meta,
+	sections: servicePageFallback.sections,
+};
+
+const sectionById = Object.fromEntries((pageRecord.sections ?? []).map((section) => [section.id, section]));
+const aboutSection = sectionById.about ?? servicePageFallback.sections.find((section) => section.id === 'about');
+const relatedServicesSection = sectionById.related_services ?? servicePageFallback.sections.find((section) => section.id === 'related_services');
+const capabilities = Array.isArray(aboutSection?.items) ? aboutSection.items : fallbackCapabilities;
+const relatedServices: ServiceItem[] = Array.isArray(relatedServicesSection?.items)
+	? relatedServicesSection.items.map((item) => ({
+			slug: item.slug,
+			title: item.title,
+			description: item.description,
+			icon: item.icon,
+			image: item.image,
+			tone: item.tone,
+		}))
+	: services;
+
 ---
 
 <Layout
-	title="Extended Services | Bhumi Warih"
+	title={pageRecord.seo_title ?? 'Extended Services | Bhumi Warih'}
 	activeNav="service"
 	footerShape={footerShape}
 >
@@ -50,25 +80,17 @@ const capabilities = [
 				<img class="service-hero__shape" src={heroShape} alt="" />
 			</div>
 			<div class="service-hero__copy">
-				<p class="service-hero__eyebrow">/Service</p>
-				<h1>Extended Services</h1>
+				<p class="service-hero__eyebrow">{pageRecord.hero_eyebrow ?? servicePageFallback.hero.eyebrow}</p>
+				<h1>{pageRecord.hero_title ?? servicePageFallback.hero.title}</h1>
 			</div>
-			<p class="service-hero__meta">Registered on CIVD System: SPDA Number 73970/EMP/2024</p>
+			<p class="service-hero__meta">{pageRecord.hero_meta ?? servicePageFallback.hero.meta}</p>
 		</section>
 
 		<section class="service-intro">
 			<div class="service-intro__copy">
-				<p class="section-tag">About</p>
-				<p class="service-intro__lead">
-					A business in marine area frequently needs a specific service and only an expert in
-					each particular subject is able to conduct the calculations and measurements.
-				</p>
-				<p>
-					We provide our clients with full expert assistance throughout every step of the
-					additional services. Our highly skilled and experienced professional consultants have
-					helped enable hundreds of clients to achieve success and maximize performance in
-					metocean scope or other scope related to metocean.
-				</p>
+				<p class="section-tag">{aboutSection.eyebrow}</p>
+				<p class="service-intro__lead">{aboutSection.lead}</p>
+				<p>{aboutSection.body}</p>
 			</div>
 
 			<div class="capability-stack">
@@ -86,7 +108,12 @@ const capabilities = [
 			</div>
 		</section>
 
-		<ServicesSection services={services} />
+		<ServicesSection
+			eyebrow={relatedServicesSection.eyebrow}
+			title={relatedServicesSection.title}
+			description={relatedServicesSection.description}
+			services={relatedServices}
+		/>
 	</main>
 </Layout>
 

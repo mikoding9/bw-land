@@ -1,10 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { fetchDirectusPage } from '../data/directus';
+import legalPageFallback from '../data/page-content/legal-and-privacy.json';
 
 const heroShape = '/figma/legal-glossary-hero-wave.svg';
 const footerShape = '/figma/legal-contact-shape.svg';
 
-const sections = [
+const fallbackSections = [
 	{
 		title: '',
 		paragraphs: [
@@ -60,10 +62,24 @@ const sections = [
 		],
 	},
 ];
+
+const fallbackPage = await fetchDirectusPage('legal-and-privacy').catch((error) => {
+	console.error('Failed to load legal and privacy page content from Directus:', error);
+	return null;
+});
+
+const pageRecord = fallbackPage ?? {
+	seo_title: legalPageFallback.seo.title,
+	hero_eyebrow: legalPageFallback.hero.eyebrow,
+	hero_title: legalPageFallback.hero.title,
+	sections: legalPageFallback.sections,
+};
+
+const sections = pageRecord.sections ?? fallbackSections;
 ---
 
 <Layout
-	title="Legal and Privacy | Bhumi Warih"
+	title={pageRecord.seo_title ?? 'Legal and Privacy | Bhumi Warih'}
 	footerShape={footerShape}
 	footerLegalHref="/legal-and-privacy"
 >
@@ -74,8 +90,8 @@ const sections = [
 				<img class="legal-hero__shape" src={heroShape} alt="" />
 			</div>
 			<div class="legal-hero__copy">
-				<p class="legal-hero__eyebrow">/Legal and Privacy</p>
-				<h1>Legal and Privacy</h1>
+				<p class="legal-hero__eyebrow">{pageRecord.hero_eyebrow ?? legalPageFallback.hero.eyebrow}</p>
+				<h1>{pageRecord.hero_title ?? legalPageFallback.hero.title}</h1>
 			</div>
 		</section>
 

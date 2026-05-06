@@ -1,6 +1,8 @@
 ---
 import ServicesSection from '../../components/ServicesSection.astro';
-import { services } from '../../data/services';
+import { fetchDirectusPage } from '../../data/directus';
+import { services, type ServiceItem } from '../../data/services';
+import servicePageFallback from '../../data/page-content/service-metocean-design-criteria.json';
 import Layout from '../../layouts/Layout.astro';
 
 const heroShape = '/figma/service-metocean-hero-wave.svg';
@@ -9,7 +11,7 @@ const atlasImage = '/figma/service-metocean-atlas.png';
 const directionalImage = '/figma/service-metocean-directional.png';
 const simulationImage = '/figma/service-metocean-simulation.png';
 const extremeImage = '/figma/service-metocean-extreme.png';
-const studies = [
+const fallbackStudies = [
 	{
 		title: 'Metocean Atlas',
 		description:
@@ -40,10 +42,38 @@ const studies = [
 	},
 ];
 
+const fallbackPage = await fetchDirectusPage('service-metocean-design-criteria').catch((error) => {
+	console.error('Failed to load metocean design criteria page content from Directus:', error);
+	return null;
+});
+
+const pageRecord = fallbackPage ?? {
+	seo_title: servicePageFallback.seo.title,
+	hero_eyebrow: servicePageFallback.hero.eyebrow,
+	hero_title: servicePageFallback.hero.title,
+	hero_meta: servicePageFallback.hero.meta,
+	sections: servicePageFallback.sections,
+};
+
+const sectionById = Object.fromEntries((pageRecord.sections ?? []).map((section) => [section.id, section]));
+const aboutSection = sectionById.about ?? servicePageFallback.sections.find((section) => section.id === 'about');
+const relatedServicesSection = sectionById.related_services ?? servicePageFallback.sections.find((section) => section.id === 'related_services');
+const studies = Array.isArray(aboutSection?.items) ? aboutSection.items : fallbackStudies;
+const relatedServices: ServiceItem[] = Array.isArray(relatedServicesSection?.items)
+	? relatedServicesSection.items.map((item) => ({
+			slug: item.slug,
+			title: item.title,
+			description: item.description,
+			icon: item.icon,
+			image: item.image,
+			tone: item.tone,
+		}))
+	: services;
+
 ---
 
 <Layout
-	title="MetOcean Design Criteria | Bhumi Warih"
+	title={pageRecord.seo_title ?? 'MetOcean Design Criteria | Bhumi Warih'}
 	activeNav="service"
 	footerShape={footerShape}
 >
@@ -54,28 +84,17 @@ const studies = [
 				<img class="service-hero__shape" src={heroShape} alt="" />
 			</div>
 			<div class="service-hero__copy">
-				<p class="service-hero__eyebrow">/Service</p>
-				<h1>MetOcean Design Criteria</h1>
+				<p class="service-hero__eyebrow">{pageRecord.hero_eyebrow ?? servicePageFallback.hero.eyebrow}</p>
+				<h1>{pageRecord.hero_title ?? servicePageFallback.hero.title}</h1>
 			</div>
-			<p class="service-hero__meta">Registered on CIVD System: SPDA Number 73970/EMP/2024</p>
+			<p class="service-hero__meta">{pageRecord.hero_meta ?? servicePageFallback.hero.meta}</p>
 		</section>
 
 		<section class="service-intro">
 			<div class="service-intro__copy">
-				<p class="section-tag">About</p>
-				<p class="service-intro__lead">
-					Metocean is a set of atmospheric and oceanic parameters (i.e. wind, wave, current,
-					tide level) that are essential in ensuring the safety and reliability of various coastal
-					and marine operations and constructions.
-				</p>
-				<p>
-					Metocean Design Criteria is developed to deliver the probabilistic behavior of
-					representative metocean parameters for coastal and offshore construction and structure
-					planning and design. MODC provides engineers the data to minimize uncertainty for
-					optimal resource allocation in order to ensure cost-efficient engineering practices in
-					compliance with international standards. We present metocean information as a prediction
-					of normal and extreme conditions of wind, tides, waves, and currents.
-				</p>
+				<p class="section-tag">{aboutSection.eyebrow}</p>
+				<p class="service-intro__lead">{aboutSection.lead}</p>
+				<p>{aboutSection.body}</p>
 			</div>
 
 			<div class="study-stack">
@@ -95,7 +114,12 @@ const studies = [
 			</div>
 		</section>
 
-		<ServicesSection services={services} />
+		<ServicesSection
+			eyebrow={relatedServicesSection.eyebrow}
+			title={relatedServicesSection.title}
+			description={relatedServicesSection.description}
+			services={relatedServices}
+		/>
 	</main>
 </Layout>
 

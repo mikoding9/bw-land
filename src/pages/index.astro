@@ -4,7 +4,9 @@ import BlogSection from "../components/BlogSection.astro";
 import Layout from "../layouts/Layout.astro";
 import ServicesSection from "../components/ServicesSection.astro";
 import { blogPostSummaries } from "../data/blog";
-import { services } from "../data/services";
+import { fetchDirectusPage } from "../data/directus";
+import { services, type ServiceItem } from "../data/services";
+import homePageFallback from "../data/page-content/home.json";
 import heroBackdropImage from "../assets/home/hero-bg.png";
 import heroRigImage from "../assets/home/hero-rig.png";
 import industryOilCardImage from "../assets/home/industry-oil.png";
@@ -15,9 +17,9 @@ const industryIconOil = "/figma/industry-icon-oil.png";
 const industryIconPort = "/figma/industry-icon-port.png";
 const industryIconOther = "/figma/industry-icon-other.png";
 const industryListItemIcon = "/figma/industry-list-item-icon.svg";
-const industries = [
+const fallbackIndustries = [
     {
-        eyebrow: "Oil & Gas",
+        title: "Oil & Gas",
         slug: "metocean-design-criteria",
         copy: "Assist with the necessary information on atmospheric and oceanographic conditions on our client working sites. Metocean data and analysis will enable our clients’ engineers to refine plans with better cost conformity.",
         image: industryOilCardImage,
@@ -32,7 +34,7 @@ const industries = [
         ],
     },
     {
-        eyebrow: "Port and Harbor",
+        title: "Port and Harbor",
         slug: "metocean-dss",
         copy: "Develop an optimized port and harbor design that meets economic and technical viability criteria including design protection, engineering efficiency, and maintainability.",
         image: industryPortCardImage,
@@ -46,7 +48,7 @@ const industries = [
         ],
     },
     {
-        eyebrow: "Other Maritime Industry",
+        title: "Other Maritime Industry",
         slug: "extended-services",
         copy: "Bring clarity to any maritime industry problem at any stage. Before planning any maritime development, we need to understand the natural environment surrounding the project location.",
         image: industryOtherCardImage,
@@ -62,13 +64,78 @@ const industries = [
     },
 ];
 
+const imageMap = {
+    "metocean-design-criteria": industryOilCardImage,
+    "metocean-dss": industryPortCardImage,
+    "extended-services": industryOtherCardImage,
+};
+
+const iconMap = {
+    "metocean-design-criteria": industryIconOil,
+    "metocean-dss": industryIconPort,
+    "extended-services": industryIconOther,
+};
+
 const blogPosts = blogPostSummaries.map((post) => ({
     ...post,
     href: `/insight/${post.slug}`,
 }));
+
+const homePage = await fetchDirectusPage("home").catch((error) => {
+    console.error("Failed to load home page content from Directus:", error);
+    return null;
+});
+
+const pageRecord = homePage ?? {
+    seo_title: homePageFallback.seo.title,
+    hero_title: homePageFallback.hero.title,
+    hero_meta: homePageFallback.hero.meta,
+    sections: homePageFallback.sections,
+};
+
+const sectionById = Object.fromEntries(
+    (pageRecord.sections ?? []).map((section) => [section.id, section]),
+);
+
+const hero = {
+    title: pageRecord.hero_title ?? homePageFallback.hero.title,
+    meta: pageRecord.hero_meta ?? homePageFallback.hero.meta,
+    headline:
+        homePageFallback.hero.headline,
+    glossaryCta:
+        homePageFallback.hero.glossary_cta,
+};
+
+const aboutSection = sectionById.about ?? homePageFallback.sections.find((section) => section.id === "about");
+const servicesSection = sectionById.services ?? homePageFallback.sections.find((section) => section.id === "services");
+const approachSection = sectionById.approach ?? homePageFallback.sections.find((section) => section.id === "approach");
+const industriesSection = sectionById.industries ?? homePageFallback.sections.find((section) => section.id === "industries");
+
+const homeServices: ServiceItem[] = Array.isArray(servicesSection?.items)
+    ? servicesSection.items.map((item) => ({
+          slug: item.slug,
+          title: item.title,
+          description: item.description,
+          icon: item.icon,
+          image: item.image,
+          tone: item.tone,
+      }))
+    : services;
+
+const industries = Array.isArray(industriesSection?.items)
+    ? industriesSection.items.map((industry) => ({
+          title: industry.title,
+          slug: industry.service_slug,
+          copy: industry.copy,
+          image: imageMap[industry.service_slug] ?? industryOilCardImage,
+          accent: industry.accent,
+          icon: iconMap[industry.service_slug] ?? industryIconOil,
+          items: industry.items,
+      }))
+    : fallbackIndustries;
 ---
 
-<Layout title="Bhumi Warih">
+<Layout title={pageRecord.seo_title ?? "Bhumi Warih"}>
     <main class="page-shell">
         <section class="hero" id="home" data-nav-hero>
             <div class="hero__backdrop">
@@ -83,9 +150,9 @@ const blogPosts = blogPostSummaries.map((post) => ({
             </div>
 
             <div class="hero__meta">
-                Registered on CIVD System: SPDA Number 73970/EMP/2024
+                {hero.meta}
             </div>
-            <h1 class="hero__wordmark">BHUMI WARIH</h1>
+            <h1 class="hero__wordmark">{hero.title}</h1>
             <div class="hero__rig">
                 <Image
                     class="hero__rig-image"
@@ -98,13 +165,9 @@ const blogPosts = blogPostSummaries.map((post) => ({
             </div>
 
             <div class="hero__content">
-                <p class="hero__headline">
-                    SAFE Marine Operations,
-                    <br />
-                    SECURE Maritime Investments
-                </p>
-                <a href="/glossary" class="pill pill--ghost hero__glossary"
-                    >Glossary</a
+                <p class="hero__headline">{hero.headline.split("\n").map((line) => <><span>{line}</span><br /></>)}</p>
+                <a href={hero.glossaryCta.href} class="pill pill--ghost hero__glossary"
+                    >{hero.glossaryCta.label}</a
                 >
             </div>
         </section>
@@ -117,15 +180,14 @@ const blogPosts = blogPostSummaries.map((post) => ({
                         data-reveal
                         data-reveal-delay="0"
                     >
-                        About
+                        {aboutSection.eyebrow}
                     </p>
                     <p
                         class="about-gap__lead"
                         data-reveal
                         data-reveal-delay="120"
                     >
-                        Bhumi Warih is an Indonesian based company specializing
-                        in meteorological and oceanographic (Metocean) analysis.
+                        {aboutSection.title}
                     </p>
                 </div>
 
@@ -135,45 +197,41 @@ const blogPosts = blogPostSummaries.map((post) => ({
                         data-reveal
                         data-reveal-delay="240"
                     >
-                        Our knowledge and experience have been acquired from
-                        specialized services in the maritime industry since
-                        2010, with strong access and local understanding across
-                        South East Asia.
+                        {aboutSection.body}
                     </p>
                     <a
                         class="pill pill--outline-dark about-gap__cta"
-                        href="/about">About Us</a
+                        href={aboutSection.cta.href}>{aboutSection.cta.label}</a
                     >
                 </div>
             </div>
         </section>
 
-        <ServicesSection services={services} />
+        <ServicesSection
+            eyebrow={servicesSection.eyebrow}
+            title={servicesSection.title}
+            description={servicesSection.description}
+            services={homeServices}
+        />
 
         <section class="approach section">
-            <p class="section-tag section-tag--center">Approach</p>
+            <p class="section-tag section-tag--center">{approachSection.eyebrow}</p>
             <h2>
-                Integrated Marine Intelligence &amp; Business Insight Ecosystem
+                {approachSection.title}
             </h2>
             <p>
-                The collaboration between oceanographic science, geospatial
-                engineering, and GeoAI platforms enhances research capabilities,
-                R&amp;D, and predictive models for national maritime disasters
-                and climate.
+                {approachSection.body}
             </p>
         </section>
 
         <section class="industries section" id="industry">
             <div class="section__intro">
                 <div>
-                    <p class="section-tag">Industries</p>
-                    <h2>Bringing Clarity Across Industries</h2>
+                    <p class="section-tag">{industriesSection.eyebrow}</p>
+                    <h2>{industriesSection.title}</h2>
                 </div>
                 <p>
-                    Assess and align the critical elements needed in various
-                    maritime industry. Our team possesses a strong knowledge of
-                    South East Asian waters that brings clarity to any maritime
-                    industry’s problem at any stage of development.
+                    {industriesSection.description}
                 </p>
             </div>
 
@@ -186,7 +244,7 @@ const blogPosts = blogPostSummaries.map((post) => ({
                                 style={`--industry-index:${index}; --panel-accent:${industry.accent}`}
                             >
                                 <div class="industry-card__summary">
-                                    <h3>{industry.eyebrow}</h3>
+                                    <h3>{industry.title}</h3>
                                     <div
                                         class="industry-card__icon"
                                         aria-hidden="true"
@@ -211,7 +269,7 @@ const blogPosts = blogPostSummaries.map((post) => ({
                                         <Image
                                             class="industry-card__img"
                                             src={industry.image}
-                                            alt={industry.eyebrow}
+                                            alt={industry.title}
                                             loading="lazy"
                                             quality={78}
                                         />

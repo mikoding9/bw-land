@@ -1,16 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { fetchDirectusPage } from '../data/directus';
+import glossaryPageFallback from '../data/page-content/glossary.json';
 
 const heroShape = '/figma/legal-glossary-hero-wave.svg';
 const footerShape = '/figma/glossary-contact-shape.svg';
 
-const introParagraphs = [
+const fallbackIntroParagraphs = [
 	'Metocean glossary is a dictionary that is authoritative reference to hydrographic related terms and definitions used in various standards, specifications and other informative referred in Maritime Industry.',
 	'In Indonesian hydrography, The International Hydrographics Dictionary (S-32) is the main standards of terms and definition used.',
 	'Use the relevance 2-3 words from the desired term to get the best result from our search feature. Example: to find HAT refering to Tidal Level, please type "HAT Tidal Level" in the search box.',
 ];
 
-const glossaryRows = [
+const fallbackGlossaryRows = [
 	{
 		no: '1',
 		term: 'Point',
@@ -62,9 +64,27 @@ const glossaryRows = [
 		description: 'In United Nations law of the sea terminology, the sea-bed and ocean floor and subsoil thereof, beyond the limits of national jurisdiction.',
 	},
 ];
+
+const fallbackPage = await fetchDirectusPage('glossary').catch((error) => {
+	console.error('Failed to load glossary page content from Directus:', error);
+	return null;
+});
+
+const pageRecord = fallbackPage ?? {
+	seo_title: glossaryPageFallback.seo.title,
+	hero_eyebrow: glossaryPageFallback.hero.eyebrow,
+	hero_title: glossaryPageFallback.hero.title,
+	sections: glossaryPageFallback.sections,
+};
+
+const sectionById = Object.fromEntries((pageRecord.sections ?? []).map((section) => [section.id, section]));
+const introSection = sectionById.intro ?? glossaryPageFallback.sections.find((section) => section.id === 'intro');
+const glossaryTableSection = sectionById.glossary_table ?? glossaryPageFallback.sections.find((section) => section.id === 'glossary_table');
+const introParagraphs = introSection.paragraphs ?? fallbackIntroParagraphs;
+const glossaryRows = glossaryTableSection.rows ?? fallbackGlossaryRows;
 ---
 
-<Layout title="Metocean Glossary | Bhumi Warih" footerShape={footerShape} footerGlossaryHref="/glossary">
+<Layout title={pageRecord.seo_title ?? 'Metocean Glossary | Bhumi Warih'} footerShape={footerShape} footerGlossaryHref="/glossary">
 	<main class="glossary-page">
 		<section class="glossary-hero" data-nav-hero>
 			<div class="glossary-hero__bg"></div>
@@ -72,14 +92,14 @@ const glossaryRows = [
 				<img class="glossary-hero__shape" src={heroShape} alt="" />
 			</div>
 			<div class="glossary-hero__copy">
-				<p class="glossary-hero__eyebrow">/Glossary</p>
-				<h1>Metocean Glossary</h1>
+				<p class="glossary-hero__eyebrow">{pageRecord.hero_eyebrow ?? glossaryPageFallback.hero.eyebrow}</p>
+				<h1>{pageRecord.hero_title ?? glossaryPageFallback.hero.title}</h1>
 			</div>
 		</section>
 
 		<section class="glossary-content">
 			<div class="glossary-content__intro">
-				<h2>A trusted hydrography reference for the maritime industry.</h2>
+				<h2>{introSection.title}</h2>
 				{
 					introParagraphs.map((paragraph) => <p>{paragraph}</p>)
 				}
@@ -88,15 +108,15 @@ const glossaryRows = [
 			<section class="glossary-card" aria-labelledby="glossary-table-heading">
 				<div class="glossary-card__toolbar">
 					<label class="select-field">
-						<span>Menampilkan</span>
+						<span>{glossaryTableSection.toolbar?.entries_label}</span>
 						<select aria-label="Entries per page">
-							<option selected>20</option>
+							<option selected>{glossaryTableSection.toolbar?.entries_default}</option>
 						</select>
 					</label>
 
 					<label class="search-field">
 						<span class="sr-only">Search glossary</span>
-						<input type="search" placeholder="Cari Istilah" />
+						<input type="search" placeholder={glossaryTableSection.toolbar?.search_placeholder} />
 						<span class="search-field__icon" aria-hidden="true"></span>
 					</label>
 				</div>
@@ -107,8 +127,8 @@ const glossaryRows = [
 						<thead>
 							<tr>
 								<th scope="col">No.</th>
-								<th scope="col">Term</th>
-								<th scope="col">Description</th>
+								<th scope="col">{glossaryTableSection.columns?.[1] ?? 'Term'}</th>
+								<th scope="col">{glossaryTableSection.columns?.[2] ?? 'Description'}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -126,7 +146,7 @@ const glossaryRows = [
 				</div>
 
 				<div class="glossary-card__footer">
-					<p>Menampilkan 1 to 10 of 6,500 entries</p>
+					<p>{glossaryTableSection.pagination?.summary}</p>
 					<nav class="pagination" aria-label="Glossary pages">
 						<a href="#glossary-table-heading" class="pagination__arrow" aria-label="Previous page">‹</a>
 						<a href="#glossary-table-heading" class="pagination__page is-active" aria-current="page">1</a>

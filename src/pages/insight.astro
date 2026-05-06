@@ -1,13 +1,19 @@
 ---
-import BlogSection from '../components/BlogSection.astro';
 import Layout from '../layouts/Layout.astro';
-import { fetchDirectusPage } from '../data/directus';
+import {
+	directusInsightsApiUrl,
+	directusStaticToken,
+	fetchDirectusPage,
+	resolveDirectusImageUrl,
+	type DirectusFileReference,
+	type DirectusInsightRecord,
+} from '../data/directus';
 import insightPageFallback from '../data/page-content/insight.json';
+import insightsSeed from '../data/insights.seed.json';
 
 const heroImage = '/figma/blog-hero-image.png';
-const blogCardA = '/figma/blog-card-feature-a.png';
-const blogCardB = '/figma/blog-card-feature-b.png';
 const footerShape = '/figma/blog-contact-shape.svg';
+const insightCategories = ['Products', 'Projects', 'Company News', 'Science and Technology'] as const;
 
 const fallbackPage = await fetchDirectusPage('insight').catch((error) => {
 	console.error('Failed to load insight page content from Directus:', error);
@@ -25,131 +31,121 @@ const sectionById = Object.fromEntries((pageRecord.sections ?? []).map((section)
 const featuredPost = sectionById.featured_post ?? insightPageFallback.sections.find((section) => section.id === 'featured_post');
 const latestIntro = sectionById.latest_intro ?? insightPageFallback.sections.find((section) => section.id === 'latest_intro');
 
-const latestPosts = [
-	{
-		tag: 'Products',
-		title: 'Get To Know the Metocean Study, Assess Extreme Weather Risk for Your Project',
-		excerpt:
-			'Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering, or renewable energy, project site.',
-		image: blogCardA,
-		variant: 'metocean',
-		href: '/insight/metocean-study-extreme-weather-risk',
-	},
-	{
-		tag: 'Projects',
-		title: 'Smarter Land Decisions Start Here: Discover the Power of Land Forecasting',
-		excerpt:
-			'In dynamic and weather-sensitive sectors such as maritime operations, energy production, and resource exploration, atmospheric conditions are far more than a backdrop.',
-		image: heroImage,
-		variant: 'land',
-		href: '/insight/smarter-land-decisions-start-here',
-	},
-	{
-		tag: 'Projects',
-		title: 'Navigating Disaster Resilience: Flood and Tsunami Early Warning Systems with Machine Learning',
-		excerpt:
-			'PT Bhumi Warih Geohydromatics supported the development of an Early Warning System platform for floods and tsunamis in the Palu region.',
-		image: blogCardB,
-		variant: 'warning',
-		href: '/insight/disaster-resilience-early-warning-systems',
-	},
-	{
-		tag: 'Science and Technology',
-		title: 'The Future is Bright: Unlocking Indonesia’s Solar Potential',
-		excerpt:
-			'Recent studies highlight the enormous renewable energy potential that Indonesia can harness through geospatial analysis and financial modelling.',
-		image: blogCardA,
-		variant: 'solar',
-		href: '/insight/unlocking-indonesia-solar-potential',
-	},
-];
+type InsightSeedRecord = typeof insightsSeed.items[number];
 
-const listPosts = [
-	{
-		tag: 'Products',
-		title: 'Get To Know the Metocean Study, Assess Extreme Weather Risk for Your Project',
-		excerpt:
-			'Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering, or renewable energy, project site.',
-		href: '/insight/metocean-study-extreme-weather-risk',
-	},
-	{
-		tag: 'Products',
-		title: 'Get To Know the Metocean Study, Assess Extreme Weather Risk for Your Project',
-		excerpt:
-			'Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering, or renewable energy, project site.',
-		href: '/insight/metocean-study-extreme-weather-risk',
-	},
-	{
-		tag: 'Products',
-		title: 'Get To Know the Metocean Study, Assess Extreme Weather Risk for Your Project',
-		excerpt:
-			'Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering, or renewable energy, project site.',
-		href: '/insight/metocean-study-extreme-weather-risk',
-	},
-];
+type InsightCard = {
+	tag: string;
+	title: string;
+	excerpt: string;
+	image: string;
+	variant: string;
+	href: string;
+};
 
-const sections = [
-	{
-		title: 'Products',
-		feature: {
-			tag: 'Projects',
-			title: 'Navigating Disaster Resilience: Flood and Tsunami Early Warning Systems with Machine Learning',
-			excerpt:
-				'PT Bhumi Warih Geohydromatics supported by our expert, in collaboration with PT Telkom Indonesia and PT Metra-Net, has successfully developed an Early Warning System platform for floods and tsunamis in the Palu region.',
-			image: blogCardB,
-			tone: 'mono',
-			href: '/insight/disaster-resilience-early-warning-systems',
-		},
-		list: listPosts,
-	},
-	{
-		title: 'Projects',
-		feature: {
-			tag: 'Projects',
-			title: 'Navigating Disaster Resilience: Flood and Tsunami Early Warning Systems with Machine Learning',
-			excerpt:
-				'PT Bhumi Warih Geohydromatics supported by our expert, in collaboration with PT Telkom Indonesia and PT Metra-Net, has successfully developed an Early Warning System platform for floods and tsunamis in the Palu region.',
-			image: heroImage,
-			tone: 'layered',
-			href: '/insight/disaster-resilience-early-warning-systems',
-		},
-		list: listPosts,
-	},
-	{
-		title: 'Company News',
-		feature: {
-			tag: 'Projects',
-			title: 'Navigating Disaster Resilience: Flood and Tsunami Early Warning Systems with Machine Learning',
-			excerpt:
-				'PT Bhumi Warih Geohydromatics supported by our expert, in collaboration with PT Telkom Indonesia and PT Metra-Net, has successfully developed an Early Warning System platform for floods and tsunamis in the Palu region.',
-			image: blogCardB,
-			tone: 'mono',
-			href: '/insight/disaster-resilience-early-warning-systems',
-		},
-		list: [
-			{
-				tag: 'Products',
-				title: 'Navigating Disaster Resilience: Flood and Tsunami Early Warning Systems with Machine Learning',
-				excerpt:
-					'PT Bhumi Warih Geohydromatics supported by our expert, in collaboration with PT Telkom Indonesia and PT Metra-Net.',
-				href: '/insight/disaster-resilience-early-warning-systems',
-			},
-		],
-	},
-	{
-		title: 'Science and Technology',
-		feature: {
-			tag: 'Projects',
-			title: 'Navigating Disaster Resilience: Flood and Tsunami Early Warning Systems with Machine Learning',
-			excerpt:
-				'PT Bhumi Warih Geohydromatics supported by our expert, in collaboration with PT Telkom Indonesia and PT Metra-Net, has successfully developed an Early Warning System platform for floods and tsunamis in the Palu region.',
-			image: heroImage,
-			tone: 'layered',
-			href: '/insight/disaster-resilience-early-warning-systems',
-		},
-		list: listPosts,
-	},
-];
+type InsightListItem = {
+	tag: string;
+	title: string;
+	excerpt: string;
+	href: string;
+};
+
+type InsightSection = {
+	title: string;
+	feature: InsightCard;
+	list: InsightListItem[];
+};
+
+function parseHighlightSlots(value: DirectusInsightRecord['highlight_slots'] | InsightSeedRecord['highlight_slots']) {
+	if (Array.isArray(value)) {
+		return value;
+	}
+
+	if (typeof value === 'string') {
+		try {
+			const parsed = JSON.parse(value);
+			return Array.isArray(parsed) ? parsed : [value];
+		} catch {
+			return [value];
+		}
+	}
+
+	return [];
+}
+
+function toInsightHref(slug: string) {
+	return '#';
+}
+
+function toImageUrl(asset: DirectusFileReference | string | null | undefined) {
+	return resolveDirectusImageUrl(asset as DirectusFileReference, heroImage);
+}
+
+function toInsightCard(record: DirectusInsightRecord | InsightSeedRecord): InsightCard {
+	return {
+		tag: record.category ?? 'Insight',
+		title: record.title ?? 'Untitled insight',
+		excerpt: record.excerpt ?? '',
+		image: toImageUrl(record.thumbnail),
+		variant: record.listing_variant ?? 'metocean',
+		href: toInsightHref(record.slug),
+	};
+}
+
+function toInsightFeature(record: DirectusInsightRecord | InsightSeedRecord): InsightCard {
+	return {
+		...toInsightCard(record),
+		image: toImageUrl(record.featured_image ?? record.thumbnail),
+	};
+}
+
+function sortByHighlight(records: Array<DirectusInsightRecord | InsightSeedRecord>) {
+	return [...records].sort((left, right) => {
+		const leftOrder = left.highlight_order ?? Number.MAX_SAFE_INTEGER;
+		const rightOrder = right.highlight_order ?? Number.MAX_SAFE_INTEGER;
+		if (leftOrder !== rightOrder) {
+			return leftOrder - rightOrder;
+		}
+
+		const leftDate = left.published_at ? Date.parse(left.published_at) : 0;
+		const rightDate = right.published_at ? Date.parse(right.published_at) : 0;
+		return rightDate - leftDate;
+	});
+}
+
+function getRecordsForSlot(records: Array<DirectusInsightRecord | InsightSeedRecord>, slot: string) {
+	return sortByHighlight(records.filter((record) => parseHighlightSlots(record.highlight_slots).includes(slot)));
+}
+
+function buildInsightView(records: Array<DirectusInsightRecord | InsightSeedRecord>) {
+	const publishedRecords = records.filter((record) => (record.status ?? 'published') === 'published');
+	const latestPosts = getRecordsForSlot(publishedRecords, 'latest').slice(0, 4).map(toInsightCard);
+	const sections = insightCategories.map((category) => {
+		const categoryKey = category.toLowerCase().replaceAll(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+		const featureRecord =
+			getRecordsForSlot(publishedRecords, `${categoryKey}_feature`)[0] ??
+			publishedRecords.find((record) => record.category === category);
+		const listRecords =
+			getRecordsForSlot(publishedRecords, `${categoryKey}_list`).slice(0, 3).length > 0
+				? getRecordsForSlot(publishedRecords, `${categoryKey}_list`).slice(0, 3)
+				: publishedRecords.filter((record) => record.category === category && record.slug !== featureRecord?.slug).slice(0, 3);
+
+		return {
+			title: category,
+			feature: featureRecord ? toInsightFeature(featureRecord) : null,
+			list: listRecords.map((record) => toInsightCard(record)),
+		};
+	});
+
+	return {
+		latestPosts,
+		sections,
+	};
+}
+
+const insightView = buildInsightView(insightsSeed.items);
+const latestPosts = insightView.latestPosts;
+const sections = insightView.sections as InsightSection[];
+const insightSeedPayload = JSON.stringify(insightsSeed.items);
 ---
 
 <Layout title={pageRecord.seo_title ?? 'Insight | Bhumi Warih'} activeNav="insight" footerShape={footerShape}>
@@ -167,33 +163,55 @@ const sections = [
 			</div>
 		</section>
 
-		<BlogSection
-			id="latest"
-			posts={latestPosts}
-			eyebrow={latestIntro.eyebrow}
-			title={latestIntro.title}
-			description={latestIntro.description}
-		/>
+		<section class="blog-section" id="latest">
+			<div class="blog-section__intro">
+				<div>
+					<p class="blog-section__tag">{latestIntro.eyebrow}</p>
+					<h2>{latestIntro.title}</h2>
+				</div>
+				<p>{latestIntro.description}</p>
+			</div>
+
+			<div class="blog-section__grid">
+				{
+					latestPosts.map((post) => (
+						<article class:list={['blog-card', post.variant && `blog-card--${post.variant}`]} style={`--blog-card-image:url(${post.image})`}>
+							<div class="blog-card__tag">{post.tag}</div>
+							<div class="blog-card__spacer" aria-hidden="true"></div>
+							<div class="blog-card__footer">
+								<div class="blog-card__content">
+									<h3>{post.title}</h3>
+									<p>{post.excerpt}</p>
+								</div>
+								<a href={post.href} class="blog-card__link">Read More <span aria-hidden="true">→</span></a>
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</section>
 
 		<section class="blog-sections">
 			{
 				sections.map((section) => (
 					<div class="blog-column">
 						<h2>{section.title}</h2>
-						<article
-							class={`feature-card feature-card--${section.feature.tone} feature-card--large`}
-							style={`--feature-card-image:url(${section.feature.image})`}
-						>
-							<div class="meta-pill">{section.feature.tag}</div>
-							<div class="feature-card__spacer" aria-hidden="true"></div>
-							<div class="feature-card__footer">
-								<div class="feature-card__content">
-									<h3>{section.feature.title}</h3>
-									<p>{section.feature.excerpt}</p>
+						{section.feature && (
+							<article
+								class={`feature-card feature-card--${section.feature.variant} feature-card--large`}
+								style={`--feature-card-image:url(${section.feature.image})`}
+							>
+								<div class="meta-pill">{section.feature.tag}</div>
+								<div class="feature-card__spacer" aria-hidden="true"></div>
+								<div class="feature-card__footer">
+									<div class="feature-card__content">
+										<h3>{section.feature.title}</h3>
+										<p>{section.feature.excerpt}</p>
+									</div>
+									<a href={section.feature.href} class="pill pill--ghost pill--small">Read More <span aria-hidden="true">→</span></a>
 								</div>
-								<a href={section.feature.href} class="pill pill--ghost pill--small">Read More <span aria-hidden="true">→</span></a>
-							</div>
-						</article>
+							</article>
+						)}
 
 						<div class="list-panel">
 							{
@@ -215,6 +233,249 @@ const sections = [
 
 	</main>
 </Layout>
+
+<script
+	is:inline
+	type="application/json"
+	id="insight-seed-data"
+	data-directus-insights-api-url={directusInsightsApiUrl}
+	data-directus-static-token={directusStaticToken}
+	data-fallback-hero-image={heroImage}
+	set:html={insightSeedPayload}
+></script>
+
+<script is:inline>
+	const seedNode = document.getElementById('insight-seed-data');
+	const fallbackInsights = seedNode ? JSON.parse(seedNode.textContent || '[]') : [];
+	const directusInsightsApiUrl = seedNode?.dataset.directusInsightsApiUrl || '';
+	const directusStaticToken = seedNode?.dataset.directusStaticToken || '';
+	const insightCategories = ['Products', 'Projects', 'Company News', 'Science and Technology'];
+	const fallbackHeroImage = seedNode?.dataset.fallbackHeroImage || '';
+	const directusPanelBaseUrl = 'https://panel.braga.co.id/panel';
+
+	function parseHighlightSlots(value) {
+		if (Array.isArray(value)) {
+			return value;
+		}
+
+		if (typeof value === 'string') {
+			try {
+				const parsed = JSON.parse(value);
+				return Array.isArray(parsed) ? parsed : [value];
+			} catch {
+				return [value];
+			}
+		}
+
+		return [];
+	}
+
+	function toCategoryKey(category) {
+		return category.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+	}
+
+	function sortByHighlight(records) {
+		return [...records].sort((left, right) => {
+			const leftOrder = left.highlight_order ?? Number.MAX_SAFE_INTEGER;
+			const rightOrder = right.highlight_order ?? Number.MAX_SAFE_INTEGER;
+			if (leftOrder !== rightOrder) {
+				return leftOrder - rightOrder;
+			}
+
+			const leftDate = left.published_at ? Date.parse(left.published_at) : 0;
+			const rightDate = right.published_at ? Date.parse(right.published_at) : 0;
+			return rightDate - leftDate;
+		});
+	}
+
+	function getRecordsForSlot(records, slot) {
+		return sortByHighlight(records.filter((record) => parseHighlightSlots(record.highlight_slots).includes(slot)));
+	}
+
+	function toInsightHref() {
+		return '#';
+	}
+
+	function toImageUrl(asset) {
+		if (!asset) {
+			return fallbackHeroImage;
+		}
+
+		if (typeof asset === 'string') {
+			return asset.startsWith('/') ? asset : `${directusPanelBaseUrl}/assets/${asset}`;
+		}
+
+		if (typeof asset === 'object' && asset.id) {
+			return `${directusPanelBaseUrl}/assets/${asset.id}`;
+		}
+
+		return fallbackHeroImage;
+	}
+
+	function toCard(record, useFeaturedImage = false) {
+		return {
+			tag: record.category ?? 'Insight',
+			title: record.title ?? 'Untitled insight',
+			excerpt: record.excerpt ?? '',
+			image: toImageUrl((useFeaturedImage ? record.featured_image : record.thumbnail) ?? record.thumbnail),
+			variant: record.listing_variant ?? 'metocean',
+			href: toInsightHref(record.slug),
+		};
+	}
+
+	function buildInsightView(records) {
+		const publishedRecords = records.filter((record) => (record.status ?? 'published') === 'published');
+		const latestPosts = getRecordsForSlot(publishedRecords, 'latest').slice(0, 4).map((record) => toCard(record));
+		const sections = insightCategories.map((category) => {
+			const categoryKey = toCategoryKey(category);
+			const featuredCandidates = getRecordsForSlot(publishedRecords, `${categoryKey}_feature`);
+			const featureRecord = featuredCandidates[0] ?? publishedRecords.find((record) => record.category === category);
+			const listCandidates = getRecordsForSlot(publishedRecords, `${categoryKey}_list`);
+			const listRecords =
+				listCandidates.length > 0
+					? listCandidates.slice(0, 3)
+					: publishedRecords.filter((record) => record.category === category && record.slug !== featureRecord?.slug).slice(0, 3);
+
+			return {
+				title: category,
+				feature: featureRecord ? toCard(featureRecord, true) : null,
+				list: listRecords.map((record) => toCard(record)),
+			};
+		});
+
+		return { latestPosts, sections };
+	}
+
+	function applyCard(article, post) {
+		if (!article || !post) {
+			return;
+		}
+
+		article.className = `blog-card blog-card--${post.variant}`;
+		article.style.setProperty('--blog-card-image', `url(${post.image})`);
+		const tag = article.querySelector('.blog-card__tag');
+		const title = article.querySelector('h3');
+		const excerpt = article.querySelector('.blog-card__content p');
+		const link = article.querySelector('.blog-card__link');
+
+		if (tag) tag.textContent = post.tag;
+		if (title) title.textContent = post.title;
+		if (excerpt) excerpt.textContent = post.excerpt;
+		if (link) link.href = post.href;
+	}
+
+	function applyFeature(article, post) {
+		if (!article || !post) {
+			return;
+		}
+
+		article.className = `feature-card feature-card--${post.variant} feature-card--large`;
+		article.style.setProperty('--feature-card-image', `url(${post.image})`);
+		const tag = article.querySelector('.meta-pill');
+		const title = article.querySelector('h3');
+		const excerpt = article.querySelector('.feature-card__content p');
+		const link = article.querySelector('a');
+
+		if (tag) tag.textContent = post.tag;
+		if (title) title.textContent = post.title;
+		if (excerpt) excerpt.textContent = post.excerpt;
+		if (link) link.href = post.href;
+	}
+
+	function applyListItem(item, post) {
+		if (!item || !post) {
+			return;
+		}
+
+		const tag = item.querySelector('.meta-pill');
+		const title = item.querySelector('h3');
+		const excerpt = item.querySelector('p');
+		const link = item.querySelector('a');
+
+		if (tag) tag.textContent = post.tag;
+		if (title) title.textContent = post.title;
+		if (excerpt) excerpt.textContent = post.excerpt;
+		if (link) link.href = post.href;
+	}
+
+	function renderInsightSections(view) {
+		const latestCards = [...document.querySelectorAll('#latest .blog-card')];
+		latestCards.forEach((card, index) => {
+			const post = view.latestPosts[index];
+			card.hidden = !post;
+			if (post) {
+				applyCard(card, post);
+			}
+		});
+
+		const columns = [...document.querySelectorAll('.blog-sections .blog-column')];
+		columns.forEach((column, index) => {
+			const section = view.sections[index];
+			if (!section) {
+				column.hidden = true;
+				return;
+			}
+
+			column.hidden = false;
+			const heading = column.querySelector('h2');
+			if (heading) {
+				heading.textContent = section.title;
+			}
+
+			const featureCard = column.querySelector('.feature-card');
+			if (featureCard) {
+				featureCard.hidden = !section.feature;
+				if (section.feature) {
+					applyFeature(featureCard, section.feature);
+				}
+			}
+
+			const listItems = [...column.querySelectorAll('.list-item')];
+			listItems.forEach((item, itemIndex) => {
+				const post = section.list[itemIndex];
+				item.hidden = !post;
+				if (post) {
+					applyListItem(item, post);
+				}
+			});
+		});
+	}
+
+	async function loadInsights() {
+		const params = new URLSearchParams({
+			'filter[language][_eq]': 'en',
+			'filter[status][_eq]': 'published',
+			sort: '-published_at',
+			limit: '100',
+		});
+
+		const response = await fetch(`${directusInsightsApiUrl}?${params.toString()}`, {
+			headers: {
+				Accept: 'application/json',
+				Authorization: `Bearer ${directusStaticToken}`,
+			},
+		});
+
+		if (!response.ok) {
+			throw new Error(`Failed to fetch bw-insights: ${response.status} ${response.statusText}`);
+		}
+
+		const payload = await response.json();
+		return Array.isArray(payload?.data) ? payload.data : [];
+	}
+
+	renderInsightSections(buildInsightView(fallbackInsights));
+
+	loadInsights()
+		.then((records) => {
+			if (records.length > 0) {
+				renderInsightSections(buildInsightView(records));
+			}
+		})
+		.catch((error) => {
+			console.error('Failed to load bw-insights content from Directus:', error);
+		});
+</script>
 
 <style>
 	:global(:root) {
@@ -259,6 +520,205 @@ const sections = [
 	.blog-hero__content {
 		position: relative;
 		z-index: 1;
+	}
+
+	.blog-section {
+		padding: 5rem var(--page-pad, clamp(1rem, 4vw, 5rem));
+	}
+
+	.blog-section__intro {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.5rem 2rem;
+		align-items: end;
+	}
+
+	.blog-section__tag {
+		margin: 0 0 0.75rem;
+		font-size: 1.25rem;
+		color: var(--blue, #00a1dc);
+	}
+
+	.blog-section__intro h2 {
+		margin: 0;
+		font-size: clamp(2.5rem, 4vw, 3.5rem);
+		line-height: 1.05;
+		letter-spacing: -0.03em;
+	}
+
+	.blog-section__intro > p:last-child {
+		margin: 0;
+		font-size: 1.25rem;
+		line-height: 1.35;
+		color: var(--muted, #5b5b5b);
+	}
+
+	.blog-section__grid {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 1.5rem;
+		margin-top: 1.875rem;
+	}
+
+	.blog-card {
+		position: relative;
+		min-height: 24.5rem;
+		padding: 1rem;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: flex-start;
+		gap: 0.5rem;
+		border-radius: 0.5rem;
+		border: 1px solid #b0b0b0;
+		color: white;
+		overflow: hidden;
+		isolation: isolate;
+		background: #3b3b3b;
+	}
+
+	.blog-card::before,
+	.blog-card::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+	}
+
+	.blog-card::before {
+		background-color: lightgray;
+		background-image: var(--blog-card-image);
+		background-position: var(--blog-card-image-position, center);
+		background-size: cover;
+		background-repeat: no-repeat;
+		filter: var(--blog-card-filter, none);
+		z-index: 0;
+	}
+
+	.blog-card::after {
+		background:
+			var(--blog-card-overlay-top, linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%)),
+			var(--blog-card-overlay-bottom, linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.32) 50%));
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	.blog-card > * {
+		position: relative;
+		z-index: 2;
+	}
+
+	.blog-card__tag {
+		display: inline-flex;
+		align-items: center;
+		width: fit-content;
+		padding: 0.375rem 0.5rem;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.92);
+		font-size: 0.625rem;
+		font-weight: 600;
+		line-height: 1;
+	}
+
+	.blog-card__spacer {
+		flex: 0 0 auto;
+		width: 100%;
+		min-height: 0;
+		aspect-ratio: 652 / 384;
+	}
+
+	.blog-card__footer {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.5rem;
+	}
+
+	.blog-card__content {
+		max-width: 16.875rem;
+		min-height: 7.5rem;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.blog-card h3 {
+		margin: 0;
+		max-width: 16.875rem;
+		font-size: 1.25rem;
+		line-height: 1.12;
+		letter-spacing: -0.02em;
+	}
+
+	.blog-card p {
+		margin: 0;
+		color: white;
+		font-size: 0.875rem;
+		line-height: 1.12;
+		max-width: 16.875rem;
+		display: -webkit-box;
+		-webkit-line-clamp: 4;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.blog-card__link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		min-height: 2.625rem;
+		padding: 0.75rem 1rem;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 1);
+		font-size: 1.125rem;
+		line-height: 1;
+		text-decoration: none;
+		white-space: nowrap;
+		color: white;
+	}
+
+	.blog-card--metocean {
+		--blog-card-filter: grayscale(1);
+		--blog-card-overlay-top: linear-gradient(180deg, rgba(0, 161, 220, 0) 0%, rgba(0, 161, 220, 0.08) 100%);
+		--blog-card-overlay-bottom: linear-gradient(180deg, rgba(0, 161, 220, 0) 0%, rgba(20, 93, 133, 0.72) 77.895%);
+		--blog-card-image-position: center 38%;
+	}
+
+	.blog-card--land {
+		--blog-card-filter: none;
+		--blog-card-overlay-top: linear-gradient(180deg, rgba(8, 33, 18, 0) 0%, rgba(8, 33, 18, 0.18) 100%);
+		--blog-card-overlay-bottom: linear-gradient(180deg, rgba(11, 39, 20, 0) 0%, rgba(11, 39, 20, 0.58) 52%);
+		--blog-card-image-position: center 46%;
+	}
+
+	.blog-card--warning {
+		--blog-card-filter: grayscale(1);
+		--blog-card-overlay-bottom: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.32) 50%);
+	}
+
+	.blog-card--warning h3,
+	.blog-card--warning p {
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.blog-card--warning h3 {
+		-webkit-line-clamp: 3;
+	}
+
+	.blog-card--warning p {
+		-webkit-line-clamp: 4;
+	}
+
+	.blog-card--solar {
+		--blog-card-filter: none;
+		--blog-card-overlay-top: linear-gradient(180deg, rgba(147, 73, 12, 0) 0%, rgba(147, 73, 12, 0.16) 100%);
+		--blog-card-overlay-bottom: linear-gradient(180deg, rgba(61, 30, 4, 0) 0%, rgba(61, 30, 4, 0.46) 56%);
+		--blog-card-image-position: center 42%;
 	}
 
 	.topbar {
@@ -410,8 +870,11 @@ const sections = [
 	}
 
 	.feature-card::before {
-		background:
-			var(--feature-card-image) lightgray var(--feature-card-image-position, center) / cover no-repeat;
+		background-color: lightgray;
+		background-image: var(--feature-card-image);
+		background-position: var(--feature-card-image-position, center);
+		background-size: cover;
+		background-repeat: no-repeat;
 		filter: var(--feature-card-filter, grayscale(1));
 		z-index: 0;
 	}
@@ -447,6 +910,32 @@ const sections = [
 		--feature-card-filter: none;
 		--feature-card-overlay-top: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.12) 100%);
 		--feature-card-overlay-bottom: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.32) 100%);
+		--feature-card-image-position: center 42%;
+	}
+
+	.feature-card--metocean {
+		--feature-card-filter: grayscale(1);
+		--feature-card-overlay-top: linear-gradient(180deg, rgba(0, 161, 220, 0) 0%, rgba(0, 161, 220, 0.08) 100%);
+		--feature-card-overlay-bottom: linear-gradient(180deg, rgba(0, 161, 220, 0) 0%, rgba(20, 93, 133, 0.72) 77.895%);
+		--feature-card-image-position: center 38%;
+	}
+
+	.feature-card--land {
+		--feature-card-filter: none;
+		--feature-card-overlay-top: linear-gradient(180deg, rgba(8, 33, 18, 0) 0%, rgba(8, 33, 18, 0.18) 100%);
+		--feature-card-overlay-bottom: linear-gradient(180deg, rgba(11, 39, 20, 0) 0%, rgba(11, 39, 20, 0.58) 52%);
+		--feature-card-image-position: center 46%;
+	}
+
+	.feature-card--warning {
+		--feature-card-filter: grayscale(1);
+		--feature-card-overlay-bottom: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.32) 50%);
+	}
+
+	.feature-card--solar {
+		--feature-card-filter: none;
+		--feature-card-overlay-top: linear-gradient(180deg, rgba(147, 73, 12, 0) 0%, rgba(147, 73, 12, 0.16) 100%);
+		--feature-card-overlay-bottom: linear-gradient(180deg, rgba(61, 30, 4, 0) 0%, rgba(61, 30, 4, 0.46) 56%);
 		--feature-card-image-position: center 42%;
 	}
 

@@ -2,6 +2,7 @@ const directusPanelBaseUrl = 'https://panel.braga.co.id/panel';
 
 export const directusMessagesApiUrl = `${directusPanelBaseUrl}/items/Messages`;
 export const directusTeamMembersApiUrl = `${directusPanelBaseUrl}/items/team_member`;
+export const directusInsightsApiUrl = `${directusPanelBaseUrl}/items/bw-insights`;
 export const directusStaticToken = 'F7WXBm590W2sO3cpb4Cf4I_kcu4alJQ4';
 
 const directusJsonHeaders = {
@@ -40,8 +41,57 @@ export type DirectusPageRecord = {
 	sections: Array<Record<string, unknown>>;
 };
 
+export type DirectusInsightRecord = {
+	id: string | number;
+	slug: string;
+	language: string;
+	status: string | null;
+	category: string | null;
+	title: string | null;
+	excerpt: string | null;
+	thumbnail: DirectusFileReference;
+	featured_image: DirectusFileReference;
+	listing_variant: string | null;
+	highlight_slots: string[] | string | null;
+	highlight_order: number | null;
+	published_at: string | null;
+	date_label: string | null;
+	body_markdown: string | null;
+	seo_title: string | null;
+	seo_description: string | null;
+};
+
+export type DirectusFileReference =
+	| string
+	| {
+			id?: string | null;
+			filename_disk?: string | null;
+			filename_download?: string | null;
+	  }
+	| null;
+
 export function getDirectusAssetUrl(assetId: string) {
 	return `${directusPanelBaseUrl}/assets/${assetId}`;
+}
+
+export function resolveDirectusImageUrl(asset: DirectusFileReference, fallback?: string) {
+	if (!asset) {
+		return fallback ?? '';
+	}
+
+	if (typeof asset === 'string') {
+		if (asset.startsWith('/')) {
+			return asset;
+		}
+
+		return getDirectusAssetUrl(asset);
+	}
+
+	if (asset.id) {
+		return getDirectusAssetUrl(asset.id);
+	}
+
+	return fallback ?? '';
 }
 
 export async function fetchDirectusCollection<T>(collection: string, params?: URLSearchParams) {

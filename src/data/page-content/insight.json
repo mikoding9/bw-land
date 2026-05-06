@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "page": "insight",
+  "route": "/insight",
+  "navigation_key": "insight",
+  "seo": {
+    "title": "Insight | Bhumi Warih"
+  },
+  "hero": {
+    "eyebrow": "/Insight",
+    "title": "Get To Know the Metocean Study, Assess Extreme Weather Risk for Your Project",
+    "meta": "Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering, or renewable energy, project site.",
+    "assets": {
+      "featured_image": "/figma/blog-hero-image.png",
+      "footer_shape": "/figma/blog-contact-shape.svg"
+    }
+  },
+  "sections": [
+    {
+      "id": "featured_post",
+      "type": "hero_article_teaser",
+      "tag": "Industry",
+      "title": "Get To Know the Metocean Study, Assess Extreme Weather Risk for Your Project",
+      "excerpt": "Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering, or renewable energy, project site.",
+      "image": "/figma/blog-hero-image.png",
+      "href": "/insight/metocean-study-extreme-weather-risk",
+      "cta_label": "Read"
+    },
+    {
+      "id": "latest_intro",
+      "type": "copy_block",
+      "eyebrow": "",
+      "title": "Latest Insights",
+      "description": "Our freshest thoughts on the latest trends -- ongoing, and upcoming."
+    },
+    {
+      "id": "article_listing",
+      "type": "deferred",
+      "source": "bw-insights",
+      "render_mode": "client",
+      "note": "Article listing and category sections will be sourced from bw-insights later."
+    }
+  ]
+}

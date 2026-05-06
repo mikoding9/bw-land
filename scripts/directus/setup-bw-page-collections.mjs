@@ -130,6 +130,7 @@ function isTargetPage(parsed) {
 	return (
 		parsed.page === 'home' ||
 		parsed.page === 'industry' ||
+		parsed.page === 'insight' ||
 		parsed.page === 'about' ||
 		parsed.page === 'glossary' ||
 		parsed.page === 'legal-and-privacy' ||

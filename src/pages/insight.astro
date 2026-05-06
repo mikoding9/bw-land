@@ -1,19 +1,29 @@
 ---
 import BlogSection from '../components/BlogSection.astro';
 import Layout from '../layouts/Layout.astro';
+import { fetchDirectusPage } from '../data/directus';
+import insightPageFallback from '../data/page-content/insight.json';
 
 const heroImage = '/figma/blog-hero-image.png';
 const blogCardA = '/figma/blog-card-feature-a.png';
 const blogCardB = '/figma/blog-card-feature-b.png';
 const footerShape = '/figma/blog-contact-shape.svg';
 
-const featuredPost = {
-	tag: 'Industry',
-	title: 'Get To Know the Metocean Study, Assess Extreme Weather Risk for Your Project',
-	excerpt:
-		'Metocean is concerned with understanding meteorological and oceanographic conditions at an engineering, or renewable energy, project site.',
-	image: heroImage,
+const fallbackPage = await fetchDirectusPage('insight').catch((error) => {
+	console.error('Failed to load insight page content from Directus:', error);
+	return null;
+});
+
+const pageRecord = fallbackPage ?? {
+	seo_title: insightPageFallback.seo.title,
+	hero_title: insightPageFallback.hero.title,
+	hero_meta: insightPageFallback.hero.meta,
+	sections: insightPageFallback.sections,
 };
+
+const sectionById = Object.fromEntries((pageRecord.sections ?? []).map((section) => [section.id, section]));
+const featuredPost = sectionById.featured_post ?? insightPageFallback.sections.find((section) => section.id === 'featured_post');
+const latestIntro = sectionById.latest_intro ?? insightPageFallback.sections.find((section) => section.id === 'latest_intro');
 
 const latestPosts = [
 	{
@@ -142,27 +152,27 @@ const sections = [
 ];
 ---
 
-<Layout title="Insight | Bhumi Warih" activeNav="insight" footerShape={footerShape}>
+<Layout title={pageRecord.seo_title ?? 'Insight | Bhumi Warih'} activeNav="insight" footerShape={footerShape}>
 	<main class="blog-page">
 		<section class="blog-hero" data-nav-hero>
 			<div class="blog-hero__media">
-				<img src={featuredPost.image} alt="" />
+				<img src={featuredPost.image ?? heroImage} alt="" />
 			</div>
 
 			<div class="blog-hero__content">
 				<div class="meta-pill">{featuredPost.tag}</div>
 				<h1>{featuredPost.title}</h1>
 				<p>{featuredPost.excerpt}</p>
-				<a href="/insight/metocean-study-extreme-weather-risk" class="pill pill--solid">Read <span aria-hidden="true">→</span></a>
+				<a href={featuredPost.href ?? '/insight/metocean-study-extreme-weather-risk'} class="pill pill--solid">{featuredPost.cta_label ?? 'Read'} <span aria-hidden="true">→</span></a>
 			</div>
 		</section>
 
 		<BlogSection
 			id="latest"
 			posts={latestPosts}
-			eyebrow=""
-			title="Latest Insights"
-			description="Our freshest thoughts on the latest trends -- ongoing, and upcoming."
+			eyebrow={latestIntro.eyebrow}
+			title={latestIntro.title}
+			description={latestIntro.description}
 		/>
 
 		<section class="blog-sections">

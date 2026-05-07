@@ -1,55 +1,73 @@
 ---
+import { marked } from 'marked';
 import BlogSection from '../../components/BlogSection.astro';
-import { blogPostSummaries, getBlogPostBySlug } from '../../data/blog';
+import {
+	buildReadMoreCards,
+	fetchDirectusInsightBySlug,
+	fetchDirectusInsights,
+	getInsightSeedBySlug,
+	getInsightSeedRecords,
+	resolveInsightImageUrl,
+	type InsightRecord,
+} from '../../data/insights';
 import Layout from '../../layouts/Layout.astro';
 
-export function getStaticPaths() {
-	return blogPostSummaries.map((post) => ({
+export async function getStaticPaths() {
+	const records = await fetchDirectusInsights().catch((error) => {
+		console.error('Failed to load insight slugs from Directus:', error);
+		return getInsightSeedRecords();
+	});
+
+	return records.map((post) => ({
 		params: { slug: post.slug },
-		props: { post: getBlogPostBySlug(post.slug)! },
 	}));
 }
 
-const { post } = Astro.props;
+const { slug } = Astro.params;
+const post =
+	(await fetchDirectusInsightBySlug(slug!).catch((error) => {
+		console.error(`Failed to load insight "${slug}" from Directus:`, error);
+		return null;
+	})) ?? getInsightSeedBySlug(slug!);
+
+if (!post) {
+	throw new Error(`Insight article not found for slug "${slug}"`);
+}
+
+const allPosts = await fetchDirectusInsights().catch((error) => {
+	console.error('Failed to load related insights from Directus:', error);
+	return getInsightSeedRecords();
+});
+
+const readMorePosts = buildReadMoreCards(allPosts, post.slug);
+const bodyHtml = await marked.parse(post.body_markdown ?? '');
+const heroImage = resolveInsightImageUrl(post.featured_image ?? post.thumbnail);
 const footerShape = '/figma/blog-contact-shape.svg';
 ---
 
-<Layout title={`${post.title} | Bhumi Warih`} activeNav="insight" footerShape={footerShape}>
+<Layout title={`${post.seo_title ?? post.title} | Bhumi Warih`} activeNav="insight" footerShape={footerShape}>
 	<main class="article-page">
 		<section class="article-hero" data-nav-hero>
+			{heroImage && (
+				<div class="article-hero__media">
+					<img src={heroImage} alt="" />
+				</div>
+			)}
+
 			<div class="article-hero__inner">
-				<p class="article-hero__breadcrumb">Insight / {post.tag}</p>
-				<h1>{post.heroTitle ?? post.title}</h1>
-				<p class="article-hero__meta">{post.dateLabel}</p>
+				<p class="article-hero__breadcrumb">Insight / {post.category ?? 'Insight'}</p>
+				<h1>{post.title}</h1>
+				{post.date_label && <p class="article-hero__meta">{post.date_label}</p>}
 			</div>
 		</section>
 
 		<article class="article-body">
-			<div class="article-body__copy">
-				{
-					post.bodyParagraphs.map((paragraph) => (
-						<p>{paragraph}</p>
-					))
-				}
-
-				<figure class="article-body__figure">
-					<img src={post.reportImage} alt={post.reportImageAlt} loading="lazy" />
-				</figure>
-
-				<p class="article-body__callout">
-					{post.callout.beforeLink}
-					<a href={post.callout.reportHref} target="_blank" rel="noreferrer">here</a>
-					{post.callout.middleText}
-					<a href={post.callout.serviceHref} target="_blank" rel="noreferrer">here</a>.
-				</p>
-
-				<p>{post.closingParagraph}</p>
-			</div>
+			<div class="article-body__copy article-body__richtext" set:html={bodyHtml}></div>
 		</article>
 
 		<BlogSection
 			id="read-more"
-			posts={blogPostSummaries.map((entry) => ({ ...entry, href: `/insight/${entry.slug}` }))}
+			posts={readMorePosts}
 			eyebrow=""
 			title="Read More"
 			description="Our freshest thoughts on the latest trends -- ongoing, and upcoming."
@@ -64,12 +82,35 @@ const footerShape = '/figma/blog-contact-shape.svg';
 	}
 
 	.article-hero {
+		position: relative;
 		background: #0b3479;
 		color: #ffffff;
 		padding: 13.75rem clamp(1rem, 5.56vw, 5rem) 3rem;
+		overflow: clip;
+	}
+
+	.article-hero__media,
+	.article-hero__media img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.article-hero__media img {
+		object-fit: cover;
+	}
+
+	.article-hero__media::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(180deg, rgba(11, 52, 121, 0.32) 0%, rgba(11, 52, 121, 0.88) 100%);
 	}
 
 	.article-hero__inner {
+		position: relative;
+		z-index: 1;
 		width: min(100%, 52.75rem);
 	}
 
@@ -107,32 +148,52 @@ const footerShape = '/figma/blog-contact-shape.svg';
 		line-height: 1.24;
 	}
 
-	.article-body__copy p {
+	.article-body__richtext :is(p, ul, ol, blockquote, pre, table) {
 		margin: 0 0 1.5rem;
 	}
 
-	.article-body__figure {
-		margin: 3rem 0 2.5rem;
+	.article-body__richtext :is(h2, h3, h4) {
+		margin: 2.5rem 0 1rem;
+		line-height: 1.08;
+		letter-spacing: -0.03em;
 	}
 
-	.article-body__figure img {
-		display: block;
-		width: 100%;
-		height: auto;
+	.article-body__richtext h2 {
+		font-size: clamp(2rem, 3vw, 3rem);
 	}
 
-	.article-body__callout {
-		margin: 0 0 2.5rem;
+	.article-body__richtext h3 {
+		font-size: clamp(1.5rem, 2.2vw, 2rem);
+	}
+
+	.article-body__richtext :is(a, a:visited) {
+		color: inherit;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.1em;
+	}
+
+	.article-body__richtext ul,
+	.article-body__richtext ol {
+		padding-left: 1.5rem;
+	}
+
+	.article-body__richtext li + li {
+		margin-top: 0.5rem;
+	}
+
+	.article-body__richtext blockquote {
+		margin: 2rem 0;
 		padding-left: 1.625rem;
 		border-left: 2px solid #6aa7db;
 		font-size: clamp(1.125rem, 2.2vw, 2rem);
 		line-height: 1.24;
 	}
 
-	.article-body__callout a {
-		color: inherit;
-		text-decoration-thickness: 1px;
-		text-underline-offset: 0.1em;
+	.article-body__richtext img {
+		display: block;
+		width: 100%;
+		height: auto;
+		margin: 2rem 0;
 	}
 
 	@media (max-width: 900px) {
@@ -154,11 +215,7 @@ const footerShape = '/figma/blog-contact-shape.svg';
 			font-size: 1rem;
 		}
 
-		.article-body__figure {
-			margin: 2rem 0;
-		}
-
-		.article-body__callout {
+		.article-body__richtext blockquote {
 			padding-left: 1rem;
 			font-size: 1.125rem;
 		}

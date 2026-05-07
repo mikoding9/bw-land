@@ -4,16 +4,17 @@ import {
 	directusInsightsApiUrl,
 	directusStaticToken,
 	fetchDirectusPage,
-	resolveDirectusImageUrl,
-	type DirectusFileReference,
-	type DirectusInsightRecord,
 } from '../data/directus';
+import {
+	buildInsightView,
+	getInsightSeedRecords,
+	resolveInsightTeaserHref,
+	type InsightRecord,
+} from '../data/insights';
 import insightPageFallback from '../data/page-content/insight.json';
-import insightsSeed from '../data/insights.seed.json';
 
 const heroImage = '/figma/blog-hero-image.png';
 const footerShape = '/figma/blog-contact-shape.svg';
-const insightCategories = ['Products', 'Projects', 'Company News', 'Science and Technology'] as const;
 
 const fallbackPage = await fetchDirectusPage('insight').catch((error) => {
 	console.error('Failed to load insight page content from Directus:', error);
@@ -31,121 +32,12 @@ const sectionById = Object.fromEntries((pageRecord.sections ?? []).map((section)
 const featuredPost = sectionById.featured_post ?? insightPageFallback.sections.find((section) => section.id === 'featured_post');
 const latestIntro = sectionById.latest_intro ?? insightPageFallback.sections.find((section) => section.id === 'latest_intro');
 
-type InsightSeedRecord = typeof insightsSeed.items[number];
-
-type InsightCard = {
-	tag: string;
-	title: string;
-	excerpt: string;
-	image: string;
-	variant: string;
-	href: string;
-};
-
-type InsightListItem = {
-	tag: string;
-	title: string;
-	excerpt: string;
-	href: string;
-};
-
-type InsightSection = {
-	title: string;
-	feature: InsightCard;
-	list: InsightListItem[];
-};
-
-function parseHighlightSlots(value: DirectusInsightRecord['highlight_slots'] | InsightSeedRecord['highlight_slots']) {
-	if (Array.isArray(value)) {
-		return value;
-	}
-
-	if (typeof value === 'string') {
-		try {
-			const parsed = JSON.parse(value);
-			return Array.isArray(parsed) ? parsed : [value];
-		} catch {
-			return [value];
-		}
-	}
-
-	return [];
-}
-
-function toInsightHref(slug: string) {
-	return '#';
-}
-
-function toImageUrl(asset: DirectusFileReference | string | null | undefined) {
-	return resolveDirectusImageUrl(asset as DirectusFileReference, heroImage);
-}
-
-function toInsightCard(record: DirectusInsightRecord | InsightSeedRecord): InsightCard {
-	return {
-		tag: record.category ?? 'Insight',
-		title: record.title ?? 'Untitled insight',
-		excerpt: record.excerpt ?? '',
-		image: toImageUrl(record.thumbnail),
-		variant: record.listing_variant ?? 'metocean',
-		href: toInsightHref(record.slug),
-	};
-}
-
-function toInsightFeature(record: DirectusInsightRecord | InsightSeedRecord): InsightCard {
-	return {
-		...toInsightCard(record),
-		image: toImageUrl(record.featured_image ?? record.thumbnail),
-	};
-}
-
-function sortByHighlight(records: Array<DirectusInsightRecord | InsightSeedRecord>) {
-	return [...records].sort((left, right) => {
-		const leftOrder = left.highlight_order ?? Number.MAX_SAFE_INTEGER;
-		const rightOrder = right.highlight_order ?? Number.MAX_SAFE_INTEGER;
-		if (leftOrder !== rightOrder) {
-			return leftOrder - rightOrder;
-		}
-
-		const leftDate = left.published_at ? Date.parse(left.published_at) : 0;
-		const rightDate = right.published_at ? Date.parse(right.published_at) : 0;
-		return rightDate - leftDate;
-	});
-}
-
-function getRecordsForSlot(records: Array<DirectusInsightRecord | InsightSeedRecord>, slot: string) {
-	return sortByHighlight(records.filter((record) => parseHighlightSlots(record.highlight_slots).includes(slot)));
-}
-
-function buildInsightView(records: Array<DirectusInsightRecord | InsightSeedRecord>) {
-	const publishedRecords = records.filter((record) => (record.status ?? 'published') === 'published');
-	const latestPosts = getRecordsForSlot(publishedRecords, 'latest').slice(0, 4).map(toInsightCard);
-	const sections = insightCategories.map((category) => {
-		const categoryKey = category.toLowerCase().replaceAll(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
-		const featureRecord =
-			getRecordsForSlot(publishedRecords, `${categoryKey}_feature`)[0] ??
-			publishedRecords.find((record) => record.category === category);
-		const listRecords =
-			getRecordsForSlot(publishedRecords, `${categoryKey}_list`).slice(0, 3).length > 0
-				? getRecordsForSlot(publishedRecords, `${categoryKey}_list`).slice(0, 3)
-				: publishedRecords.filter((record) => record.category === category && record.slug !== featureRecord?.slug).slice(0, 3);
-
-		return {
-			title: category,
-			feature: featureRecord ? toInsightFeature(featureRecord) : null,
-			list: listRecords.map((record) => toInsightCard(record)),
-		};
-	});
-
-	return {
-		latestPosts,
-		sections,
-	};
-}
-
-const insightView = buildInsightView(insightsSeed.items);
+const insightSeedRecords = getInsightSeedRecords();
+const insightView = buildInsightView(insightSeedRecords);
+const featuredPostHref = resolveInsightTeaserHref(featuredPost ?? {}, insightSeedRecords);
 const latestPosts = insightView.latestPosts;
-const sections = insightView.sections as InsightSection[];
-const insightSeedPayload = JSON.stringify(insightsSeed.items);
+const sections = insightView.sections;
+const insightSeedPayload = JSON.stringify(insightSeedRecords as InsightRecord[]);
 ---
 
 <Layout title={pageRecord.seo_title ?? 'Insight | Bhumi Warih'} activeNav="insight" footerShape={footerShape}>
@@ -159,7 +51,7 @@ const insightSeedPayload = JSON.stringify(insightsSeed.items);
 				<div class="meta-pill">{featuredPost.tag}</div>
 				<h1>{featuredPost.title}</h1>
 				<p>{featuredPost.excerpt}</p>
-				<a href={featuredPost.href ?? '/insight/metocean-study-extreme-weather-risk'} class="pill pill--solid">{featuredPost.cta_label ?? 'Read'} <span aria-hidden="true">→</span></a>
+				<a href={featuredPostHref} class="pill pill--solid">{featuredPost.cta_label ?? 'Read'} <span aria-hidden="true">→</span></a>
 			</div>
 		</section>
 
@@ -292,8 +184,8 @@ const insightSeedPayload = JSON.stringify(insightsSeed.items);
 		return sortByHighlight(records.filter((record) => parseHighlightSlots(record.highlight_slots).includes(slot)));
 	}
 
-	function toInsightHref() {
-		return '#';
+	function toInsightHref(slug) {
+		return slug ? `/insight/${slug}` : '#';
 	}
 
 	function toImageUrl(asset) {

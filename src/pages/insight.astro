@@ -11,6 +11,7 @@ import {
 	resolveInsightTeaserHref,
 	type InsightRecord,
 } from '../data/insights';
+import { organizationName, toAbsoluteUrl, toMetaDescription } from '../data/site';
 import insightPageFallback from '../data/page-content/insight.json';
 
 const heroImage = '/figma/blog-hero-image.png';
@@ -38,13 +39,33 @@ const featuredPostHref = resolveInsightTeaserHref(featuredPost ?? {}, insightSee
 const latestPosts = insightView.latestPosts;
 const sections = insightView.sections;
 const insightSeedPayload = JSON.stringify(insightSeedRecords as InsightRecord[]);
+const pageDescription = toMetaDescription(featuredPost?.excerpt, latestIntro?.description, pageRecord.hero_meta);
+const pageSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'CollectionPage',
+	name: pageRecord.seo_title ?? 'Insight | Bhumi Warih',
+	description: pageDescription,
+	url: toAbsoluteUrl('/insight'),
+	about: {
+		'@type': 'Organization',
+		name: organizationName,
+	},
+};
 ---
 
-<Layout title={pageRecord.seo_title ?? 'Insight | Bhumi Warih'} activeNav="insight" footerShape={footerShape}>
+<Layout
+	title={pageRecord.seo_title ?? 'Insight | Bhumi Warih'}
+	description={pageDescription}
+	canonicalPath="/insight"
+	image={featuredPost.image ?? heroImage}
+	activeNav="insight"
+	footerShape={footerShape}
+	schema={pageSchema}
+>
 	<main class="blog-page">
 		<section class="blog-hero" data-nav-hero>
 			<div class="blog-hero__media">
-				<img src={featuredPost.image ?? heroImage} alt="" />
+				<img src={featuredPost.image ?? heroImage} alt={featuredPost.title ?? 'Featured insight'} />
 			</div>
 
 			<div class="blog-hero__content">

@@ -10,6 +10,7 @@ import {
 	resolveInsightImageUrl,
 	type InsightRecord,
 } from '../../data/insights';
+import { organizationName, toAbsoluteUrl, toMetaDescription } from '../../data/site';
 import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
@@ -43,14 +44,67 @@ const readMorePosts = buildReadMoreCards(allPosts, post.slug);
 const bodyHtml = await marked.parse(post.body_markdown ?? '');
 const heroImage = resolveInsightImageUrl(post.featured_image ?? post.thumbnail);
 const footerShape = '/figma/blog-contact-shape.svg';
+const articlePath = `/insight/${post.slug}`;
+const pageDescription = toMetaDescription(post.seo_description, post.excerpt, post.title);
+const pageSchema = [
+	{
+		'@context': 'https://schema.org',
+		'@type': 'Article',
+		headline: post.title,
+		description: pageDescription,
+		author: {
+			'@type': 'Organization',
+			name: organizationName,
+		},
+		publisher: {
+			'@type': 'Organization',
+			name: organizationName,
+			logo: {
+				'@type': 'ImageObject',
+				url: toAbsoluteUrl('/apple-touch-icon.png'),
+			},
+		},
+		mainEntityOfPage: toAbsoluteUrl(articlePath),
+		url: toAbsoluteUrl(articlePath),
+		image: heroImage ? [toAbsoluteUrl(heroImage)] : undefined,
+		datePublished: post.published_at ?? undefined,
+	},
+	{
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{
+				'@type': 'ListItem',
+				position: 1,
+				name: 'Insight',
+				item: toAbsoluteUrl('/insight'),
+			},
+			{
+				'@type': 'ListItem',
+				position: 2,
+				name: post.title,
+				item: toAbsoluteUrl(articlePath),
+			},
+		],
+	},
+];
 ---
 
-<Layout title={`${post.seo_title ?? post.title} | Bhumi Warih`} activeNav="insight" footerShape={footerShape}>
+<Layout
+	title={`${post.seo_title ?? post.title} | Bhumi Warih`}
+	description={pageDescription}
+	canonicalPath={articlePath}
+	image={heroImage}
+	ogType="article"
+	activeNav="insight"
+	footerShape={footerShape}
+	schema={pageSchema}
+>
 	<main class="article-page">
 		<section class="article-hero" data-nav-hero>
 			{heroImage && (
 				<div class="article-hero__media">
-					<img src={heroImage} alt="" />
+					<img src={heroImage} alt={post.title} />
 				</div>
 			)}
 

@@ -2,6 +2,7 @@
 import ServicesSection from '../../components/ServicesSection.astro';
 import { fetchDirectusPage } from '../../data/directus';
 import { services, type ServiceItem } from '../../data/services';
+import { toAbsoluteUrl, toMetaDescription } from '../../data/site';
 import servicePageFallback from '../../data/page-content/service-metocean-dss.json';
 import Layout from '../../layouts/Layout.astro';
 
@@ -71,13 +72,25 @@ const relatedServices: ServiceItem[] = Array.isArray(relatedServicesSection?.ite
 			tone: item.tone,
 		}))
 	: services;
+const pageDescription = toMetaDescription(aboutSection?.lead, aboutSection?.body, aboutSection?.kicker);
+const pageSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'WebPage',
+	name: pageRecord.seo_title ?? 'MetOcean DSS | Bhumi Warih',
+	description: pageDescription,
+	url: toAbsoluteUrl('/service/metocean-dss'),
+};
 
 ---
 
 <Layout
 	title={pageRecord.seo_title ?? 'MetOcean DSS | Bhumi Warih'}
+	description={pageDescription}
+	canonicalPath="/service/metocean-dss"
+	image={forecast7Image}
 	activeNav="service"
 	footerShape={footerShape}
+	schema={pageSchema}
 >
 	<main class="service-page">
 		<section class="service-hero" data-nav-hero>

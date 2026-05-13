@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { fetchDirectusPage } from '../data/directus';
+import { toAbsoluteUrl, toMetaDescription } from '../data/site';
 import glossaryPageFallback from '../data/page-content/glossary.json';
 
 const heroShape = '/figma/legal-glossary-hero-wave.svg';
@@ -82,9 +83,25 @@ const introSection = sectionById.intro ?? glossaryPageFallback.sections.find((se
 const glossaryTableSection = sectionById.glossary_table ?? glossaryPageFallback.sections.find((section) => section.id === 'glossary_table');
 const introParagraphs = introSection.paragraphs ?? fallbackIntroParagraphs;
 const glossaryRows = glossaryTableSection.rows ?? fallbackGlossaryRows;
+const pageDescription = toMetaDescription(introSection?.title, introParagraphs[0], introParagraphs[1]);
+const pageSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'DefinedTermSet',
+	name: pageRecord.seo_title ?? 'Metocean Glossary | Bhumi Warih',
+	description: pageDescription,
+	url: toAbsoluteUrl('/glossary'),
+};
 ---
 
-<Layout title={pageRecord.seo_title ?? 'Metocean Glossary | Bhumi Warih'} footerShape={footerShape} footerGlossaryHref="/glossary">
+<Layout
+	title={pageRecord.seo_title ?? 'Metocean Glossary | Bhumi Warih'}
+	description={pageDescription}
+	canonicalPath="/glossary"
+	image="/apple-touch-icon.png"
+	footerShape={footerShape}
+	footerGlossaryHref="/glossary"
+	schema={pageSchema}
+>
 	<main class="glossary-page">
 		<section class="glossary-hero" data-nav-hero>
 			<div class="glossary-hero__bg"></div>

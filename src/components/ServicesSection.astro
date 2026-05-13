@@ -44,7 +44,7 @@ const stackedServices = services.filter((service) => service.slug !== featuredSe
 							</a>
 						</div>
 						<div class="services-card__media">
-							<img src={service.image} alt="" />
+							<img src={service.image} alt={service.title} loading="lazy" />
 						</div>
 					</article>
 				))
@@ -63,7 +63,7 @@ const stackedServices = services.filter((service) => service.slug !== featuredSe
 						</a>
 					</div>
 					<div class="services-card__media">
-						<img src={featuredService.image} alt="" />
+						<img src={featuredService.image} alt={featuredService.title} loading="lazy" />
 					</div>
 				</article>
 			)

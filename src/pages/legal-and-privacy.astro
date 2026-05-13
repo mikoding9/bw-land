@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { fetchDirectusPage } from '../data/directus';
+import { toAbsoluteUrl, toMetaDescription } from '../data/site';
 import legalPageFallback from '../data/page-content/legal-and-privacy.json';
 
 const heroShape = '/figma/legal-glossary-hero-wave.svg';
@@ -76,12 +77,24 @@ const pageRecord = fallbackPage ?? {
 };
 
 const sections = pageRecord.sections ?? fallbackSections;
+const pageDescription = toMetaDescription(sections[0]?.paragraphs?.[0], sections[0]?.paragraphs?.[1]);
+const pageSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'WebPage',
+	name: pageRecord.seo_title ?? 'Legal and Privacy | Bhumi Warih',
+	description: pageDescription,
+	url: toAbsoluteUrl('/legal-and-privacy'),
+};
 ---
 
 <Layout
 	title={pageRecord.seo_title ?? 'Legal and Privacy | Bhumi Warih'}
+	description={pageDescription}
+	canonicalPath="/legal-and-privacy"
+	image="/apple-touch-icon.png"
 	footerShape={footerShape}
 	footerLegalHref="/legal-and-privacy"
+	schema={pageSchema}
 >
 	<main class="legal-page">
 		<section class="legal-hero" data-nav-hero>

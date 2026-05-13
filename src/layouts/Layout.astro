@@ -1,13 +1,57 @@
 ---
 import { directusMessagesApiUrl, directusStaticToken } from '../data/directus';
+import {
+	defaultOgImage,
+	organizationName,
+	siteName,
+	toAbsoluteUrl,
+	toMetaDescription,
+} from '../data/site';
 
 const {
 	title = 'Bhumi Warih',
+	description = '',
 	activeNav = '',
 	footerShape = '',
 	footerGlossaryHref = '/glossary',
 	footerLegalHref = '/legal-and-privacy',
+	canonicalPath = Astro.url.pathname,
+	image = defaultOgImage,
+	robots = 'index,follow',
+	ogType = 'website',
+	schema = [],
 } = Astro.props;
+
+const metaDescription = toMetaDescription(description, title);
+const canonicalUrl = toAbsoluteUrl(canonicalPath);
+const socialImageUrl = toAbsoluteUrl(image);
+const schemaItems = Array.isArray(schema) ? schema : [schema];
+const organizationSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Organization',
+	name: organizationName,
+	url: toAbsoluteUrl('/'),
+	logo: toAbsoluteUrl('/apple-touch-icon.png'),
+	email: 'bw@bwgeohydromatics.com',
+	sameAs: [
+		'https://www.facebook.com/profile.php?id=100009719311453',
+		'https://www.linkedin.com/company/bwgeohydromatics/posts/?feedView=all',
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: 'Non Stop Building 2nd Floor Unit 7, Jl. Tubagus Ismail No.40',
+		addressLocality: 'Bandung',
+		postalCode: '40134',
+		addressCountry: 'ID',
+	},
+};
+const webSiteSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'WebSite',
+	name: siteName,
+	url: toAbsoluteUrl('/'),
+};
+const jsonLd = JSON.stringify([organizationSchema, webSiteSchema, ...schemaItems]);
 
 const topNavLogo = '/figma/top-nav-logo.svg';
 const topNavLogoScrolled = '/figma/top-nav-logo-scrolled.svg';
@@ -63,7 +107,21 @@ const navItems = [
 			rel="stylesheet"
 		/>
 		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={metaDescription} />
+		<meta name="robots" content={robots} />
+		<link rel="canonical" href={canonicalUrl} />
+		<meta property="og:site_name" content={siteName} />
+		<meta property="og:type" content={ogType} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={metaDescription} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:image" content={socialImageUrl} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={metaDescription} />
+		<meta name="twitter:image" content={socialImageUrl} />
 		<title>{title}</title>
+		<script type="application/ld+json" set:html={jsonLd}></script>
 	</head>
 	<body>
 		<header class="site-topbar">

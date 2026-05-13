@@ -2,6 +2,7 @@
 import ServicesSection from '../../components/ServicesSection.astro';
 import { fetchDirectusPage } from '../../data/directus';
 import { services, type ServiceItem } from '../../data/services';
+import { toAbsoluteUrl, toMetaDescription } from '../../data/site';
 import servicePageFallback from '../../data/page-content/service-metocean-design-criteria.json';
 import Layout from '../../layouts/Layout.astro';
 
@@ -69,13 +70,25 @@ const relatedServices: ServiceItem[] = Array.isArray(relatedServicesSection?.ite
 			tone: item.tone,
 		}))
 	: services;
+const pageDescription = toMetaDescription(aboutSection?.lead, aboutSection?.body, relatedServicesSection?.description);
+const pageSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'WebPage',
+	name: pageRecord.seo_title ?? 'MetOcean Design Criteria | Bhumi Warih',
+	description: pageDescription,
+	url: toAbsoluteUrl('/service/metocean-design-criteria'),
+};
 
 ---
 
 <Layout
 	title={pageRecord.seo_title ?? 'MetOcean Design Criteria | Bhumi Warih'}
+	description={pageDescription}
+	canonicalPath="/service/metocean-design-criteria"
+	image={atlasImage}
 	activeNav="service"
 	footerShape={footerShape}
+	schema={pageSchema}
 >
 	<main class="service-page">
 		<section class="service-hero" data-nav-hero>

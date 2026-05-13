@@ -3,8 +3,9 @@ import { Image } from "astro:assets";
 import BlogSection from "../components/BlogSection.astro";
 import Layout from "../layouts/Layout.astro";
 import ServicesSection from "../components/ServicesSection.astro";
-import { blogPostSummaries } from "../data/blog";
 import { fetchDirectusPage } from "../data/directus";
+import { buildReadMoreCards, fetchDirectusInsights, getInsightSeedRecords } from "../data/insights";
+import { organizationName, toAbsoluteUrl, toMetaDescription } from "../data/site";
 import { services, type ServiceItem } from "../data/services";
 import homePageFallback from "../data/page-content/home.json";
 import heroBackdropImage from "../assets/home/hero-bg.png";
@@ -76,11 +77,6 @@ const iconMap = {
     "extended-services": industryIconOther,
 };
 
-const blogPosts = blogPostSummaries.map((post) => ({
-    ...post,
-    href: `/insight/${post.slug}`,
-}));
-
 const homePage = await fetchDirectusPage("home").catch((error) => {
     console.error("Failed to load home page content from Directus:", error);
     return null;
@@ -133,9 +129,36 @@ const industries = Array.isArray(industriesSection?.items)
           items: industry.items,
       }))
     : fallbackIndustries;
+const insightRecords = await fetchDirectusInsights().catch((error) => {
+    console.error("Failed to load home insights from Directus:", error);
+    return getInsightSeedRecords();
+});
+const blogPosts = buildReadMoreCards(insightRecords, undefined, 4);
+const pageDescription = toMetaDescription(
+    aboutSection?.title,
+    aboutSection?.body,
+    servicesSection?.description,
+);
+const pageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: pageRecord.seo_title ?? "Bhumi Warih",
+    description: pageDescription,
+    url: toAbsoluteUrl("/"),
+    about: {
+        "@type": "Organization",
+        name: organizationName,
+    },
+};
 ---
 
-<Layout title={pageRecord.seo_title ?? "Bhumi Warih"}>
+<Layout
+    title={pageRecord.seo_title ?? "Bhumi Warih"}
+    description={pageDescription}
+    canonicalPath="/"
+    image="/apple-touch-icon.png"
+    schema={pageSchema}
+>
     <main class="page-shell">
         <section class="hero" id="home" data-nav-hero>
             <div class="hero__backdrop">

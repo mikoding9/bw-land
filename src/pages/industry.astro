@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { fetchDirectusPage } from '../data/directus';
+import { toAbsoluteUrl, toMetaDescription } from '../data/site';
 import industryPageFallback from '../data/page-content/industry.json';
 
 const heroShapes = '/figma/industry-hero-wave.svg';
@@ -94,9 +95,25 @@ const industries = Array.isArray(industriesSection?.items)
 			items: industry.items,
 		}))
 	: fallbackIndustries;
+const pageDescription = toMetaDescription(introSection?.body, industriesSection?.items?.[0]?.copy, fallbackIndustries[0]?.copy);
+const pageSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'WebPage',
+	name: pageRecord.seo_title ?? 'Industry Solutions | Bhumi Warih',
+	description: pageDescription,
+	url: toAbsoluteUrl('/industry'),
+};
 ---
 
-<Layout title={pageRecord.seo_title ?? 'Industry Solutions | Bhumi Warih'} activeNav="industry" footerShape={footerShapes}>
+<Layout
+	title={pageRecord.seo_title ?? 'Industry Solutions | Bhumi Warih'}
+	description={pageDescription}
+	canonicalPath="/industry"
+	image={oilImage}
+	activeNav="industry"
+	footerShape={footerShapes}
+	schema={pageSchema}
+>
 	<main class="industry-page">
 		<section class="industry-hero" data-nav-hero>
 			<div class="industry-hero__bg"></div>
@@ -129,7 +146,7 @@ const industries = Array.isArray(industriesSection?.items)
 
 						<div class="industry-row__content">
 							<div class="industry-row__image">
-								<img src={industry.image} alt="" />
+								<img src={industry.image} alt={industry.title} />
 							</div>
 							<div class="industry-row__body">
 								<p>{industry.copy}</p>

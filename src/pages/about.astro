@@ -3,7 +3,14 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import aboutHeroBaseImage from '../assets/about/hero-base.jpg';
 import aboutServiceImage from '../assets/about/service-image.png';
-import { directusStaticToken, directusTeamMembersApiUrl, fetchDirectusPage } from '../data/directus';
+import {
+	directusStaticToken,
+	directusTeamMembersApiUrl,
+	fetchDirectusCollection,
+	fetchDirectusPage,
+	type DirectusTeamMember,
+} from '../data/directus';
+import { organizationName, toAbsoluteUrl, toMetaDescription } from '../data/site';
 import aboutPageFallback from '../data/page-content/about.json';
 
 const heroBand = '/figma/about-hero-band.png';
@@ -39,9 +46,37 @@ const teamSection = sectionById.team ?? aboutPageFallback.sections.find((section
 
 const clientAssets = clientsSection.logos ?? [];
 const teamShots = Array.isArray(teamSection.gallery_images) ? teamSection.gallery_images : [teamShotA, teamShotB, teamShotC, teamShotD, teamShotE];
+const teamMemberParams = new URLSearchParams({
+	sort: 'sort,name',
+	fields: 'id,sort,date_updated,role,name,description,linkedin,instagram,photo',
+});
+const teamMembers = await fetchDirectusCollection<DirectusTeamMember>('team_member', teamMemberParams).catch((error) => {
+	console.error('Failed to load team members from Directus:', error);
+	return [];
+});
+const pageDescription = toMetaDescription(introSection?.title, introSection?.columns?.[0]?.body, serviceOverviewSection?.body);
+const pageSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'AboutPage',
+	name: pageRecord.seo_title ?? 'BhumiWarih Profile | Bhumi Warih',
+	description: pageDescription,
+	url: toAbsoluteUrl('/about'),
+	mainEntity: {
+		'@type': 'Organization',
+		name: organizationName,
+	},
+};
 ---
 
-<Layout title={pageRecord.seo_title ?? 'BhumiWarih Profile | Bhumi Warih'} activeNav="about" footerShape={footerShape}>
+<Layout
+	title={pageRecord.seo_title ?? 'BhumiWarih Profile | Bhumi Warih'}
+	description={pageDescription}
+	canonicalPath="/about"
+	image="/figma/about-team-shot-a.png"
+	activeNav="about"
+	footerShape={footerShape}
+	schema={pageSchema}
+>
 	<main class="about-page">
 		<section class="about-hero" data-nav-hero>
 			<div class="about-hero__bg">
@@ -107,7 +142,7 @@ const teamShots = Array.isArray(teamSection.gallery_images) ? teamSection.galler
 				{
 					clientAssets.map((asset) => (
 						<div class="clients__logo">
-							<img src={asset} alt="" />
+							<img src={asset} alt="Client logo" loading="lazy" />
 						</div>
 					))
 				}
@@ -121,7 +156,7 @@ const teamShots = Array.isArray(teamSection.gallery_images) ? teamSection.galler
 				<h3>{teamSection.title}</h3>
 
 				<div class="team__gallery">
-					{teamShots.map((asset) => <img src={asset} alt="" />)}
+					{teamShots.map((asset, index) => <img src={asset} alt={`Bhumi Warih team at work ${index + 1}`} loading="lazy" />)}
 				</div>
 
 				{teamSection.intro_paragraphs?.map((paragraph) => <p>{paragraph}</p>)}
@@ -135,7 +170,49 @@ const teamShots = Array.isArray(teamSection.gallery_images) ? teamSection.galler
 				data-linkedin-icon={socialLinkedIn}
 				data-instagram-icon={socialInstagram}
 			>
-				<p class="team__status" data-team-status>Loading team members...</p>
+				{
+					teamMembers.length > 0 ? (
+						teamMembers.map((member) => (
+							<article class="team-card">
+								<div class="team-card__media">
+									{
+										member.photo ? (
+											<img
+												class="team-card__photo"
+												src={`https://panel.braga.co.id/panel/assets/${member.photo}`}
+												alt={member.name || 'Bhumi Warih team member'}
+												loading="lazy"
+											/>
+										) : (
+											<div class="team-card__photo team-card__photo--empty" aria-hidden="true"></div>
+										)
+									}
+								</div>
+								<div class="team-card__body">
+									<p class="team-card__role">{member.role || 'Team Member'}</p>
+									<h4>{member.name || 'Bhumi Warih Team'}</h4>
+									{member.description && member.description !== '-' && <p>{member.description}</p>}
+									{(member.linkedin || member.instagram) && (
+										<div class="team-card__socials">
+											{member.linkedin && (
+												<a href={member.linkedin} aria-label="LinkedIn" target="_blank" rel="noreferrer">
+													<img src={socialLinkedIn} alt="" />
+												</a>
+											)}
+											{member.instagram && (
+												<a href={member.instagram} aria-label="Instagram" target="_blank" rel="noreferrer">
+													<img src={socialInstagram} alt="" />
+												</a>
+											)}
+										</div>
+									)}
+								</div>
+							</article>
+						))
+					) : (
+						<p class="team__status" data-team-status>Team members will appear here when the profile service is available.</p>
+					)
+				}
 			</div>
 		</section>
 
@@ -150,6 +227,7 @@ const teamShots = Array.isArray(teamSection.gallery_images) ? teamSection.galler
 		const token = teamCardsRoot.dataset.directusToken;
 		const linkedInIcon = teamCardsRoot.dataset.linkedinIcon;
 		const instagramIcon = teamCardsRoot.dataset.instagramIcon;
+		const hasServerRenderedCards = teamCardsRoot.querySelector('.team-card') !== null;
 
 		const buildTeamCard = (member) => {
 			const article = document.createElement('article');
@@ -235,7 +313,9 @@ const teamShots = Array.isArray(teamSection.gallery_images) ? teamSection.galler
 		};
 
 		if (!endpoint || !token) {
-			showStatus('Team members are unavailable right now.');
+			if (!hasServerRenderedCards) {
+				showStatus('Team members are unavailable right now.');
+			}
 		} else {
 			const params = new URLSearchParams({
 				sort: 'sort',
@@ -270,7 +350,9 @@ const teamShots = Array.isArray(teamSection.gallery_images) ? teamSection.galler
 				})
 				.catch((error) => {
 					console.error('Failed to load team members for /about:', error);
-					showStatus('Team members are unavailable right now.');
+					if (!hasServerRenderedCards) {
+						showStatus('Team members are unavailable right now.');
+					}
 				});
 		}
 	}

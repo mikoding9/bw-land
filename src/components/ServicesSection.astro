@@ -19,6 +19,10 @@ const {
 
 const featuredService = services.find((service) => service.slug === 'metocean-dss') ?? services[1] ?? services[0];
 const stackedServices = services.filter((service) => service.slug !== featuredService.slug);
+const trailingService = stackedServices.find((service) => service.slug === 'extended-services') ?? null;
+const leadingStackedServices = trailingService
+	? stackedServices.filter((service) => service.slug !== trailingService.slug)
+	: stackedServices;
 ---
 
 <section class="services-section" id={id}>
@@ -31,25 +35,23 @@ const stackedServices = services.filter((service) => service.slug !== featuredSe
 	</div>
 
 	<div class="services-section__grid">
-		<div class="services-section__stack">
-			{
-				stackedServices.map((service) => (
-					<article class={`services-card services-card--stacked services-card--${service.slug} services-card--${service.tone}`}>
-						<div class="services-card__copy">
-							<img class="services-card__icon" src={service.icon} alt="" />
-							<h3>{service.title}</h3>
-							<p>{service.description}</p>
-							<a href={`/service/${service.slug}`} class="services-card__link">
-								Read More <span aria-hidden="true">→</span>
-							</a>
-						</div>
-						<div class="services-card__media">
-							<img src={service.image} alt={service.title} loading="lazy" />
-						</div>
-					</article>
-				))
-			}
-		</div>
+		{
+			leadingStackedServices.map((service) => (
+				<article class={`services-card services-card--stacked services-card--${service.slug} services-card--${service.tone}`}>
+					<div class="services-card__copy">
+						<img class="services-card__icon" src={service.icon} alt="" />
+						<h3>{service.title}</h3>
+						<p>{service.description}</p>
+						<a href={`/service/${service.slug}`} class="services-card__link">
+							Read More <span aria-hidden="true">→</span>
+						</a>
+					</div>
+					<div class="services-card__media">
+						<img src={service.image} alt={service.title} loading="lazy" />
+					</div>
+				</article>
+			))
+		}
 
 		{
 			featuredService && (
@@ -64,6 +66,24 @@ const stackedServices = services.filter((service) => service.slug !== featuredSe
 					</div>
 					<div class="services-card__media">
 						<img src={featuredService.image} alt={featuredService.title} loading="lazy" />
+					</div>
+				</article>
+			)
+		}
+
+		{
+			trailingService && (
+				<article class={`services-card services-card--stacked services-card--${trailingService.slug} services-card--${trailingService.tone}`}>
+					<div class="services-card__copy">
+						<img class="services-card__icon" src={trailingService.icon} alt="" />
+						<h3>{trailingService.title}</h3>
+						<p>{trailingService.description}</p>
+						<a href={`/service/${trailingService.slug}`} class="services-card__link">
+							Read More <span aria-hidden="true">→</span>
+						</a>
+					</div>
+					<div class="services-card__media">
+						<img src={trailingService.image} alt={trailingService.title} loading="lazy" />
 					</div>
 				</article>
 			)
@@ -112,13 +132,6 @@ const stackedServices = services.filter((service) => service.slug !== featuredSe
 		align-items: stretch;
 	}
 
-	.services-section__stack {
-		display: grid;
-		grid-template-columns: 1fr;
-		grid-template-rows: repeat(2, minmax(0, 1fr));
-		gap: 1.5rem;
-	}
-
 	.services-card {
 		display: grid;
 		grid-template-columns: minmax(16rem, 1fr) minmax(16rem, 1fr);
@@ -130,6 +143,8 @@ const stackedServices = services.filter((service) => service.slug !== featuredSe
 	}
 
 	.services-card--feature {
+		grid-column: 2;
+		grid-row: 1 / span 2;
 		min-height: 47.875rem;
 	}
 
@@ -352,13 +367,11 @@ const stackedServices = services.filter((service) => service.slug !== featuredSe
 			grid-template-columns: 1fr;
 		}
 
-		.services-section__stack {
-			grid-template-rows: auto;
-		}
-
 		.services-card,
 		.services-card--feature {
 			grid-template-columns: 1fr;
+			grid-column: auto;
+			grid-row: auto;
 			min-height: auto;
 		}
 

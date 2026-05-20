@@ -30,6 +30,7 @@ export type DirectusPageRecord = {
 	id: string | number;
 	page_key: string;
 	language: string;
+	status: string | null;
 	schema_version: number;
 	route: string | null;
 	navigation_key: string | null;
@@ -117,6 +118,7 @@ export async function fetchDirectusPage(pageKey: string, language = 'en') {
 	const params = new URLSearchParams({
 		'filter[page_key][_eq]': pageKey,
 		'filter[language][_eq]': language,
+		'filter[status][_eq]': 'published',
 		limit: '1',
 	});
 

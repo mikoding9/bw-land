@@ -20,6 +20,25 @@ const fieldCache = new Map();
 
 const pageFields = [
 	{
+		field: 'status',
+		type: 'string',
+		meta: {
+			note: 'Publishing state used for archive-safe page records',
+			width: 'half',
+			interface: 'select-dropdown',
+			options: {
+				choices: [
+					{ text: 'Published', value: 'published' },
+					{ text: 'Draft', value: 'draft' },
+					{ text: 'Archived', value: 'archived' },
+				],
+			},
+		},
+		schema: {
+			default_value: 'published',
+		},
+	},
+	{
 		field: 'page_key',
 		type: 'string',
 		meta: {
@@ -146,6 +165,10 @@ function toCollectionMeta() {
 			note: 'Localized page content records for the BW website',
 			hidden: false,
 			singleton: false,
+			archive_field: 'status',
+			archive_app_filter: true,
+			archive_value: 'archived',
+			unarchive_value: 'draft',
 			accountability: 'all',
 		},
 		schema: {
@@ -158,6 +181,7 @@ function toSeedPayload(pageData) {
 	return {
 		page_key: pageData.page,
 		language: 'en',
+		status: 'published',
 		schema_version: pageData.schema_version ?? 1,
 		route: pageData.route ?? null,
 		navigation_key: pageData.navigation_key ?? null,
@@ -269,7 +293,16 @@ async function ensureCollection() {
 	const payload = toCollectionMeta();
 
 	if (await collectionExists(collectionName)) {
-		console.log(`Collection exists: ${collectionName}`);
+		if (DRY_RUN) {
+			console.log(`[dry-run] update collection ${collectionName}`);
+			return;
+		}
+
+		await directusFetch(`/collections/${encodeURIComponent(collectionName)}`, {
+			method: 'PATCH',
+			body: JSON.stringify(payload),
+		});
+		console.log(`Updated collection: ${collectionName}`);
 		return;
 	}
 
